@@ -1,0 +1,230 @@
+/*--------------------------------------------------------------
+ Header
+--------------------------------------------------------------*/
+.span4 {
+    display: block;
+    margin: 0 auto;
+}
+
+.content-heading {
+    width: 100%;
+    color: #32E0C4;
+}
+
+.content-heading > h1 {
+    width: 100%;
+    color: #32E0C4;
+    font-size: 33px;
+    margin-top: 10px;
+    margin-left: 50px;
+    font-weight: 700;
+}
+
+.logo-container > img {
+    display: block;
+    margin: 20px auto;
+}
+/*--------------------------------------------------------------
+ End Header
+--------------------------------------------------------------*/
+
+/*--------------------------------------------------------------
+ Login Section
+--------------------------------------------------------------*/
+
+div #main-section {
+    padding: 0;
+}
+
+.container {
+    height: 100%;
+    align-content: center;
+}
+
+.card-login {
+    border: none;
+    width: 300px;
+    height: 100px;
+    margin-top: 50px;
+}
+
+.card-signup {
+    border: none;
+    width: 300px;
+    height: 100px;
+}
+
+.card-header {
+    border: none;
+    background-color: white;
+    padding: 10px 0;
+}
+
+.card-footer {
+    border: none;
+    background-color: white;
+}
+
+.span4 > img {
+    float: left;
+    width: 38px;
+    margin-top: 15px;
+    margin-right: 18px;
+}
+
+.input-group-prepend span {
+    background-color: white;
+    color: black;
+    border: none;
+}
+
+.bx-user {
+    font-size: 28px;
+    color: #0D7377;
+}
+
+.bx-lock-alt {
+    font-size: 28px;
+    color: #0D7377;
+}
+
+.form-control {
+    border: none;
+    /*border-bottom: 1px solid #E6E6E6;*/
+    outline: 0 0 0 0 !important;
+    box-shadow: 0 0 0 0 !important;
+}
+
+input:focus {
+    border: none;
+    outline: none !important;
+    box-shadow: 0 0 0 0 !important;
+}
+
+input[type=button] {
+    background-color: #32E0C4 !important;
+}
+
+input:focus ~ .floating-label-login ,
+input:focus ~ .floating-label-signup ,
+input:not(:focus):valid ~ .floating-label-login,
+input:not(:focus):valid ~ .floating-label-signup  {
+    top: -10px;
+    bottom: 20px;
+    left: 0;
+    font-size: 11px;
+    opacity: 1;
+}
+
+.form-control {
+    font-size: 14px;
+    width: 200px;
+    height: 35px;
+}
+
+.floating-label-login {
+    color: #495057;
+    position: absolute;
+    pointer-events: none;
+    top: 13px;
+    left: 55px;
+    z-index: 999;
+    transition: 0.3s ease all;
+}
+
+.floating-label-signup {
+    color: #495057;
+    position: absolute;
+    pointer-events: none;
+    top: 13px;
+    left: 15px;
+    z-index: 999;
+    transition: 0.3s ease all;
+}
+
+.login_btn {
+    border: none;
+    outline: none !important;
+    box-shadow: none !important;
+    border-radius: 50px;
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    background-color: #32E0C4;
+    width: 220px;
+    height: 43px;
+    margin-top: 15%;
+}
+
+.login_btn:hover {
+    background-color: #32E0C4;
+    color: black;
+}
+
+.forgot-password-link {
+    width: 105%;
+    margin: 0 auto;
+    text-align: center;
+    color: rgba(19, 44, 51, 0.6);
+}
+
+.links a {
+    margin-left: 4px;
+}
+
+.input-group .form-group {
+    align-items: center;
+    border-bottom: 1px solid #e6e6e6;
+    margin-bottom: 20px;
+}
+
+.form-validation-feedback {
+    /* visibility: hidden; */
+    margin: -19px 0 25px 0;
+    font-size: 11px;
+    color: red;
+}
+
+#firstname-field, #lastname-field {
+    margin: 0px 0 40px 0;
+}
+/*--------------------------------------------------------------
+ End Login page
+--------------------------------------------------------------*/
+
+/*--------------------------------------------------------------
+ Sign up page
+--------------------------------------------------------------*/
+
+
+/*--------------------------------------------------------------
+ End Sign up page
+--------------------------------------------------------------*/
+
+/*--------------------------------------------------------------
+ End Footer
+--------------------------------------------------------------*/
+#footer .credits {
+    color: rgba(19, 44, 51, 0.6);;
+    text-align: center;
+    font-size: 13px;
+    padding-top: 25px;
+}
+
+.social-links > p {
+    color: rgba(19, 44, 51, 0.6);
+    text-align: center;
+}
+
+.copyleft {
+    font-size: 12px;
+}
+
+#footer {
+    position: fixed;
+    bottom: 15px;
+    width: 100%;
+}
+/*--------------------------------------------------------------
+ End Footer
+--------------------------------------------------------------*/
