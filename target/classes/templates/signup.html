@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <title>Signup | Unipi Agenda</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width = device-width, initial-scale= 1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" href=img/favicon.ico">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/bootstrap-4.3.1-dist/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="boxicons-2.0.7/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <!-- SEO tags -->
+
+
+</head>
+
+<body>
+    <!-- ========= Header ========== -->
+    <div class="page-header">
+        <div class="logo-container">
+            <img src="img/logo.svg" alt="unipi agenda logo">
+        </div>
+    </div>
+    <!-- ======= End Header ========== -->
+
+
+    <!-- ======= Login Section ======= -->
+    <div id="main-section" class="container">
+        <div class="d-flex justify-content-center h-100">
+            <div class="card card-signup">
+                
+                <div class="card-body">
+                    <form action="" method="POST">
+                        <!-- TODO: Form validation with JQuery -->
+
+                        <div class="input-group form-group">
+                            <input type="text" class="form-control" name="username" maxlength="30" required>
+                            <span class="floating-label-signup">Username</span>
+                        </div>
+
+                        <div class="form-validation-feedback">
+                            <span>Username already taken. Please try again</span>
+                        </div>
+
+                        <div id="firstname-field" class="input-group form-group">
+                            <input type="text" id="firstname" name="firstname" class="form-control" maxlength="30" required>
+                            <span class="floating-label-signup">First name</span>
+                        </div>
+
+                        <div id="lastname-field" class="input-group form-group">
+                            <input type="text" id="lastname" name="lastname" class="form-control" maxlength="30" required>
+                            <span class="floating-label-signup">Lastname</span>
+                        </div>
+
+                        <div class="input-group form-group">
+                            <input type="password" id="password" name="password" class="form-control" maxlength="30" required>
+                            <span class="floating-label-signup">Password</span>
+                        </div>
+
+                        <div class="form-validation-feedback">
+                            <span>Password too short: 8-30 characters</span>
+                        </div>
+
+                        <div class="input-group form-group">
+                            <input type="password" id="reenter-password" name="reenter-password" class="form-control" maxlength="30" required>
+                            <span class="floating-label-signup">Re-enter password</span>
+                            <!-- TODO: Eye: take a look at the password -->
+                        </div>
+
+                        <div class="form-validation-feedback">
+                            <span>Passwords do not match. Please try again</span>
+                        </div>
+
+                        <div class="form-group">
+                              <div class="col text-center">
+                                <button href="#" class="btn btn-primary login_btn">Sign up</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="card-footer">
+                    <div class="d-flex justify-content-center forgot-password-link">
+                        Already have an account ? Login&nbsp;<a href="index.html">here</a>
+                    </div>
+                    <!-- <div class="d-flex justify-content-center">
+                    <a href="#">Forgot your password?</a>
+                </div> -->
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- ========== End Login Section ========== -->
+
+    <h2 th:text="${message}"></h2>
+
+    <!-- ======= Footer ======= -->
+    <footer id="footer">
+        <!-- <div class="footer-top">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="social-links">
+                        <p>Just login with</p>
+                        <a href="#" class="google" target="_blank"><img src="assets/img/facebook icon.png"></a>
+                        <a href="#" class="instagram" target="_blank"><img src="assets/img/twitter icon.png"></a>
+                        <a href="#" class="facebook" target="_blank"><img src="assets/img/google icon.png"></a>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+
+        <div class="container footer-bottom clearfix">
+            <div class="credits">
+                <div class="row justify-content-center">
+                    <span class="copyleft">&copy;UnipiAgenda
+                        <script>document.write(new Date().getFullYear())</script>.<br> All rights and lefts reserved.
+                    </span>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- ======= End Footer ======== -->
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
