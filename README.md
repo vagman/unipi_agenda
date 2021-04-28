@@ -1,1 +1,3 @@
-# unipi_agenda
+# Unipi Agenda
+
+Is a university project with .. 
