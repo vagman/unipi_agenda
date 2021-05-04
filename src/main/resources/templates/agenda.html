@@ -2,28 +2,134 @@
 <html lang="en-US">
 
 <head>
-    <title>My Agenda</title>
+    
+    <title>$username | Unipi Agenda</title>
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width = device-width, initial-scale= 1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="icon" href="../../../../../UnipiAgenda%20web%20(WIP%20-%20Work%20in%20progress)/assets/img/favicon.ico">
+    <link rel="icon" href="img/favicon.ico">
 
     <!-- CSS -->
-    <link rel="stylesheet" href="../../../../../UnipiAgenda%20web%20(WIP%20-%20Work%20in%20progress)/assets/css/bootstrap-4.3.1-dist/css/bootstrap.min.css"
+    <link rel="stylesheet" href="css/bootstrap-4.3.1-dist/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="../../../../../UnipiAgenda%20web%20(WIP%20-%20Work%20in%20progress)/assets/boxicons-2.0.7/css/boxicons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../../../../UnipiAgenda%20web%20(WIP%20-%20Work%20in%20progress)/assets/style.css">
+    <link href="boxicons-2.0.7/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- SEO tags -->
 
 
 </head> 
 <body>
 
+    <!-- ========= Header ========== -->
+    <div class="page-header">
+        <div class="logo-container">
+            <img src="img/logo.svg">
+        </div>
+    </div>
+    <!-- ======= End Header ========== -->
+
+    <!-- ======= Main Section ======= -->
+    <div id="main-section" class="container">
+        <div class="d-flex justify-content-center h-100">
+            <div class="card" style="width: 20rem;"> 
+        
+                    <h3 class="meeting-date">Tuesday 21-04 (Today)</h3>
+                    <!-- TODO: Create one card-body element dynamically. Each card its a diffrent event. -->
+                    <div class="card-body">
+                        <ul class="tasks"> 
+                            <li class="task row" data-toggle="1">
+                                <h5 class="card-title">Zoomba class</h5> <!-- $meeting_title + $meeting_hours -->
+                                <span class="card-hours">
+                                    9:00 - 10:30<i id="arrow_ex1" class="bx bx-chevron-down" ></i>
+                                </span>
+                            </li>
+                            <li class="task-details" data-toggle="1" style="display: none;">
+                                <div class="card-description-title">Description</div>
+                                <p class="card-text">We are going to have an extensive zoomba training session with 4 top tier istructors. We are going to have an extensive zoomba training session with 4 top tier istructors.</p>
+                            
+                            
+                                <div class="card-participants-title">Participants</div>
+                                <p class="card-text"><strong>Vagman</strong>, Brinel, prekwood, user44</p>
+                            
+                                <div class="row agenda-button-row">
+                                    <button type="button" class="btn btn-danger btn-sm"><i class="bx bx-trash"></i></button>
+                                    <button type="button" class="btn btn-info"><i class="bx bx-edit-alt"></i>Edit</button>
+                                    <button type="button" class="btn btn-success">Enter meeting<i class="bx bx-right-arrow-alt"></i></button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
 
 
+                    <div class="card-body">
+                        <ul class="tasks"> 
+                            <li class="task row" data-toggle="2">
+                                <h5 class="card-title">Zoomba class</h5> <!-- $meeting_title + $meeting_hours -->
+                                <span class="card-hours">
+                                    9:00 - 10:30<i id="arrow_ex2" class="bx bx-chevron-down"></i>
+                                </span>
+                            </li>
+                            <li class="task-details" data-toggle="2"style="display: none;">
+                                <div class="card-description-title">Description</div>
+                                <p class="card-text">We are going to have an extensive zoomba training session with 4 top tier istructors. We are going to have an extensive zoomba training session with 4 top tier istructors.</p>
+                            
+                            
+                                <div class="card-participants-title">Participants</div>
+                                <p class="card-text"><strong>Vagman</strong>, Brinel, prekwood, user44</p>
+                            
+                                <div class="row agenda-button-row">
+                                    <button type="button" class="btn btn-danger btn-sm"><i class="bx bx-trash"></i></button>
+                                    <button type="button" class="btn btn-info"><i class="bx bx-edit-alt"></i>Edit</button>
+                                    <button type="button" class="btn btn-success">Enter meeting<i class="bx bx-right-arrow-alt"></i></button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <h3 class="meeting-date">Friday 28-05 </h3>
+                    <!-- TODO: Create one card-body element dynamically. Each card its a diffrent event. -->
+                    <div class="card-body">
+                        <ul class="tasks"> 
+                            <li class="task row" data-toggle="3">
+                                <h5 class="card-title">Zoomba class</h5> <!-- $meeting_title + $meeting_hours -->
+                                <span class="card-hours">
+                                    9:00 - 10:30<i id="arrow_ex3" class="bx bx-chevron-down" ></i>
+                                </span>
+                            </li>
+                            <li class="task-details" data-toggle="3" style="display: none;">
+                                <div class="card-description-title">Description</div>
+                                <p class="card-text">We are going to have an extensive zoomba training session with 4 top tier istructors. We are going to have an extensive zoomba training session with 4 top tier istructors.</p>
+                            
+                            
+                                <div class="card-participants-title">Participants</div>
+                                <p class="card-text"><strong>Vagman</strong>, Brinel, prekwood, user44</p>
+                            
+                                <div class="row agenda-button-row">
+                                    <!-- TODO: only the admin of the meeting can have access to these actions -->
+                                    <!-- <button type="button" class="btn btn-danger btn-sm"><i class="bx bx-trash"></i></button>
+                                    <button type="button" class="btn btn-info"><i class="bx bx-edit-alt"></i>Edit</button> -->
+                                    <button type="button" class="btn btn-success">Enter meeting<i class="bx bx-right-arrow-alt"></i></button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+            </div>
+        </div>
+        
+        <div class="new-meeting">
+            <button type="button" class="btn btn-primary btn-new-meeting">New Meeting<i class="bx bx-plus"></i></button>
+        </div>
+        
+    </div>   
+
+    
+    
+    <!-- ======= Main Section ======= -->
 
 
 
@@ -39,14 +145,12 @@
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+    <script src="scripts/script.js"></script>
 </body>
 </html>
