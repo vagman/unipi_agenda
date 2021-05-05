@@ -8,10 +8,12 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.sql.*;
 
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 @RequestMapping(path = "/")
@@ -23,14 +25,18 @@ public class LoginController {
     }
 
     @PostMapping("/")
-    public String loginUser(Model model,
+    public Object loginUser(Model model,
+                            HttpSession session,
                             @RequestParam(name = "username", required = false) String username,
-                            @RequestParam(name = "password", required = false) String password){
-        User u = User.login(username,password,model);
-        if (u != null){
-//          TODO: next page with all the meetings
-            model.addAttribute("message", "The user "+u.get_Username()+" connected successfully");
+                            @RequestParam(name = "password", required = false) String password)
+    {
+        User registeredUser = User.login(username,password,model);
+        if (registeredUser != null){
+            System.out.println(registeredUser.getFullName());
+            session.setAttribute("user", registeredUser);
+            return new RedirectView("user");
         }
+        model.addAttribute("message", "Something went wrong");
         return "index";
     }
 }

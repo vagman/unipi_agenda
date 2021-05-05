@@ -2,28 +2,29 @@
  Header
 --------------------------------------------------------------*/
 .span4 {
-    display: block;
-    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
 }
 
 .content-heading {
-    width: 100%;
     color: #32E0C4;
 }
 
 .content-heading > h1 {
-    width: 100%;
     color: #32E0C4;
     font-size: 33px;
-    margin-top: 10px;
-    margin-left: 50px;
     font-weight: 700;
+    margin: 0
 }
 
 .logo-container > img {
     display: block;
     margin: 20px auto;
 }
+
 /*--------------------------------------------------------------
  End Header
 --------------------------------------------------------------*/
@@ -44,6 +45,7 @@ div #main-section {
 .card {
     border: none;
 }
+
 
 .card-login {
     border: none;
@@ -72,7 +74,6 @@ div #main-section {
 .span4 > img {
     float: left;
     width: 38px;
-    margin-top: 15px;
     margin-right: 18px;
 }
 
@@ -95,7 +96,7 @@ div #main-section {
 .form-control {
     border: none;
     /*border-bottom: 1px solid #E6E6E6;*/
-    outline: 0 !important;
+    outline: unset !important;
     box-shadow: 0 0 0 0 !important;
 }
 
@@ -109,10 +110,10 @@ input[type=button] {
     background-color: #32E0C4 !important;
 }
 
-input:focus ~ .floating-label-login ,
-input:focus ~ .floating-label-signup ,
+input:focus ~ .floating-label-login,
+input:focus ~ .floating-label-signup,
 input:not(:focus):valid ~ .floating-label-login,
-input:not(:focus):valid ~ .floating-label-signup  {
+input:not(:focus):valid ~ .floating-label-signup {
     top: -10px;
     bottom: 20px;
     left: 0;
@@ -126,11 +127,12 @@ input:not(:focus):valid ~ .floating-label-signup  {
     height: 35px;
 }
 
+
 .floating-label-login {
     color: #495057;
     position: absolute;
     pointer-events: none;
-    top: 13px;
+    top: 6px;
     left: 55px;
     z-index: 999;
     transition: 0.3s ease all;
@@ -140,7 +142,7 @@ input:not(:focus):valid ~ .floating-label-signup  {
     color: #495057;
     position: absolute;
     pointer-events: none;
-    top: 13px;
+    top: 6px;
     left: 15px;
     z-index: 999;
     transition: 0.3s ease all;
@@ -183,21 +185,19 @@ input:not(:focus):valid ~ .floating-label-signup  {
 }
 
 .form-validation-feedback {
-    /* visibility: hidden; */
-    margin: -19px 0 25px 0;
-    font-size: 11px;
+    margin: 0 10px;
+    font-size: 13px;
     color: red;
 }
 
-#firstname-field, #lastname-field {
-    margin: 0px 0 40px 0;
+
+div#main-section .input-group {
+    border-bottom: 1px solid #E6E6E6;
 }
+
 /*--------------------------------------------------------------
  End Login page
 --------------------------------------------------------------*/
-
-
-
 
 
 /*--------------------------------------------------------------
@@ -211,13 +211,9 @@ input:not(:focus):valid ~ .floating-label-signup  {
 }
 
 
-
 /*--------------------------------------------------------------
  End Sign up page
 --------------------------------------------------------------*/
-
-
-
 
 
 /*--------------------------------------------------------------
@@ -358,15 +354,27 @@ li.task i {
     background-color: #0D7377;
     border: none;
 }
+
 /*--------------------------------------------------------------
  End Agenda page
 --------------------------------------------------------------*/
 
+/*--------------------------------------------------------------
+ Meeting page
+--------------------------------------------------------------*/
+.meeting-name {
+    font-size: 27px;
+    font-weight: 600;
+    color: #0D7377;
+}
 
+/*--------------------------------------------------------------
+ End Meeting page
+--------------------------------------------------------------*/
 
 
 /*--------------------------------------------------------------
- End Footer
+ Footer
 --------------------------------------------------------------*/
 #footer .credits {
     color: rgba(19, 44, 51, 0.6);;
@@ -384,11 +392,172 @@ li.task i {
     font-size: 12px;
 }
 
+
 #footer {
     position: fixed;
     bottom: 15px;
     width: 100%;
 }
+
 /*--------------------------------------------------------------
  End Footer
 --------------------------------------------------------------*/
+div#main-section a {
+    color: #0d7377;
+}
+
+body.register div#main-section .input-group {
+    margin-bottom: 25px;
+}
+
+body.register div#main-section {
+    margin-top: 20px;
+}
+
+
+body.meeting div#main-section > form {
+    padding: 30px 10px;
+}
+
+body.meeting div#main-section .form-group.meeting-title {
+    border-bottom: 2px solid #0D7377;
+    margin: 0;
+    width: 100%;
+    margin-top: 25px;
+}
+
+body.meeting .meeting-title input:not(:focus):valid ~ span.floating-label-login {
+    top: 3px;
+    left: 10px;
+    font-size: 23px;
+    font-weight: bold;
+    color: #0d7377;
+    line-height: 23px;
+    height: 26px;
+}
+
+body.meeting h4 {
+    font-weight: 100;
+    font-size: 20px;
+    display: block;
+    color: #545454;
+}
+
+body.meeting .input-group.form-group.meeting-desc {
+    flex-direction: column;
+}
+
+body.meeting textarea.meeting-desc {
+    border: unset;
+}
+
+body.meeting .datetime-container {
+    display: flex;
+    align-items: center;
+    width: calc(100% - 20px);
+    margin-top: 20px;
+}
+
+.datetime-container > * {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    margin: 5px;
+}
+
+body.meeting .datepicker, body.meeting input.timepicker {
+    max-width: 80%;
+    display: block;
+    border: unset;
+    font-size: 15px;
+    padding: 10px;
+}
+
+.input-group.form-group.meeting-participants {
+    margin-top: 20px;
+    flex-direction: column;
+}
+
+.meeting-headline {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+button#add_participants {
+    border: unset;
+    background: transparent;
+    padding: 0;
+    display: flex;
+    margin: 0 0px 0px 10px;
+}
+
+.meeting-participant {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.meeting-participants-list {
+    background: #F2F2F2;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+button.sticky-button {
+    border: unset;
+    position: absolute;
+    bottom: 15px;
+    background: #32E0C4;
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    width: 220px;
+    padding: 5px;
+    border-radius: 20px;
+    display: block;
+    margin: auto;
+    left: calc(50% - 110px);
+}
+
+body.meeting input:not(:focus):valid ~ .floating-label-login {
+    font-weight: 100;
+    font-size: 20px;
+    display: block;
+    color: #545454;
+    top: 6px;
+    left: 40px;
+}
+
+body.meeting .selected input:not(:focus):valid ~ .floating-label-login,
+body.meeting input:focus ~ .floating-label-login,
+body.meeting .meeting-title.selected input:not(:focus):valid ~ .floating-label-login {
+    top: -18px;
+    bottom: 20px;
+    left: 0;
+    font-size: 17px;
+    opacity: 1;
+}
+
+.meeting-headline h4 {
+    margin: 0;
+}
+
+textarea.meeting-desc:focus {
+    outline: unset;
+}
+
+.input-group.form-group.meeting-desc {
+    margin-top: 20px;
+}
+a.go-back {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    align-items: center;
+}
+a.go-back img {
+    margin-right: 10px;
+}
