@@ -7,7 +7,7 @@ import java.util.List;
 
 public class User {
 
-    User(String username, String firstName, String lastName){
+    User(String username){
         this.username = username;
 
     }
@@ -42,6 +42,10 @@ public class User {
         this.firstName = firstName;
     }
 
+    public String getFullName(){
+        return firstName+" "+lastName;
+    }
+
     public String getLastName() {
         return lastName;
     }
@@ -74,7 +78,7 @@ public class User {
                     String last_name = rs.getString(4);
                     Encryption e1 = new Encryption();
                     if (e1.passwordMach(hash_password,password_salt,pass)){
-                        return new User(username, first_name, last_name);
+                        return new User(username);
                     }
                 }
                 model.addAttribute("message","Username or password are not correct");
@@ -114,7 +118,7 @@ public class User {
                 int rows = ps.executeUpdate();
                 if (rows>0){
                     model.addAttribute("message","New user created successfully");
-                    return new User(username,firstName,lastName);
+                    return new User(username);
                 }else {
                     model.addAttribute("message","Something happen (unknown)");
                     return null;
