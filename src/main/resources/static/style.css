@@ -234,7 +234,7 @@ div#main-section .input-group {
 .card-hours {
     vertical-align: top;
     margin-left: 65px;
-    top: 0px;
+    top: 0;
     margin-top: -3px;
 }
 
@@ -264,7 +264,7 @@ div#main-section .input-group {
 }
 
 .agenda-button-row {
-    margin: 0px;
+    margin: 0;
 }
 
 .btn-info {
@@ -490,7 +490,7 @@ button#add_participants {
     background: transparent;
     padding: 0;
     display: flex;
-    margin: 0 0px 0px 10px;
+    margin: 0 0 0 10px;
 }
 
 .meeting-participant {
