@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+
+    <title>$meeting_name | Unipi Agenda</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width = device-width, initial-scale= 1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" href="img/favicon.ico">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <link href="boxicons-2.0.7/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- SEO tags -->
+
+
+</head>
+<body class="meeting">
+
+
+<!-- ======= Main Section ======= -->
+<div id="main-section" class="container">
+
+    <a class="go-back" href="/user"><img src="/img/arrow-left.svg">Go back</a>
+    <form action="" method="post">
+        <div class="input-group form-group meeting-title">
+            <input name="meeting-title" class="form-control"  autocomplete="off">
+            <span class="floating-label-login">Meeting title</span>
+        </div>
+        <div class="input-group form-group meeting-desc">
+            <h4>Description</h4>
+            <textarea name="meeting-desc" class="meeting-desc"  autocomplete="off"></textarea>
+        </div>
+        <div class="datetime-container">
+            <div class="input-group form-group meeting-date">
+                <div class="input-group-prepend">
+                    <img src="/img/calendar.svg">
+                </div>
+                <input name="meeting-date" class="datepicker"  autocomplete="off">
+                <span class="floating-label-login">Date</span>
+            </div>
+            <div class="input-group form-group meeting-duration">
+                <div class="input-group-prepend">
+                    <img src="/img/clock.svg">
+                </div>
+                <input name="meeting-duration" class="timepicker" autocomplete="off">
+                <span class="floating-label-login">Duration</span>
+            </div>
+        </div>
+        <div class="input-group form-group meeting-participants">
+            <div class="meeting-headline">
+                <h4>Participants</h4>
+                <button id="add_participants"><img src="/img/add.svg"></button>
+            </div>
+            <div class="meeting-participants-list">
+                <div class="meeting-participant">
+                    <span class="meeting-participant-name" th:text="${fullname}"></span>
+                    <div></div>
+<!--                    <img src="/img/exit.svg">-->
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="sticky-button">Create meeting</button>
+    </form>
+</div>
+<!-- ======= Main Section ======= -->
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+
+<script src="/scripts/meeting.js"></script>
+
+
+</body>
+</html>
