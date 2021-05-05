@@ -38,7 +38,7 @@ public class Encryption {
         toHash = salt + password_unhashed + salt;
         MessageDigest messageDigest = null;
         try {
-            messageDigest = MessageDigest.getInstance("SHA512");
+            messageDigest = MessageDigest.getInstance("MD5"); //SHA512
         } catch (NoSuchAlgorithmException ex) {
             ex.printStackTrace();
             this.password_hashed = "";
