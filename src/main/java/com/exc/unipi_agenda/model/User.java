@@ -3,11 +3,12 @@ package com.exc.unipi_agenda.model;
 import org.springframework.ui.Model;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class User {
 
-    User(String username){
+    public User(String username){
         this.username = username;
 
     }
@@ -17,6 +18,16 @@ public class User {
     private String firstName;
     private String lastName;
     private List<UserNotification> notificationList;
+
+    public List<Meeting> getMeetings() {
+        return meetings;
+    }
+
+    public void setMeetings(List<Meeting> meetings) {
+        this.meetings = meetings;
+    }
+
+    private List<Meeting> meetings;
 
     public String get_Username() {
         return username;
@@ -78,26 +89,24 @@ public class User {
                     String last_name = rs.getString(4);
                     Encryption e1 = new Encryption();
                     if (e1.passwordMach(hash_password,password_salt,pass)){
-                        return new User(username);
+                        conn.close();
+                        User u =new User(username);
+                        u.setFirstName(first_name); u.setLastName(last_name);
+                        u.loadMeetings();
+                        return u;
                     }
                 }
                 model.addAttribute("message","Username or password are not correct");
                 return null;
             }catch (SQLException throwables) {
                 throwables.printStackTrace();
-            }finally {
-                try {
-                    conn.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
             }
-
         }
         return null;
     }
 
-    public void logout() {
+    public User logout(User u) {
+        return null;
     }
 
     public static User  register(String username, String password, String firstName, String lastName, Model model) {
@@ -134,5 +143,34 @@ public class User {
             }
         }
         return null;
+    }
+
+    private void loadMeetings(){
+        List<Meeting> meeting = new ArrayList<>();
+        Connection conn = Db.getConnection();
+//      we get meetings data from the meetings which the user is admin or participant
+        String sql_query = "SELECT meeting.id_meeting,name,date,duration,admin, username\n" +
+                           "from meeting left join meeting_participants on meeting.id_meeting = meeting_participants.id_meeting\n" +
+                           "where date > now() and admin = ? or username = ?\n" +
+                           "order by id_meeting;";
+        try {
+            if (conn!=null) {
+                PreparedStatement ps = conn.prepareStatement(sql_query);
+                ps.setString(1, this.get_Username());
+                ps.setString(2, this.get_Username());
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    Meeting m = new Meeting(rs.getString("id_meeting"), rs.getString("admin"));
+                    m.setName(rs.getString("name"));
+                    m.setDatetime(rs.getDate("date"));
+                    m.setDuration(rs.getFloat("duration"));
+                    meeting.add(m);
+                }
+                conn.close();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        this.setMeetings(meeting);
     }
 }
