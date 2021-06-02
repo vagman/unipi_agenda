@@ -7,3 +7,4 @@ Your team will implement a web application that will serve as an online agenda. 
 * Java SE 16.0.1
 * SpringBoot 2.4.5
 * Bootstrap 4.3.1
+* JQuery 3.3.1
