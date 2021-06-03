@@ -10,7 +10,7 @@ public class User {
 
     public User(String username){
         this.username = username;
-
+        this.loadAttributes();
     }
 
     private String username;
@@ -75,32 +75,33 @@ public class User {
 
     public static User login(String username, String pass, Model model) {
         Connection conn = Db.getConnection();
-        if (conn != null) {
-            String sql_query = "SELECT password,password_salt, first_name, last_name FROM users WHERE username=?;";
-            try {
-                PreparedStatement ps = conn.prepareStatement(sql_query);
-                ps.setString(1,username);
-                ResultSet rs = ps.executeQuery();
-//               if the username exists
-                if (rs.next()){
-                    String hash_password = rs.getString(1);
-                    String password_salt = rs.getString(2);
-                    String first_name = rs.getString(3);
-                    String last_name = rs.getString(4);
-                    Encryption e1 = new Encryption();
-                    if (e1.passwordMach(hash_password,password_salt,pass)){
-                        conn.close();
-                        User u =new User(username);
-                        u.setFirstName(first_name); u.setLastName(last_name);
-                        u.loadMeetings();
-                        return u;
-                    }
+        if (conn == null) {
+            return null;
+        }
+
+        String sql_query = "SELECT password,password_salt, first_name, last_name FROM users WHERE username=?;";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql_query);
+            ps.setString(1,username);
+            ResultSet rs = ps.executeQuery();
+            //  if the username exists
+            if (rs.next()){
+                String hash_password = rs.getString(1);
+                String password_salt = rs.getString(2);
+                String first_name = rs.getString(3);
+                String last_name = rs.getString(4);
+                Encryption e1 = new Encryption();
+                if (e1.passwordMach(hash_password,password_salt,pass)){
+                    conn.close();
+                    User u =new User(username);
+                    u.setFirstName(first_name); u.setLastName(last_name);
+                    u.loadMeetings();
+                    return u;
                 }
-                model.addAttribute("message","Username or password are not correct");
-                return null;
-            }catch (SQLException throwables) {
-                throwables.printStackTrace();
             }
+            model.addAttribute("message","Username or password are not correct");
+        }catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
         return null;
     }
@@ -172,5 +173,33 @@ public class User {
             e.printStackTrace();
         }
         this.setMeetings(meeting);
+    }
+
+    private boolean loadAttributes(){
+        Connection conn = Db.getConnection();
+        if (conn == null) {
+            return false;
+        }
+
+        // load name
+        String sql_query = "SELECT first_name, last_name FROM users WHERE username = ? ;";
+        List<Object> search_results = new ArrayList<Object>();
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql_query);
+            ps.setString(1,this.username);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                this.firstName = rs.getString("first_name");
+                this.lastName = rs.getString("last_name");
+            }
+        }catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return false;
+        }
+
+
+        // TODO: load notifications
+
+        return true;
     }
 }

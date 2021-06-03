@@ -95,7 +95,6 @@ div #main-section {
 
 .form-control {
     border: none;
-    /*border-bottom: 1px solid #E6E6E6;*/
     outline: unset !important;
     box-shadow: 0 0 0 0 !important;
 }
@@ -219,18 +218,13 @@ div#main-section .input-group {
 }
 
 .meeting-date {
-    font-size: 23px;
+    font-size: 20px;
     font-weight: 700;
     color: #0D7377;
     margin-bottom: 22px;
 }
 
-.card-hours {
-    vertical-align: top;
-    margin-left: 65px;
-    top: 0;
-    margin-top: -3px;
-}
+
 
 .bx-chevron-down {
     vertical-align: middle;
@@ -293,14 +287,18 @@ ul.task {
 }
 
 li.task {
-    font-size: 19px;
+    font-size: 17px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    padding: 0 15px;
 }
 
 ul.tasks {
     list-style: none;
     color: #707070;
-    padding-left: 15px;
 }
 
 li.task.open i {
@@ -495,13 +493,9 @@ li.task i {
 }
 
 .form-control {
-    border: 2px solid #0D7377;
     border-radius: 30px !important;
 }
 
-.form-control:focus {
-    border: 2px solid #0D7377;
-}
 
 .input-group-append .input-group-text {
     border: none;
@@ -721,3 +715,56 @@ a.go-back img {
 /*--------------------------------------------------------------
  End Meeting page 
 --------------------------------------------------------------*/
+
+.login .input-group {
+    float: none;
+}
+.form-control{
+
+}
+.new-meeting > a {
+    margin: 0;
+}
+.new-meeting {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+li.task-details {
+    padding: 20px;
+    background: #F9F9F9;
+}
+.card-title {
+    font-size: 18px;
+    font-weight: normal;
+    color: #272727;
+    margin: 0;
+}
+.add-participants-popup, .add-participants-popup-filter{
+    display: none;
+    position: fixed;
+
+}
+.add-participants-popup{
+    background: white;
+    top: 10px;
+    left:10px;
+    bottom:10px;
+    right:10px;
+    z-index: 999;
+}
+.add-participants-popup-filter{
+    background: rgba(0,0,0,.2);
+    top: 0;
+    left:0;
+    bottom:0;
+    right:0;
+}
+input#user_search {
+    margin: 10px 15px;
+    width: calc(100% - 30px);
+    border: unset;
+    border-bottom: 1px solid #d6d6d6;
+    padding: 6px;
+    font-size: 18px;
+}
