@@ -2,9 +2,7 @@
 <html lang="en-US">
 
 <head>
-    
     <title>$username | Unipi Agenda</title>
-
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width = device-width, initial-scale= 1">
@@ -18,138 +16,128 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- SEO tags -->
-
-
-</head> 
+</head>
 <body>
 
-    <!-- ========= Header ========== -->
-    <div class="page-header">
-        <div class="logo-container">
-            <img src="img/logo.svg">
-        </div>
+<!-- ========= Header ========== -->
+<div class="page-header">
+    <div class="logo-container">
+        <img src="img/logo.svg">
     </div>
-    <!-- ======= End Header ========== -->
+</div>
+<!-- ======= End Header ========== -->
 
-    <!-- ======= Main Section ======= -->
-    <div id="main-section" class="container">
-        <div class="d-flex justify-content-center h-100">
-            <div class="card" style="width: 20rem;"> 
-        
-                    <h3 class="meeting-date">Tuesday 21-04 (Today)</h3>
-                    <!-- TODO: Create one card-body element dynamically. Each card its a diffrent event. -->
-                    <div class="card-body">
-                        <ul class="tasks"> 
-                            <li class="task row" data-toggle="1">
-                                <h5 class="card-title">Zoomba class</h5> <!-- $meeting_title + $meeting_hours -->
-                                <span class="card-hours">
-                                    9:00 - 10:30<i id="arrow_ex1" class="bx bx-chevron-down" ></i>
+<!-- ======= Main Section ======= -->
+<div id="main-section" class="container">
+    <div class="">
+        <div class="card">
+            <h3 class="meeting-date">Tuesday 21-04 (Today)</h3>
+            <!-- TODO: Create one card-body element dynamically. Each card its a different event. -->
+            <div class="card-body">
+                <ul class="tasks">
+                    <li class="task" data-toggle="1">
+                        <h5 class="card-title">Zoomba class</h5> <!-- $meeting_title + $meeting_hours -->
+                        <span class="card-hours">
+                                    9:00 - 10:30<i id="arrow_ex1" class="bx bx-chevron-down"></i>
                                 </span>
-                            </li>
-                            <li class="task-details" data-toggle="1" style="display: none;">
-                                <div class="card-description-title">Description</div>
-                                <p class="card-text">We are going to have an extensive zoomba training session with 4 top tier istructors. We are going to have an extensive zoomba training session with 4 top tier istructors.</p>
-                            
-                            
-                                <div class="card-participants-title">Participants</div>
-                                <p class="card-text"><strong>Vagman</strong>, Brinel, prekwood, user44</p>
-                            
-                                <div class="row agenda-button-row">
-                                    <button type="button" class="btn btn-danger btn-sm"><i class="bx bx-trash"></i></button>
-                                    <button type="button" class="btn btn-info"><i class="bx bx-edit-alt"></i>Edit</button>
-                                    <button type="button" class="btn btn-success">Enter meeting<i class="bx bx-right-arrow-alt"></i></button>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+                    </li>
+                    <li class="task-details" data-toggle="1" style="display: none;">
+                        <div class="card-description-title">Description</div>
+                        <p class="card-text">We are going to have an extensive zoomba training session with 4 top tier
+                            istructors. We are going to have an extensive zoomba training session with 4 top tier
+                            istructors.</p>
 
 
-                    <div class="card-body">
-                        <ul class="tasks"> 
-                            <li class="task row" data-toggle="2">
-                                <h5 class="card-title">Zoomba class</h5> <!-- $meeting_title + $meeting_hours -->
-                                <span class="card-hours">
+                        <div class="card-participants-title">Participants</div>
+                        <p class="card-text"><strong>Vagman</strong>, Brinel, prekwood, user44</p>
+
+                        <div class="row agenda-button-row">
+                            <button type="button" class="btn btn-danger btn-sm"><i class="bx bx-trash"></i></button>
+                            <button type="button" class="btn btn-info"><i class="bx bx-edit-alt"></i>Edit</button>
+                            <button type="button" class="btn btn-success">Enter meeting<i
+                                    class="bx bx-right-arrow-alt"></i></button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+
+            <div class="card-body">
+                <ul class="tasks">
+                    <li class="task row" data-toggle="2">
+                        <h5 class="card-title">Zoomba class</h5> <!-- $meeting_title + $meeting_hours -->
+                        <span class="card-hours">
                                     9:00 - 10:30<i id="arrow_ex2" class="bx bx-chevron-down"></i>
                                 </span>
-                            </li>
-                            <li class="task-details" data-toggle="2"style="display: none;">
-                                <div class="card-description-title">Description</div>
-                                <p class="card-text">We are going to have an extensive zoomba training session with 4 top tier istructors. We are going to have an extensive zoomba training session with 4 top tier istructors.</p>
-                            
-                            
-                                <div class="card-participants-title">Participants</div>
-                                <p class="card-text"><strong>Vagman</strong>, Brinel, prekwood, user44</p>
-                            
-                                <div class="row agenda-button-row">
-                                    <button type="button" class="btn btn-danger btn-sm"><i class="bx bx-trash"></i></button>
-                                    <button type="button" class="btn btn-info"><i class="bx bx-edit-alt"></i>Edit</button>
-                                    <button type="button" class="btn btn-success">Enter meeting<i class="bx bx-right-arrow-alt"></i></button>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+                    </li>
+                    <li class="task-details" data-toggle="2" style="display: none;">
+                        <div class="card-description-title">Description</div>
+                        <p class="card-text">We are going to have an extensive zoomba training session with 4 top tier
+                            istructors. We are going to have an extensive zoomba training session with 4 top tier
+                            istructors.</p>
 
-                    <h3 class="meeting-date">Friday 28-05 </h3>
-                    <!-- TODO: Create one card-body element dynamically. Each card its a diffrent event. -->
-                    <div class="card-body">
-                        <ul class="tasks"> 
-                            <li class="task row" data-toggle="3">
-                                <h5 class="card-title">Zoomba class</h5> <!-- $meeting_title + $meeting_hours -->
-                                <span class="card-hours">
-                                    9:00 - 10:30<i id="arrow_ex3" class="bx bx-chevron-down" ></i>
+
+                        <div class="card-participants-title">Participants</div>
+                        <p class="card-text"><strong>Vagman</strong>, Brinel, prekwood, user44</p>
+
+                        <div class="row agenda-button-row">
+                            <button type="button" class="btn btn-danger btn-sm"><i class="bx bx-trash"></i></button>
+                            <button type="button" class="btn btn-info"><i class="bx bx-edit-alt"></i>Edit</button>
+                            <button type="button" class="btn btn-success">Enter meeting<i
+                                    class="bx bx-right-arrow-alt"></i></button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <h3 class="meeting-date">Friday 28-05 </h3>
+            <!-- TODO: Create one card-body element dynamically. Each card its a different event. -->
+            <div class="card-body">
+                <ul class="tasks">
+                    <li class="task row" data-toggle="3">
+                        <h5 class="card-title">Zoomba class</h5> <!-- $meeting_title + $meeting_hours -->
+                        <span class="card-hours">
+                                    9:00 - 10:30<i id="arrow_ex3" class="bx bx-chevron-down"></i>
                                 </span>
-                            </li>
-                            <li class="task-details" data-toggle="3" style="display: none;">
-                                <div class="card-description-title">Description</div>
-                                <p class="card-text">We are going to have an extensive zoomba training session with 4 top tier istructors. We are going to have an extensive zoomba training session with 4 top tier istructors.</p>
-                            
-                            
-                                <div class="card-participants-title">Participants</div>
-                                <p class="card-text"><strong>Vagman</strong>, Brinel, prekwood, user44</p>
-                            
-                                <div class="row agenda-button-row">
-                                    <!-- TODO: only the admin of the meeting can have access to these actions -->
-                                    <!-- <button type="button" class="btn btn-danger btn-sm"><i class="bx bx-trash"></i></button>
-                                    <button type="button" class="btn btn-info"><i class="bx bx-edit-alt"></i>Edit</button> -->
-                                    <button type="button" class="btn btn-success">Enter meeting<i class="bx bx-right-arrow-alt"></i></button>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
+                    </li>
+                    <li class="task-details" data-toggle="3" style="display: none;">
+                        <div class="card-description-title">Description</div>
+                        <p class="card-text">We are going to have an extensive zoomba training session with 4 top tier
+                            istructors. We are going to have an extensive zoomba training session with 4 top tier
+                            istructors.</p>
 
+
+                        <div class="card-participants-title">Participants</div>
+                        <p class="card-text"><strong>Vagman</strong>, Brinel, prekwood, user44</p>
+
+                        <div class="row agenda-button-row">
+                            <!-- TODO: only the admin of the meeting can have access to these actions -->
+                            <!-- <button type="button" class="btn btn-danger btn-sm"><i class="bx bx-trash"></i></button>
+                            <button type="button" class="btn btn-info"><i class="bx bx-edit-alt"></i>Edit</button> -->
+                            <button type="button" class="btn btn-success">Enter meeting<i
+                                    class="bx bx-right-arrow-alt"></i></button>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
-        
-        <div class="new-meeting">
-            <a href="/meeting" class="btn btn-primary btn-new-meeting">New Meeting<i class="bx bx-plus"></i></a>
-        </div>
-        
-    </div>   
+    </div>
+    <div class="new-meeting">
+        <a href="/meeting" class="btn btn-primary btn-new-meeting">New Meeting<i class="bx bx-plus"></i></a>
+    </div>
+</div>
 
-    
-    
-    <!-- ======= Main Section ======= -->
+<!-- ======= Main Section ======= -->
 
 
-
-
-
-
-
-
-
-
-
-
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-    <script src="scripts/script.js"></script>
+<script src="scripts/script.js"></script>
 </body>
 </html>

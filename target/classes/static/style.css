@@ -95,7 +95,6 @@ div #main-section {
 
 .form-control {
     border: none;
-    /*border-bottom: 1px solid #E6E6E6;*/
     outline: unset !important;
     box-shadow: 0 0 0 0 !important;
 }
@@ -198,8 +197,6 @@ div#main-section .input-group {
 /*--------------------------------------------------------------
  End Login page
 --------------------------------------------------------------*/
-
-
 /*--------------------------------------------------------------
  Sign up page
 --------------------------------------------------------------*/
@@ -209,13 +206,9 @@ div#main-section .input-group {
     font-size: 12px;
     font-weight: 700;
 }
-
-
 /*--------------------------------------------------------------
  End Sign up page
 --------------------------------------------------------------*/
-
-
 /*--------------------------------------------------------------
  Agenda page
 --------------------------------------------------------------*/
@@ -225,18 +218,13 @@ div#main-section .input-group {
 }
 
 .meeting-date {
-    font-size: 23px;
+    font-size: 20px;
     font-weight: 700;
     color: #0D7377;
     margin-bottom: 22px;
 }
 
-.card-hours {
-    vertical-align: top;
-    margin-left: 65px;
-    top: 0;
-    margin-top: -3px;
-}
+
 
 .bx-chevron-down {
     vertical-align: middle;
@@ -299,14 +287,18 @@ ul.task {
 }
 
 li.task {
-    font-size: 19px;
+    font-size: 17px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    padding: 0 15px;
 }
 
 ul.tasks {
     list-style: none;
     color: #707070;
-    padding-left: 15px;
 }
 
 li.task.open i {
@@ -360,18 +352,172 @@ li.task i {
 --------------------------------------------------------------*/
 
 /*--------------------------------------------------------------
- Meeting page
+ Meeting Comments page
 --------------------------------------------------------------*/
+.meeting-header {
+    box-shadow: 0 37px 30px 0 rgba(20, 20, 20, 0.1);
+}
+
+.bx-chevron-left {
+    color: #0D7377;
+    font-size: 40px;
+    margin-top: 5px;
+}
+
+.bx-chevron-left:hover {
+    color: #16595c;
+}
+
+.date-heading {
+    width: 100%; 
+    text-align: center; 
+    border-bottom: 1px solid rgba(19, 44, 51, 0.2); 
+    line-height: 0.1em;
+    margin: 10px 0 20px; 
+}
+
+.date-heading span {
+    background: white; 
+    padding: 0 12px; 
+}
+
+.date {
+    font-size: 12px;
+}
+
 .meeting-name {
-    font-size: 27px;
-    font-weight: 600;
+    font-size: 26px;
+    font-weight: 700;
+    margin: 7px 0 0 10px;   
+    color: #0D7377;
+}
+.bx-dots-vertical-rounded {
+    font-size: 30px;
+    margin: 8px 0 0 85px;
     color: #0D7377;
 }
 
-/*--------------------------------------------------------------
- End Meeting page
---------------------------------------------------------------*/
+.bx-dots-vertical-rounded:hover {
+    color: #16595c;
+}
 
+.messagebox {
+    position: relative;
+    background-color: #0D7377;
+    border-radius: 20px;
+    font-weight: 400;
+    font-size: 17px;
+    padding: 4px 10px 1px 10px;
+}
+ 
+.meeting-notes {
+    background-color: #F9F9F9;
+    padding: 0 0 50px 0;
+}
+
+.msg-inbox {
+    overflow: hidden;
+    padding-bottom: 30px;
+}
+
+.chats {
+    padding: 30px 0 0 10px;   
+}
+
+.msg-page {
+    height: 560px;
+    overflow-y: auto;
+}
+
+.received-chats-name {
+    padding: 0 0 0 10px;
+}
+
+.received-chats-name > p {
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+.received-msg {
+    display: inline-block;
+    vertical-align: top;
+    width: 85%;
+}
+
+.received-msg-inbox {
+    width: 60%;
+}
+
+.received-msg-inbox p {
+    background: #cecece none repeat scroll 0 0;
+    border-radius: 25px;
+    padding: 10px 10px 10px 10px;
+    font-size: 16px;
+    margin: 0;
+    width: 100%;
+}
+
+.outgoing-chats {
+    overflow: hidden;
+    margin: 25px 10px;
+}
+ 
+.outgoing-chats p {
+    background: #16595c none repeat scroll 0 0;
+    border-radius: 30px; 
+    padding: 10px 5px 12px 15px;
+    color: white;
+    font-size: 16px;
+}
+
+.outgoing-msg {
+    float: left;
+    width: 75%;
+    margin-left: 23%;
+}
+
+.msg-typing {
+    position: fixed;
+    display: inline-block;
+    margin: 0 auto;
+    width: 90%;
+    bottom: 25px;
+}
+
+.input-group {
+    float: right;
+    outline: none !important;
+    border: none;
+    width: 100%;
+    border-color: white ;
+}
+
+.form-control {
+    border-radius: 30px !important;
+}
+
+
+.input-group-append .input-group-text {
+    border: none;
+    background-color:  #fff;
+}
+
+.bxs-paper-plane {
+    font-size: 25px;
+}
+
+/* Responsive CSS for Desktop View */
+@media screen and (min-width: 410px) {
+    .msg-typing {
+        position: relative;
+        width: 340px;
+    }
+}
+/* END: Responsive CSS for Desktop View */
+
+/*--------------------------------------------------------------
+End Meeting Comments page
+--------------------------------------------------------------*/
 
 /*--------------------------------------------------------------
  Footer
@@ -402,6 +548,11 @@ li.task i {
 /*--------------------------------------------------------------
  End Footer
 --------------------------------------------------------------*/
+/*--------------------------------------------------------------
+ Meeting page 
+--------------------------------------------------------------*/
+
+
 div#main-section a {
     color: #0d7377;
 }
@@ -560,4 +711,60 @@ a.go-back {
 }
 a.go-back img {
     margin-right: 10px;
+}
+/*--------------------------------------------------------------
+ End Meeting page 
+--------------------------------------------------------------*/
+
+.login .input-group {
+    float: none;
+}
+.form-control{
+
+}
+.new-meeting > a {
+    margin: 0;
+}
+.new-meeting {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+}
+li.task-details {
+    padding: 20px;
+    background: #F9F9F9;
+}
+.card-title {
+    font-size: 18px;
+    font-weight: normal;
+    color: #272727;
+    margin: 0;
+}
+.add-participants-popup, .add-participants-popup-filter{
+    display: none;
+    position: fixed;
+
+}
+.add-participants-popup{
+    background: white;
+    top: 10px;
+    left:10px;
+    bottom:10px;
+    right:10px;
+    z-index: 999;
+}
+.add-participants-popup-filter{
+    background: rgba(0,0,0,.2);
+    top: 0;
+    left:0;
+    bottom:0;
+    right:0;
+}
+input#user_search {
+    margin: 10px 15px;
+    width: calc(100% - 30px);
+    border: unset;
+    border-bottom: 1px solid #d6d6d6;
+    padding: 6px;
+    font-size: 18px;
 }
