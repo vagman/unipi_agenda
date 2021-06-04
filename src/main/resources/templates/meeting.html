@@ -24,7 +24,7 @@
 <!-- ======= Main Section ======= -->
 <div id="main-section" class="container">
     <a class="go-back" href="/user"><img src="/img/arrow-left.svg">Go back</a>
-    <form action="" method="post">
+    <form action="/meeting" method="post">
         <div class="input-group form-group meeting-title">
             <input name="meeting-title" class="form-control" autocomplete="off">
             <span class="floating-label-login">Meeting title</span>
@@ -55,8 +55,15 @@
                 <button id="add_participants"><img src="/img/add.svg"></button>
             </div>
             <div class="meeting-participants-list">
+                <input type="hidden" name="meeting-participants" id="meeting_participants_input_hidden">
                 <div class="meeting-participant">
-                    <span class="meeting-participant-name" th:text="${fullname}"></span>
+                    <div class="meeting-participant-info">
+                        <div class="user-icon" th:style="'background:' + @{${user.color}} + '; '">
+                            <span th:text="${user.getFirstName().charAt(0)}"></span>
+                            <span th:text="${user.getLastName().charAt(0)}"></span>
+                        </div>
+                        <span class="meeting-participant-name" th:text="${user.getFullName()}"></span>
+                    </div>
                     <div></div>
                 </div>
             </div>
@@ -66,7 +73,13 @@
 
         <div class="add-participants-popup-filter"></div>
         <div class="add-participants-popup">
-            <input type="text" id="user_search">
+            <button class="add-participants-popup-close">
+                <img src="/img/close.svg">
+            </button>
+
+            <h2>Add participants</h2>
+
+            <input type="text" id="user_search" placeholder="Search for participants">
             <div id="user_search_results"></div>
         </div>
     </form>

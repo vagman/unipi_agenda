@@ -30,21 +30,21 @@ public class AjaxController {
             return null;
         }
 
-        String sql_query = "SELECT username FROM users WHERE username LIKE ? ;";
+        String sql_query = "SELECT username FROM users WHERE username LIKE ? AND username != ?;";
         List<Object> search_results = new ArrayList<Object>();
+        User registedUser = (User)session.getAttribute("user");
         try {
             PreparedStatement ps = conn.prepareStatement(sql_query);
             ps.setString(1,"%"+search_query+"%");
-            System.out.println(ps);
+            ps.setString(2,registedUser.get_Username());
             ResultSet rs = ps.executeQuery();
-            //  if the username exists
             while(rs.next()){
                 String result_username = rs.getString("username");
                 search_results.add(new User(result_username));
             }
-            model.addAttribute("message","Username or password are not correct");
         }catch (SQLException throwables) {
             throwables.printStackTrace();
+            return null;
         }
 
         return search_results;

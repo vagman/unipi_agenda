@@ -32,7 +32,7 @@ public class LoginController {
     {
         User registeredUser = User.login(username,password,model);
         if (registeredUser != null){
-            System.out.println(registeredUser.getFullName());
+            //System.out.println(registeredUser.getFullName());
             session.setAttribute("user", registeredUser);
             return new RedirectView("user");
         }

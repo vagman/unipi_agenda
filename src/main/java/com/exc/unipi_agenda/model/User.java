@@ -18,6 +18,8 @@ public class User {
     private String firstName;
     private String lastName;
     private List<UserNotification> notificationList;
+    public String color;
+
 
     public List<Meeting> getMeetings() {
         return meetings;
@@ -110,7 +112,7 @@ public class User {
         return null;
     }
 
-    public static User  register(String username, String password, String firstName, String lastName, Model model) {
+    public static User  register(String username, String password, String firstName, String lastName, String color, Model model) {
         Connection conn = Db.getConnection();
         if (conn!=null){
             try {
@@ -118,13 +120,14 @@ public class User {
                 Encryption encryption = new Encryption();
                 encryption.encrypt(password);
 //              prepare the query for the database
-                String sql_query = "INSERT INTO users value (?,?,?,?,?);";
+                String sql_query = "INSERT INTO users value (?,?,?,?,?,?);";
                 PreparedStatement ps = conn.prepareStatement(sql_query);
                 ps.setString(1,username);
                 ps.setString(2,encryption.getPassword_hashed());
                 ps.setString(3,encryption.getSalt());
                 ps.setString(4,firstName);
                 ps.setString(5,lastName);
+                ps.setString(6,color);
                 int rows = ps.executeUpdate();
                 if (rows>0){
                     model.addAttribute("message","New user created successfully");
@@ -182,7 +185,7 @@ public class User {
         }
 
         // load name
-        String sql_query = "SELECT first_name, last_name FROM users WHERE username = ? ;";
+        String sql_query = "SELECT * FROM users WHERE username = ? ;";
         List<Object> search_results = new ArrayList<Object>();
         try {
             PreparedStatement ps = conn.prepareStatement(sql_query);
@@ -191,6 +194,7 @@ public class User {
             if(rs.next()){
                 this.firstName = rs.getString("first_name");
                 this.lastName = rs.getString("last_name");
+                this.color = rs.getString("color");
             }
         }catch (SQLException throwables) {
             throwables.printStackTrace();
