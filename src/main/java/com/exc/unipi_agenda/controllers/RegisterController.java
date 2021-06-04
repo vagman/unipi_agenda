@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
+import java.awt.*;
+import java.util.Random;
 
 @Controller
 public class RegisterController {
@@ -26,7 +28,12 @@ public class RegisterController {
                                @RequestParam(name = "firstname", required = false) String firstname,
                                @RequestParam(name = "lastname", required = false) String lastname)
     {
-        User registeredUser = User.register(username, password, firstname, lastname, model);
+        //random color generation
+        Random rand = new Random();
+        Color randomColor = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat());
+        String randomColorHex = "#"+Integer.toHexString(randomColor.getRGB()).substring(2);
+
+        User registeredUser = User.register(username, password, firstname, lastname, randomColorHex, model);
         if(registeredUser != null){
             session.setAttribute("user", registeredUser);
             return new RedirectView("user");
