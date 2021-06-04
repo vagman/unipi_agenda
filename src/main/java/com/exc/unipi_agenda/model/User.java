@@ -17,7 +17,7 @@ public class User {
     private String password;
     private String firstName;
     private String lastName;
-    private List<UserNotification> notificationList;
+    private List<UserNotification> notificationList= new ArrayList<>();
     public String color;
 
 
@@ -77,33 +77,31 @@ public class User {
 
     public static User login(String username, String pass, Model model) {
         Connection conn = Db.getConnection();
-        if (conn == null) {
-            return null;
-        }
-
-        String sql_query = "SELECT password,password_salt, first_name, last_name FROM users WHERE username=?;";
-        try {
-            PreparedStatement ps = conn.prepareStatement(sql_query);
-            ps.setString(1,username);
-            ResultSet rs = ps.executeQuery();
-            //  if the username exists
-            if (rs.next()){
-                String hash_password = rs.getString(1);
-                String password_salt = rs.getString(2);
-                String first_name = rs.getString(3);
-                String last_name = rs.getString(4);
-                Encryption e1 = new Encryption();
-                if (e1.passwordMach(hash_password,password_salt,pass)){
-                    conn.close();
-                    User u =new User(username);
-                    u.setFirstName(first_name); u.setLastName(last_name);
-                    u.loadMeetings();
-                    return u;
+        if (conn != null) {
+            String sql_query = "SELECT password,password_salt FROM users " +
+                            "WHERE username=?;";
+            try {
+                PreparedStatement ps = conn.prepareStatement(sql_query);
+                ps.setString(1,username);
+                ResultSet rs = ps.executeQuery();
+//               if the username exists
+                if (rs.next()){
+                    String hash_password = rs.getString(1);
+                    String password_salt = rs.getString(2);
+                    Encryption e1 = new Encryption();
+                    if (e1.passwordMach(hash_password,password_salt,pass)){
+                        conn.close();
+                        User u =new User(username);
+                        u.loadMeetings();
+                        u.loadNotifications();
+                        return u;
+                    }
                 }
+                model.addAttribute("message","Username or password are not correct");
+                return null;
+            }catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
-            model.addAttribute("message","Username or password are not correct");
-        }catch (SQLException throwables) {
-            throwables.printStackTrace();
         }
         return null;
     }
@@ -154,9 +152,14 @@ public class User {
         Connection conn = Db.getConnection();
 //      we get meetings data from the meetings which the user is admin or participant
         String sql_query = "SELECT meeting.id_meeting,name,date,duration,admin, username\n" +
-                           "from meeting left join meeting_participants on meeting.id_meeting = meeting_participants.id_meeting\n" +
-                           "where date > now() and admin = ? or username = ?\n" +
-                           "order by id_meeting;";
+                        "FROM meeting left join meeting_participants on meeting.id_meeting = meeting_participants.id_meeting\n" +
+                        "WHERE date > now() AND admin = ? OR username = ?\n" +
+                        "ORDER BY id_meeting;";
+//        String sql_query = "SELECT meeting.id_meeting,name,date,duration,admin, username\n" +
+//                "FROM meeting inner join meeting_participants on meeting_participants.id_meeting = meeting.id_meeting\n" +
+//                "WHERE date > now() AND admin = ? OR username = ?\n" +
+//                "ORDER BY id_meeting;";
+
         try {
             if (conn!=null) {
                 PreparedStatement ps = conn.prepareStatement(sql_query);
@@ -164,11 +167,27 @@ public class User {
                 ps.setString(2, this.get_Username());
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
-                    Meeting m = new Meeting(rs.getString("id_meeting"), rs.getString("admin"));
-                    m.setName(rs.getString("name"));
-                    m.setDatetime(rs.getDate("date"));
-                    m.setDuration(rs.getFloat("duration"));
-                    meeting.add(m);
+                    try {
+//                        if the meeting is the same
+//                          the query can return one or more rows for the same meeting
+//                          it depends on the participants
+                        if (meeting.get(meeting.size() - 1).getId() == rs.getInt("id_meeting")) {
+                            meeting.get(meeting.size() - 1).getParticipants().add(new Participant(rs.getString("username")));
+                        }else{
+//                            if is a new meeting throw an exception to create new meeting
+                            throw new IndexOutOfBoundsException();
+                        }
+                    }catch (IndexOutOfBoundsException e){
+//                      If is a new meeting or is the first time create a meeting object and add it to the list
+                        Meeting m = new Meeting(rs.getInt("id_meeting"));
+                        m.setName(rs.getString("name"));
+                        m.setDatetime(rs.getDate("date"));
+                        m.setDuration(rs.getFloat("duration"));
+                        m.setAdmin(new Admin(rs.getString("admin")));
+                        m.getParticipants().add(new Participant(rs.getString("username")));
+                        meeting.add(m);
+                    }
+
                 }
                 conn.close();
             }
@@ -178,6 +197,7 @@ public class User {
         this.setMeetings(meeting);
     }
 
+
     private boolean loadAttributes(){
         Connection conn = Db.getConnection();
         if (conn == null) {
@@ -186,7 +206,6 @@ public class User {
 
         // load name
         String sql_query = "SELECT * FROM users WHERE username = ? ;";
-        List<Object> search_results = new ArrayList<Object>();
         try {
             PreparedStatement ps = conn.prepareStatement(sql_query);
             ps.setString(1,this.username);
@@ -204,6 +223,29 @@ public class User {
 
         // TODO: load notifications
 
+        return true;
+    }
+    private boolean loadNotifications(){
+        Connection conn = Db.getConnection();
+        if (conn == null) {
+            return false;
+        }
+        // load name
+        String sql_query = "SELECT id_notification,msg, date, viewed FROM user_notification \n" +
+                        "WHERE username = ? AND date > NOW() - INTERVAL 1 MONTH \n" +
+                        "order by date;";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql_query);
+            ps.setString(1,this.username);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                notificationList.add(new UserNotification(rs.getInt("id_notification"),rs.getString("msg"),
+                        rs.getDate("date"),rs.getBoolean("viewed")));
+            }
+        }catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return false;
+        }
         return true;
     }
 }

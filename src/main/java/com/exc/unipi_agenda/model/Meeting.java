@@ -1,24 +1,54 @@
 package com.exc.unipi_agenda.model;
 
+import org.springframework.ui.Model;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class Meeting {
-    private final String id;
+
+    private int id;
     private String name;
     private Date datetime;
     private float duration;
-    private final String admin;
-    private List<User> participants;
+    private Admin admin;
 
-    public String getId() {
-        return id;
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
     }
 
+    private List<Participant> participants = new ArrayList<>();
+    private List<MeetingComment> comments = new ArrayList<>();
+
+    //constructors
+    public Meeting(int id){
+        this.id = id;
+    }
+    public Meeting(){}
+//    public Meeting(Admin admin) {
+//        this.admin = admin;
+//    }
+//    public Meeting(String id,Admin admin,String name, float duration){
+//        this.id = id;
+//        this.admin = admin;
+//    }
+//    public Meeting(String id, String admin) {
+//        this.id = id;
+//        this.admin = admin;
+//    }
+
+    //getters and setters
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
     public String getName() {
         return name;
     }
@@ -51,22 +81,8 @@ public class Meeting {
         return participants;
     }
 
-    public void addParticipant(String username) {
-        Connection conn = Db.getConnection();
-        if (conn == null) {
-            return ;
-        }
-
-        try {
-            String sql_query = "INSERT INTO meeting_participants VALUES (?,?,?);";
-            PreparedStatement ps = conn.prepareStatement(sql_query);
-            ps.setString(1,this.id);
-            ps.setString(2,username);
-            ps.setString(3,"pending");
-            int rows = ps.executeUpdate();
-        } catch (SQLException e) {
-            return;
-        }
+    public void setParticipants(List<Participant> participants) {
+        this.participants = participants;
     }
 
     public List<MeetingComment> getComments() {
@@ -76,8 +92,25 @@ public class Meeting {
     public void setComments(List<MeetingComment> comments) {
         this.comments = comments;
     }
-
-    private List<MeetingComment> comments;
+    //    main actions
+    public boolean create(String name, User admin, String date, float duration, Model model) {
+        Connection conn = Db.getConnection();
+        if (conn != null) {
+            String sql_query = "INSERT INTO meeting(name, date, duration, admin) VALUES (?,?,?,?);";
+            try {
+                PreparedStatement ps = conn.prepareStatement(sql_query);
+                ps.setString(1, name);
+                ps.setString(2, date);
+                ps.setFloat(3, duration);
+                ps.setString(4, admin.getUsername());
+                return ps.execute();
+            } catch (SQLException throwables) {
+                model.addAttribute("error", "Something wrong with database");
+                throwables.printStackTrace();
+            }
+        }
+        return false;
+    }
 
     public static String getNewId(){
         Connection conn = Db.getConnection();
@@ -99,15 +132,5 @@ public class Meeting {
     }
 
 
-    public Meeting(String id, String admin) {
-        this.id = id;
-        this.admin = admin;
-    }
 
-    public void add(){
-
-    }
-    public void update(){}
-    public void delete(){}
-    public void addParticipants(List<User> participants){}
 }

@@ -7,4 +7,5 @@ public class MeetingInvitation {
 
     public void delete(){}
     public void approve(){}
+    public void decline(){}
 }
