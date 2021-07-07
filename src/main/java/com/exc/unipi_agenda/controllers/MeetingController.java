@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Controller
 public class MeetingController {
@@ -44,17 +41,17 @@ public class MeetingController {
             return new RedirectView("/");
         }
 
-        Meeting newMeeting = new Meeting((String)Meeting.getNewId(), registedUser.get_Username());
+        Meeting newMeeting = new Meeting();
         newMeeting.setName(meetingTitle);
 //        newMeeting.setDatetime(meetingDate);
 //        newMeeting.set(meetingDate);
 
         String[] meetingParticipantsList = meetingParticipants.split("__separator__");
         String participantUsername = "";
-        for (int i=0; i<meetingParticipantsList.length; i++){
-            participantUsername = meetingParticipantsList[i];
-            newMeeting.addParticipant(participantUsername);
-        }
+//        for (int i=0; i<meetingParticipantsList.length; i++){
+//            participantUsername = meetingParticipantsList[i];
+//        }
+        newMeeting.getAdmin().addParticipants(newMeeting.getId(), meetingParticipantsList, model);
 
 
 //        String date_string = "2100-09-26 10:00:00";

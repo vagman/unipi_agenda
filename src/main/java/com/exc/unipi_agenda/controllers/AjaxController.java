@@ -1,14 +1,11 @@
 package com.exc.unipi_agenda.controllers;
 
 import com.exc.unipi_agenda.model.Db;
-import com.exc.unipi_agenda.model.Encryption;
 import com.exc.unipi_agenda.model.User;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Connection;
@@ -36,7 +33,7 @@ public class AjaxController {
         try {
             PreparedStatement ps = conn.prepareStatement(sql_query);
             ps.setString(1,"%"+search_query+"%");
-            ps.setString(2,registedUser.get_Username());
+            ps.setString(2,registedUser.getUsername());
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 String result_username = rs.getString("username");

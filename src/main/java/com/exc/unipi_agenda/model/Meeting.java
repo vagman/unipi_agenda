@@ -73,11 +73,11 @@ public class Meeting {
         this.duration = duration;
     }
 
-    public String getAdmin() {
+    public Admin getAdmin() {
         return admin;
     }
 
-    public List<User> getParticipants() {
+    public List<Participant> getParticipants() {
         return participants;
     }
 

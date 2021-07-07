@@ -31,11 +31,11 @@ public class User {
 
     private List<Meeting> meetings;
 
-    public String get_Username() {
+    public String getUsername() {
         return username;
     }
 
-    public void set_Username(String username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -163,8 +163,8 @@ public class User {
         try {
             if (conn!=null) {
                 PreparedStatement ps = conn.prepareStatement(sql_query);
-                ps.setString(1, this.get_Username());
-                ps.setString(2, this.get_Username());
+                ps.setString(1, this.getUsername());
+                ps.setString(2, this.getUsername());
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
                     try {
