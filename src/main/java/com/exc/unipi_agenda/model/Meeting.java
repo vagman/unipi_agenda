@@ -26,6 +26,9 @@ public class Meeting {
     private List<MeetingComment> comments = new ArrayList<>();
 
     //constructors
+    public Meeting(int id, String name){
+        this.id = id;this.name = name;
+    }
     public Meeting(int id){
         this.id = id;
     }
@@ -130,7 +133,4 @@ public class Meeting {
         }
         return "";
     }
-
-
-
 }

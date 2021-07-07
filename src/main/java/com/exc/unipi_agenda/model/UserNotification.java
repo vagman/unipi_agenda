@@ -58,12 +58,3 @@ public class UserNotification {
         return false;
     }
 }
-
-
-// User::login,regiter
-// User info change
-// Metting list (home)
-// Meeting info
-// Metting create/edit (popup)
-//
-

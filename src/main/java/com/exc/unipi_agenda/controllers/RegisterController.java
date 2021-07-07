@@ -35,6 +35,8 @@ public class RegisterController extends ContextController {
         User registeredUser = User.register(username, password, firstname, lastname, randomColorHex, model);
         if(registeredUser != null){
             registeredUser.setNotificationList(refreshesNotifications(registeredUser.getUsername()));
+            registeredUser.setMeetings(refreshesMeetings(registeredUser.getUsername()));
+            registeredUser.setMeetingInvitations(refreshesInvitations(registeredUser.getUsername()));
             session.setAttribute("user", registeredUser);
             return new RedirectView("user");
         }

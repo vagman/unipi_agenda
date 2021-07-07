@@ -14,12 +14,21 @@ public class User {
     }
 
     private String username;
-    private String password;
     private String firstName;
     private String lastName;
     private List<UserNotification> notificationList= new ArrayList<>();
     public String color;
+    private List<Meeting> meetings;
 
+    public List<MeetingInvitation> getMeetingInvitations() {
+        return meetingInvitations;
+    }
+
+    public void setMeetingInvitations(List<MeetingInvitation> meetingInvitations) {
+        this.meetingInvitations = meetingInvitations;
+    }
+
+    private List<MeetingInvitation> meetingInvitations;
 
     public List<Meeting> getMeetings() {
         return meetings;
@@ -29,7 +38,6 @@ public class User {
         this.meetings = meetings;
     }
 
-    private List<Meeting> meetings;
 
     public String getUsername() {
         return username;
@@ -37,14 +45,6 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getFirstName() {
@@ -78,7 +78,7 @@ public class User {
     public static User login(String username, String pass, Model model) {
         Connection conn = Db.getConnection();
         if (conn != null) {
-            String sql_query = "SELECT password,password_salt FROM users " +
+            String sql_query = "SELECT password,password_salt,first_name,last_name FROM users " +
                             "WHERE username=?;";
             try {
                 PreparedStatement ps = conn.prepareStatement(sql_query);
@@ -91,12 +91,10 @@ public class User {
                     Encryption e1 = new Encryption();
                     if (e1.passwordMach(hash_password,password_salt,pass)){
                         conn.close();
-                        User u =new User(username);
-                        u.loadMeetings();
-                        u.loadNotifications();
-                        return u;
+                        return new User(username);
                     }
                 }
+                conn.close();
                 model.addAttribute("message","Username or password are not correct");
                 return null;
             }catch (SQLException throwables) {
@@ -147,65 +145,14 @@ public class User {
         return null;
     }
 
-    private void loadMeetings(){
-        List<Meeting> meeting = new ArrayList<>();
-        Connection conn = Db.getConnection();
-//      we get meetings data from the meetings which the user is admin or participant
-        String sql_query = "SELECT meeting.id_meeting,name,date,duration,admin, username\n" +
-                        "FROM meeting left join meeting_participants on meeting.id_meeting = meeting_participants.id_meeting\n" +
-                        "WHERE date > now() AND admin = ? OR username = ?\n" +
-                        "ORDER BY id_meeting;";
-//        String sql_query = "SELECT meeting.id_meeting,name,date,duration,admin, username\n" +
-//                "FROM meeting inner join meeting_participants on meeting_participants.id_meeting = meeting.id_meeting\n" +
-//                "WHERE date > now() AND admin = ? OR username = ?\n" +
-//                "ORDER BY id_meeting;";
-
-        try {
-            if (conn!=null) {
-                PreparedStatement ps = conn.prepareStatement(sql_query);
-                ps.setString(1, this.getUsername());
-                ps.setString(2, this.getUsername());
-                ResultSet rs = ps.executeQuery();
-                while (rs.next()) {
-                    try {
-//                        if the meeting is the same
-//                          the query can return one or more rows for the same meeting
-//                          it depends on the participants
-                        if (meeting.get(meeting.size() - 1).getId() == rs.getInt("id_meeting")) {
-                            meeting.get(meeting.size() - 1).getParticipants().add(new Participant(rs.getString("username")));
-                        }else{
-//                            if is a new meeting throw an exception to create new meeting
-                            throw new IndexOutOfBoundsException();
-                        }
-                    }catch (IndexOutOfBoundsException e){
-//                      If is a new meeting or is the first time create a meeting object and add it to the list
-                        Meeting m = new Meeting(rs.getInt("id_meeting"));
-                        m.setName(rs.getString("name"));
-                        m.setDatetime(rs.getDate("date"));
-                        m.setDuration(rs.getFloat("duration"));
-                        m.setAdmin(new Admin(rs.getString("admin")));
-                        m.getParticipants().add(new Participant(rs.getString("username")));
-                        meeting.add(m);
-                    }
-
-                }
-                conn.close();
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        this.setMeetings(meeting);
-    }
-
-
-    private boolean loadAttributes(){
+    private void loadAttributes(){
         Connection conn = Db.getConnection();
         if (conn == null) {
-            return false;
+            return;
         }
 
         // load name
-        String sql_query = "SELECT * FROM users WHERE username = ? ;";
+        String sql_query = "SELECT first_name,last_name,color FROM users WHERE username = ? ;";
         try {
             PreparedStatement ps = conn.prepareStatement(sql_query);
             ps.setString(1,this.username);
@@ -217,35 +164,6 @@ public class User {
             }
         }catch (SQLException throwables) {
             throwables.printStackTrace();
-            return false;
         }
-
-
-        // TODO: load notifications
-
-        return true;
-    }
-    private boolean loadNotifications(){
-        Connection conn = Db.getConnection();
-        if (conn == null) {
-            return false;
-        }
-        // load name
-        String sql_query = "SELECT id_notification,msg, date, viewed FROM user_notification \n" +
-                        "WHERE username = ? AND date > NOW() - INTERVAL 1 MONTH \n" +
-                        "order by date;";
-        try {
-            PreparedStatement ps = conn.prepareStatement(sql_query);
-            ps.setString(1,this.username);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()){
-                notificationList.add(new UserNotification(rs.getInt("id_notification"),rs.getString("msg"),
-                        rs.getDate("date"),rs.getBoolean("viewed")));
-            }
-        }catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return false;
-        }
-        return true;
     }
 }
