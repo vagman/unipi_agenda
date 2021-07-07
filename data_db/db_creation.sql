@@ -45,3 +45,11 @@ create table user_notification
     viewed          boolean,
     primary key (id_notification)
 );
+# This trigger is handle the notifications to the participants when the admin change a meeting
+CREATE TRIGGER update_notifications
+    AFTER UPDATE on meeting for each row
+    INSERT INTO user_notification(username, msg, date,viewed)
+            (SELECT meeting_participants.username ,concat(OLD.name ,' meeting is updated'), now() , false
+            FROM (meeting_participants)
+            WHERE (OLD.id_meeting = meeting_participants.id_meeting));
+

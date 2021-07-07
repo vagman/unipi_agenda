@@ -1,7 +1,6 @@
 package com.exc.unipi_agenda.controllers;
 
 import com.exc.unipi_agenda.model.User;
-import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +13,7 @@ import java.awt.*;
 import java.util.Random;
 
 @Controller
-public class RegisterController {
+public class RegisterController extends ContextController {
     @GetMapping("/register")
     public String getContent(Model model) {
         return "register";
@@ -35,6 +34,7 @@ public class RegisterController {
 
         User registeredUser = User.register(username, password, firstname, lastname, randomColorHex, model);
         if(registeredUser != null){
+            registeredUser.setNotificationList(refreshesNotifications(registeredUser.getUsername()));
             session.setAttribute("user", registeredUser);
             return new RedirectView("user");
         }

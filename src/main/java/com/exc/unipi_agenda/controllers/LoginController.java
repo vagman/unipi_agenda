@@ -2,22 +2,17 @@ package com.exc.unipi_agenda.controllers;
 
 //import com.exc.unipi_agenda.model.Db;
 import com.exc.unipi_agenda.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.servlet.server.Session;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import javax.sql.DataSource;
-import java.sql.*;
 
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 @RequestMapping(path = "/")
-public class LoginController {
+public class LoginController extends ContextController{
 
     @GetMapping(path = "/")
     public String getContent(Model model) {
@@ -32,6 +27,7 @@ public class LoginController {
     {
         User registeredUser = User.login(username,password,model);
         if (registeredUser != null){
+            registeredUser.setNotificationList(refreshesNotifications(registeredUser.getUsername()));
             //System.out.println(registeredUser.getFullName());
             session.setAttribute("user", registeredUser);
             return new RedirectView("user");

@@ -12,7 +12,8 @@ import org.springframework.web.servlet.view.RedirectView;
 import javax.servlet.http.HttpSession;
 
 @Controller
-public class MeetingController {
+public class MeetingController extends ContextController{
+
     @GetMapping("/meeting")
     public Object getContent(Model model, HttpSession session) {
 
@@ -20,6 +21,7 @@ public class MeetingController {
         if(registedUser == null){
             return new RedirectView("/");
         }
+        registedUser.setNotificationList(refreshesNotifications(registedUser.getUsername()));
 
         model.addAttribute("user", registedUser);
 
@@ -47,10 +49,6 @@ public class MeetingController {
 //        newMeeting.set(meetingDate);
 
         String[] meetingParticipantsList = meetingParticipants.split("__separator__");
-        String participantUsername = "";
-//        for (int i=0; i<meetingParticipantsList.length; i++){
-//            participantUsername = meetingParticipantsList[i];
-//        }
         newMeeting.getAdmin().addParticipants(newMeeting.getId(), meetingParticipantsList, model);
 
 

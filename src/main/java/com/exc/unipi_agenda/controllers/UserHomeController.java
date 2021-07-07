@@ -9,7 +9,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import javax.servlet.http.HttpSession;
 
 @Controller
-public class UserHomeController {
+public class UserHomeController extends ContextController{
     @GetMapping(path = "/user")
     public Object getContent(Model model, HttpSession session) {
 
@@ -17,7 +17,8 @@ public class UserHomeController {
         if(registedUser == null){
             return new RedirectView("/");
         }
-        System.out.println(registedUser.getFullName());
+//        System.out.println(registedUser.getFullName());
+        registedUser.setNotificationList(refreshesNotifications(registedUser.getUsername()));
 
         return "agenda";
     }
