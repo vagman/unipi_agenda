@@ -23,7 +23,6 @@ public class MeetingController extends ContextController{
         }
         registedUser.setNotificationList(refreshesNotifications(registedUser.getUsername()));
         registedUser.setMeetings(refreshesMeetings(registedUser.getUsername()));
-        registedUser.setMeetingInvitations(refreshesInvitations(registedUser.getUsername()));
         model.addAttribute("user", registedUser);
 
         return "meeting";
@@ -62,7 +61,7 @@ public class MeetingController extends ContextController{
 //        a.createMeeting("meeting test 132", date_string, 12.5f,m);
         registedUser.setNotificationList(refreshesNotifications(registedUser.getUsername()));
         registedUser.setMeetings(refreshesMeetings(registedUser.getUsername()));
-        registedUser.setMeetingInvitations(refreshesInvitations(registedUser.getUsername()));
+        session.setAttribute("user",registedUser);
         model.addAttribute("user", registedUser);
         return "index";
     }

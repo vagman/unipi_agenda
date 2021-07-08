@@ -48,7 +48,7 @@ public class Admin extends User{
     public void addParticipants(int id, String[] participants, Model model) {
         Connection conn = Db.getConnection();
         if (conn != null) {
-            String sql_query = "INSERT INTO meeting_participants(id_meeting, username, invitation_status) VALUES (?,?,?);";
+            String sql_query = "INSERT INTO meeting_participants(id_meeting, username, invitation_status,date) VALUES (?,?,?,NOW());";
             try {
                 conn.setAutoCommit(false);
                 PreparedStatement ps = conn.prepareStatement(sql_query);

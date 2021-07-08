@@ -46,8 +46,8 @@ public class MeetingInvitation {
             return false;
         }
         // load name
-        String sql_query = "UPDATE meeting_participants        \n"+
-                           "SET invitation_status = 'approved' \n"+
+        String sql_query = "UPDATE meeting_participants                      \n"+
+                           "SET invitation_status = 'approved', date = NOW() \n"+
                            "WHERE id_meeting = ? and username = ?";
         try{
             PreparedStatement ps = conn.prepareStatement(sql_query);
@@ -66,8 +66,8 @@ public class MeetingInvitation {
             return false;
         }
         // load name
-        String sql_query = "UPDATE meeting_participants        \n"+
-                           "SET invitation_status = 'declined' \n"+
+        String sql_query = "UPDATE meeting_participants                     \n"+
+                           "SET invitation_status = 'declined', date = NOW()\n"+
                            "WHERE id_meeting = ? and username = ?";
         try{
             PreparedStatement ps = conn.prepareStatement(sql_query);

@@ -29,7 +29,6 @@ public class LoginController extends ContextController{
         if (registeredUser != null){
             registeredUser.setNotificationList(refreshesNotifications(registeredUser.getUsername()));
             registeredUser.setMeetings(refreshesMeetings(registeredUser.getUsername()));
-            registeredUser.setMeetingInvitations(refreshesInvitations(registeredUser.getUsername()));
 
             //System.out.println(registeredUser.getFullName());
             session.setAttribute("user", registeredUser);

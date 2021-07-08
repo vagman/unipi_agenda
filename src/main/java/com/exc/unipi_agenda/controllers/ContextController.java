@@ -12,25 +12,39 @@ import java.util.List;
 
 public class ContextController {
 
-    public List<UserNotification> refreshesNotifications(String username){
-        List<UserNotification> notificationList = new ArrayList<>();
+    public List<Object> refreshesNotifications(String username){
+        List<Object> notificationList = new ArrayList<>();
         Connection conn = Db.getConnection();
         if (conn == null) {
             return null;
         }
-        // load last month notifications
-        String sql_query = "SELECT id_notification,msg, date, viewed FROM user_notification \n" +
-                           "WHERE username = ? AND date > NOW() - INTERVAL 1 MONTH \n" +
-                           "order by date;";
+        // load all the notifications (invitations and notifications)
+        String sql_query = "(SELECT concat('invitation') as type, m.id_meeting as id,m.name as meeting_name ," +
+                "                   invitation_status, meeting_participants.date as date_add, null as msg, null as viewed\n" +
+                            "    FROM meeting_participants inner join meeting m on meeting_participants.id_meeting = m.id_meeting\n" +
+                            "    WHERE username = ?)\n" +
+                            "UNION\n" +
+                            "(SELECT concat('notification') as type, id_notification as id, null as meeting_name, " +
+                "                   null as invitation_status, date as date_add, msg, viewed\n" +
+                            "    FROM user_notification\n" +
+                            "    WHERE username = ?) order by date_add;";
         try {
             PreparedStatement ps = conn.prepareStatement(sql_query);
             ps.setString(1,username);
+            ps.setString(2,username);
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
-                notificationList.add(new UserNotification(rs.getInt("id_notification"),
-                                                          rs.getString("msg"),
-                                                          rs.getDate("date"),
-                                                          rs.getBoolean("viewed")));
+                if (rs.getString("type").equals("notification")){
+                    notificationList.add(new UserNotification(rs.getInt("id_notification"),
+                            rs.getString("msg"),
+                            rs.getString("date"),
+                            rs.getBoolean("viewed")));
+                }else if(rs.getString("type").equals("invitation")){
+                    notificationList.add(new MeetingInvitation(
+                            new Meeting(rs.getInt("id"),rs.getString("meeting_name")),
+                            rs.getString("date"),
+                            rs.getString("status")));
+                }
             }
         }catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -43,9 +57,9 @@ public class ContextController {
         List<Meeting> meeting = new ArrayList<>();
         Connection conn = Db.getConnection();
 //      we get meetings data from the meetings which the user is admin or participant
-        String sql_query = "SELECT meeting.id_meeting,name,date,duration,admin, username\n" +
+        String sql_query = "SELECT meeting.id_meeting,name,meeting.date,duration,admin, username\n" +
                            "FROM meeting left join meeting_participants on meeting.id_meeting = meeting_participants.id_meeting\n" +
-                           "WHERE date > now() AND (admin = ? OR username = ?) AND invitation_status = 'approved'\n" +
+                           "WHERE meeting.date > now() AND (admin = ? OR username = ?) AND invitation_status = 'approved'\n" +
                            "ORDER BY id_meeting;";
         try {
             if (conn!=null) {
@@ -85,32 +99,4 @@ public class ContextController {
 
     }
 
-    public List<MeetingInvitation> refreshesInvitations(String username){
-        List<MeetingInvitation> refreshesInvitations = new ArrayList<>();
-        Connection conn = Db.getConnection();
-        if (conn == null) {
-            return null;
-        }
-        // load the 'open' invitations
-        String sql_query = "SELECT id_meeting,name, date, invitation_status " +
-                           "FROM meeting_participants natural join meeting\n" +
-                           "WHERE username = ? AND invitation_status = 'open' \n" +
-                           "order by date;";
-        try {
-            PreparedStatement ps = conn.prepareStatement(sql_query);
-            ps.setString(1,username);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()){
-                refreshesInvitations.add(new MeetingInvitation(
-                        new Meeting(rs.getInt("id_meeting"),rs.getString("name")),
-                        rs.getString("date"),
-                        rs.getString("status")
-                ));
-            }
-        }catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return null;
-        }
-        return refreshesInvitations;
-    }
 }

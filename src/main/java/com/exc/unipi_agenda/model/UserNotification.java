@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.Date;
 
 public class UserNotification {
-    public UserNotification(int idNotification, String message, Date datetime, boolean viewed){
+    public UserNotification(int idNotification, String message, String datetime, boolean viewed){
         this.idNotification = idNotification;
         this.message = message;
         this.datetime = datetime;
@@ -22,13 +22,13 @@ public class UserNotification {
     //private User user;
     private final int idNotification;
     private final String message;
-    private final Date datetime;
+    private final String datetime;
 
     public String getMessage() {
         return message;
     }
 
-    public Date getDatetime() {
+    public String getDatetime() {
         return datetime;
     }
 

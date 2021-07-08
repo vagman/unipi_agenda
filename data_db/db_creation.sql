@@ -22,9 +22,10 @@ create table if not exists meeting
 # invitation status for the participants
 create table meeting_participants
 (
-    id_meeting        int not null,
-    username          varchar(30) not null,
-    invitation_status varchar(10) check (invitation_status in ('open','approved','declined')),
+    id_meeting          int not null,
+    username            varchar(30) not null,
+    invitation_status   varchar(10) check (invitation_status in ('open','approved','declined')),
+    date                datetime,
     primary key (id_meeting, username)
 );
 # meeting chat
@@ -46,10 +47,18 @@ create table user_notification
     primary key (id_notification)
 );
 # This trigger is handle the notifications to the participants when the admin change a meeting
-CREATE TRIGGER update_notifications
+CREATE TRIGGER meeting_changed_trigger
     AFTER UPDATE on meeting for each row
     INSERT INTO user_notification(username, msg, date,viewed)
-            (SELECT meeting_participants.username ,concat(OLD.name ,' meeting is updated'), now() , false
+            (SELECT meeting_participants.username ,concat(OLD.name ,' meeting is changed'), now() , false
             FROM (meeting_participants)
             WHERE (OLD.id_meeting = meeting_participants.id_meeting));
+# This trigger inform the participants for their invitations
+CREATE TRIGGER meeting_invitations_trigger
+    AFTER INSERT on meeting_participants for each row
+    INSERT INTO user_notification(username, msg, date,viewed)
+        (SELECT meeting_participants.username,
+                concat(meeting.admin,' sends you a invitation for the meeting: ',meeting.name),NOW(),false
+            FROM meeting natural join meeting_participants
+            WHERE id_meeting = NEW.id_meeting);
 

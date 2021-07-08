@@ -20,7 +20,7 @@ public class UserHomeController extends ContextController{
 //        System.out.println(registedUser.getFullName());
         registedUser.setNotificationList(refreshesNotifications(registedUser.getUsername()));
         registedUser.setMeetings(refreshesMeetings(registedUser.getUsername()));
-        registedUser.setMeetingInvitations(refreshesInvitations(registedUser.getUsername()));
+        session.setAttribute("user", registedUser);
         return "agenda";
     }
 }

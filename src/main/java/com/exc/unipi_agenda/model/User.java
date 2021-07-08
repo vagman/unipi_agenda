@@ -16,7 +16,7 @@ public class User {
     private String username;
     private String firstName;
     private String lastName;
-    private List<UserNotification> notificationList= new ArrayList<>();
+    private List<Object> notificationList= new ArrayList<>();
     public String color;
     private List<Meeting> meetings;
 
@@ -67,11 +67,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public List<UserNotification> getNotificationList() {
+    public List<Object> getNotificationList() {
         return notificationList;
     }
 
-    public void setNotificationList(List<UserNotification> notificationList) {
+    public void setNotificationList(List<Object> notificationList) {
         this.notificationList = notificationList;
     }
 
