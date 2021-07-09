@@ -6,10 +6,16 @@ import java.sql.SQLException;
 import java.util.Date;
 
 public class MeetingComment {
+    private int id_meeting;
     private User user;
     private String message;
     private String date;
-
+    public MeetingComment(int id_meeting, User u, String message){
+        this.id_meeting = id_meeting;
+        this.user = u;
+        this.message = message;
+    }
+    public MeetingComment(){}
     public User getUser() {
         return user;
     }
@@ -41,7 +47,7 @@ public class MeetingComment {
         }
         // load name
         String sql_query = "INSERT INTO meeting_comments(id_meeting, username, date, msg)\n"+
-                            "VALUES(?,?,NOW(),?)";
+                           "VALUES(?,?,NOW(),?)";
         try{
             PreparedStatement ps = conn.prepareStatement(sql_query);
             ps.setInt(1,id_meeting);

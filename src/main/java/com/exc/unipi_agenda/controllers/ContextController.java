@@ -35,15 +35,15 @@ public class ContextController {
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
                 if (rs.getString("type").equals("notification")){
-                    notificationList.add(new UserNotification(rs.getInt("id_notification"),
+                    notificationList.add(new UserNotification(rs.getInt("id"),
                             rs.getString("msg"),
-                            rs.getString("date"),
+                            rs.getString("date_add"),
                             rs.getBoolean("viewed")));
                 }else if(rs.getString("type").equals("invitation")){
                     notificationList.add(new MeetingInvitation(
                             new Meeting(rs.getInt("id"),rs.getString("meeting_name")),
-                            rs.getString("date"),
-                            rs.getString("status")));
+                            rs.getString("date_add"),
+                            rs.getString("invitation_status")));
                 }
             }
         }catch (SQLException throwables) {
@@ -98,5 +98,4 @@ public class ContextController {
         return meeting;
 
     }
-
 }

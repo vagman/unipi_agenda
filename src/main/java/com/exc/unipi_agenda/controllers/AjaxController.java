@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-public class AjaxController {
+public class AjaxController extends ContextController{
     @PostMapping("/search-user")
     public List<Object> searchUser(Model model,
                                    HttpSession session,
@@ -45,5 +45,34 @@ public class AjaxController {
         }
 
         return search_results;
+    }
+    @PostMapping("/invitation_response")
+    public boolean InvitationResponse(Model model,
+                                           HttpSession session,
+                                           @RequestParam(name = "response", required = false) String response,
+                                           @RequestParam(name = "id_meeting", required = false) int id_meeting) {
+
+        Connection conn = Db.getConnection();
+        if (conn == null) {
+            return false;
+        }
+
+        String sql_query = "UPDATE meeting_participants SET invitation_status = ?, date = NOW() " +
+                            "WHERE id_meeting = ? AND username = ?";
+        List<Object> search_results = new ArrayList<Object>();
+        User registedUser = (User)session.getAttribute("user");
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql_query);
+            ps.setString(1,response);
+            ps.setInt(2,id_meeting);
+            ps.setString(3,registedUser.getUsername());
+            boolean result = ps.execute();
+            conn.close();
+            registedUser.setNotificationList(refreshesNotifications(registedUser.getUsername()));
+            return result;
+        }catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return false;
+        }
     }
 }
