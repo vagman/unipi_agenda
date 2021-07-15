@@ -50,6 +50,8 @@ public class Admin extends User{
         if (conn != null) {
             String sql_query = "INSERT INTO meeting_participants(id_meeting, username, invitation_status,date) VALUES (?,?,?,NOW());";
             try {
+                /*
+                // Δεν το κατάφερα να δουλέψει
                 conn.setAutoCommit(false);
                 PreparedStatement ps = conn.prepareStatement(sql_query);
                 for (String p : participants) {
@@ -60,6 +62,17 @@ public class Admin extends User{
                 }
                 conn.commit();
                 ps.executeBatch();
+                */
+
+                PreparedStatement ps;
+                for (String p : participants) {
+                    ps = conn.prepareStatement(sql_query);
+                    ps.setInt(1, id);
+                    ps.setString(2, p);
+                    ps.setString(3, "open");
+                    System.out.println(ps);
+                    ps.execute();
+                }
             } catch (SQLException throwables) {
                 model.addAttribute("error", "Something wrong with database");
                 throwables.printStackTrace();

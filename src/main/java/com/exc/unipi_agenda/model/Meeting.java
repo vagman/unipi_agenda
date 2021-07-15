@@ -2,21 +2,24 @@ package com.exc.unipi_agenda.model;
 
 import org.springframework.ui.Model;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Meeting {
+public class Meeting implements Serializable {
 
     private int id;
     private String name;
     private Date datetime;
-    private float duration;
+    private String duration;
     private Admin admin;
+    private String description;
 
     public void setAdmin(Admin admin) {
         this.admin = admin;
@@ -64,15 +67,22 @@ public class Meeting {
         return datetime;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public String getDescription() {
+        return this.description;
+    }
+
     public void setDatetime(Date datetime) {
         this.datetime = datetime;
     }
 
-    public float getDuration() {
+    public String getDuration() {
         return duration;
     }
 
-    public void setDuration(float duration) {
+    public void setDuration(String duration) {
         this.duration = duration;
     }
 
@@ -95,42 +105,82 @@ public class Meeting {
     public void setComments(List<MeetingComment> comments) {
         this.comments = comments;
     }
-    //    main actions
-    public boolean create(String name, User admin, String date, float duration, Model model) {
+
+    // main actions
+    public boolean create(User administrator) {
         Connection conn = Db.getConnection();
-        if (conn != null) {
-            String sql_query = "INSERT INTO meeting(name, date, duration, admin) VALUES (?,?,?,?);";
-            try {
-                PreparedStatement ps = conn.prepareStatement(sql_query);
-                ps.setString(1, name);
-                ps.setString(2, date);
-                ps.setFloat(3, duration);
-                ps.setString(4, admin.getUsername());
-                return ps.execute();
-            } catch (SQLException throwables) {
-                model.addAttribute("error", "Something wrong with database");
-                throwables.printStackTrace();
-            }
+
+        if (conn == null) {
+            return false;
         }
-        return false;
+
+        // Get next id
+        this.id = Meeting.getNewId();
+
+        // Date formating
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        String meetingDateString = dateFormatter.format(this.datetime);
+
+        // Set admin
+        this.admin = new Admin(administrator.getUsername());
+
+        String sql_query = "INSERT INTO meeting VALUES (?,?,?,?,?,?);";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql_query);
+            ps.setInt(1, this.id);
+            ps.setString(2, this.name);
+            ps.setString(3, this.description);
+            ps.setString(4, meetingDateString);
+            ps.setString(5, this.duration);
+            ps.setString(6, admin.getUsername());
+            return ps.execute();
+        } catch (SQLException throwables) {
+            return false;
+        }
+
     }
 
-    public static String getNewId(){
+    public static int getNewId(){
         Connection conn = Db.getConnection();
         if (conn == null) {
-            return "";
+            return -1;
         }
         String sql_query = "select max(id_meeting)+1 as last_id from meeting;";
         try {
             PreparedStatement ps = conn.prepareStatement(sql_query);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
-                return rs.getString("last_id");
+                return rs.getInt("last_id");
             }
         }catch (SQLException throwables) {
             throwables.printStackTrace();
-            return "";
+            return -1;
         }
-        return "";
+        return -1;
+    }
+
+    public void loadMessageComments(){
+        Connection conn = Db.getConnection();
+        if (conn == null) {
+            return;
+        }
+
+        String sql_query = "SELECT * FROM meeting_comments WHERE id_meeting = ?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql_query);
+            ps.setInt(1, this.id);
+            ResultSet rs = ps.executeQuery();
+            List<MeetingComment> meetingCommentList = new ArrayList<>();
+            while(rs.next()){
+                meetingCommentList.add(new MeetingComment(
+                    rs.getInt("id_meeting"),
+                    new User(rs.getString("username")),
+                    rs.getString("msg")
+                ));
+            }
+            this.comments = meetingCommentList;
+        }catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 }

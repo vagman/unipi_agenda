@@ -32,6 +32,7 @@ public class ContextController {
             PreparedStatement ps = conn.prepareStatement(sql_query);
             ps.setString(1,username);
             ps.setString(2,username);
+//            System.out.println(ps);
             ResultSet rs = ps.executeQuery();
             while (rs.next()){
                 if (rs.getString("type").equals("notification")){
@@ -57,9 +58,9 @@ public class ContextController {
         List<Meeting> meeting = new ArrayList<>();
         Connection conn = Db.getConnection();
 //      we get meetings data from the meetings which the user is admin or participant
-        String sql_query = "SELECT meeting.id_meeting,name,meeting.date,duration,admin, username\n" +
+        String sql_query = "SELECT meeting.id_meeting,name,meeting.date,duration,admin, username, meeting.description\n" +
                            "FROM meeting left join meeting_participants on meeting.id_meeting = meeting_participants.id_meeting\n" +
-                           "WHERE meeting.date > now() AND (admin = ? OR username = ?) AND invitation_status = 'approved'\n" +
+                           "WHERE meeting.date > now() AND (admin = ? OR (username = ? AND invitation_status = 'approved'))\n" +
                            "ORDER BY id_meeting;";
         try {
             if (conn!=null) {
@@ -82,8 +83,9 @@ public class ContextController {
 //                      If is a new meeting or is the first time create a meeting object and add it to the list
                         Meeting m = new Meeting(rs.getInt("id_meeting"));
                         m.setName(rs.getString("name"));
+                        m.setDescription(rs.getString("description"));
                         m.setDatetime(rs.getDate("date"));
-                        m.setDuration(rs.getFloat("duration"));
+                        m.setDuration(rs.getString("duration"));
                         m.setAdmin(new Admin(rs.getString("admin")));
                         m.getParticipants().add(new Participant(rs.getString("username")));
                         meeting.add(m);
