@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Connection;
@@ -27,26 +28,101 @@ public class AjaxController extends ContextController{
             return null;
         }
 
-        String sql_query = "SELECT username FROM users WHERE username LIKE ? AND username != ?;";
-        List<Object> search_results = new ArrayList<Object>();
+        String sqlQuery = "SELECT username FROM users WHERE username LIKE ? AND username != ?;";
+        List<Object> searchResults = new ArrayList<Object>();
         User registedUser = (User)session.getAttribute("user");
         try {
-            PreparedStatement ps = conn.prepareStatement(sql_query);
+            PreparedStatement ps = conn.prepareStatement(sqlQuery);
             ps.setString(1,"%"+search_query+"%");
             ps.setString(2,registedUser.getUsername());
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 String result_username = rs.getString("username");
-                search_results.add(new User(result_username));
+                searchResults.add(new User(result_username));
             }
         }catch (SQLException throwables) {
             throwables.printStackTrace();
             return null;
         }
 
-        return search_results;
+        return searchResults;
     }
-    @PostMapping("/invitation_response")
+
+    @PostMapping("/send-meeting-message")
+    public boolean sendMeetingMessage(Model model,
+                                      HttpSession session,
+                                      @RequestParam(name = "message_text", required = false) String messageText,
+                                      @RequestParam(name = "id_meeting", required = false) int idMeeting,
+                                      @RequestParam(name = "username", required = false) String username) {
+
+        Connection conn = Db.getConnection();
+        if (conn == null) {
+            return false;
+        }
+
+        String sql_query = "INSERT INTO meeting_comments VALUES(?, ?, NOW(), ?);";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql_query);
+            ps.setInt(1,idMeeting);
+            ps.setString(2,username);
+            ps.setString(3,messageText);
+            ps.execute();
+            conn.close();
+
+
+            return true;
+        }catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return false;
+        }
+    }
+
+
+    @PostMapping("/update-meeting-description")
+    public boolean updateMeetingDesctiprion(Model model,
+                                           HttpSession session,
+                                           @RequestParam(name = "id_meeting", required = false) int idMeeting,
+                                           @RequestParam(name = "meeting_description", required = false) String meetingDescription
+    )
+    {
+        Connection conn = Db.getConnection();
+        if (conn == null) {
+            return false;
+        }
+
+        String sql_query = "UPDATE meeting SET description = ? WHERE id_meeting = ?;";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql_query);
+            ps.setString(1,meetingDescription);
+            ps.setInt(2,idMeeting);
+            ps.execute();
+            conn.close();
+
+            // Update the meeting list that is stored on the session
+            User registedUser = (User)session.getAttribute("user");
+            if(registedUser == null){
+                return false;
+            }
+            registedUser.setMeetings(refreshesMeetings(registedUser.getUsername()));
+
+            return true;
+        }catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return false;
+        }
+    }
+
+    @PostMapping("/leave-meeting")
+    public boolean leaveMeeting(Model model,
+                                            HttpSession session,
+                                            @RequestParam(name = "id_meeting", required = true) int idMeeting
+    )
+    {
+        //TODO: Leave meeting
+        return true;
+    }
+
+    /*@PostMapping("/invitation_response")
     public boolean InvitationResponse(Model model,
                                            HttpSession session,
                                            @RequestParam(name = "response", required = false) String response,
@@ -74,5 +150,5 @@ public class AjaxController extends ContextController{
             throwables.printStackTrace();
             return false;
         }
-    }
+    }*/
 }

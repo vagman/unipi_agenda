@@ -1,5 +1,6 @@
 package com.exc.unipi_agenda.controllers;
 
+import com.exc.unipi_agenda.model.Db;
 import com.exc.unipi_agenda.model.Meeting;
 import com.exc.unipi_agenda.model.User;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Controller
 public class MeetingController extends ContextController{
@@ -21,6 +29,20 @@ public class MeetingController extends ContextController{
         if(registedUser == null){
             return new RedirectView("/");
         }
+
+        // Generate timepicker options
+        List<String> timepickerOptions = new ArrayList<String>();
+        for(int i=15; i<500; i+=15){
+            String option = "";
+            if((int)i/60 != 0){
+                option += String.valueOf((int)i/60)+" hours ";
+            }
+            option += String.valueOf(i%60)+" min";
+
+            timepickerOptions.add(option);
+        }
+        model.addAttribute("timepickerOptions", timepickerOptions);
+
         registedUser.setNotificationList(refreshesNotifications(registedUser.getUsername()));
         registedUser.setMeetings(refreshesMeetings(registedUser.getUsername()));
         model.addAttribute("user", registedUser);
@@ -28,12 +50,12 @@ public class MeetingController extends ContextController{
         return "meeting";
     }
 
-    @PostMapping("/meeting")
+    @PostMapping("/create-meeting")
     public Object createMeeting(Model model,
                                 HttpSession session,
                                 @RequestParam(name = "meeting-title", required = false) String meetingTitle,
                                 @RequestParam(name = "meeting-desc", required = false) String meetingDescription,
-                                @RequestParam(name = "meeting-date", required = false) String meetingDate,
+                                @RequestParam(name = "meeting-date", required = false) String meetingDateString,
                                 @RequestParam(name = "meeting-duration", required = false) String meetingDuration,
                                 @RequestParam(name = "meeting-participants", required = false) String meetingParticipants
     )
@@ -43,26 +65,33 @@ public class MeetingController extends ContextController{
             return new RedirectView("/");
         }
 
+        // Date formating
+        Date meetingDate;
+        try{
+            meetingDate = new SimpleDateFormat("dd/MM/yyyy").parse(meetingDateString);
+        }catch (Exception e){
+            System.out.println(e.toString());
+            meetingDate = new Date();
+        }
+
+        // Meeting creation
         Meeting newMeeting = new Meeting();
         newMeeting.setName(meetingTitle);
-//        newMeeting.setDatetime(meetingDate);
-//        newMeeting.set(meetingDate);
+        newMeeting.setDescription(meetingDescription);
+        newMeeting.setDatetime(meetingDate);
+        newMeeting.setDuration(meetingDuration);
 
+        newMeeting.create(registedUser);
+
+        // Participants
         String[] meetingParticipantsList = meetingParticipants.split("__separator__");
         newMeeting.getAdmin().addParticipants(newMeeting.getId(), meetingParticipantsList, model);
 
-
-//        String date_string = "2100-09-26 10:00:00";
-//        //Instantiating the SimpleDateFormat class
-//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        //Parsing the given String to Date object
-//        Date date = formatter.parse(date_string);
-//
-//        a.createMeeting("meeting test 132", date_string, 12.5f,m);
-        registedUser.setNotificationList(refreshesNotifications(registedUser.getUsername()));
+        // Rebuild the meetings list that is stored on the session
         registedUser.setMeetings(refreshesMeetings(registedUser.getUsername()));
-        session.setAttribute("user",registedUser);
-        model.addAttribute("user", registedUser);
-        return "index";
+
+        return new RedirectView("/user");
     }
+
+
 }

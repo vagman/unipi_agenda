@@ -110,6 +110,7 @@ public class User {
 
     public static User  register(String username, String password, String firstName, String lastName, String color, Model model) {
         Connection conn = Db.getConnection();
+        System.out.println(conn);
         if (conn!=null){
             try {
 //              prepare password hash
@@ -124,6 +125,7 @@ public class User {
                 ps.setString(4,firstName);
                 ps.setString(5,lastName);
                 ps.setString(6,color);
+                System.out.println(ps);
                 int rows = ps.executeUpdate();
                 if (rows>0){
                     model.addAttribute("message","New user created successfully");

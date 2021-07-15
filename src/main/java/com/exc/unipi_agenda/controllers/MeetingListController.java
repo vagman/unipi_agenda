@@ -9,7 +9,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import javax.servlet.http.HttpSession;
 
 @Controller
-public class UserHomeController extends ContextController{
+public class MeetingListController extends ContextController{
     @GetMapping(path = "/user")
     public Object getContent(Model model, HttpSession session) {
 
@@ -17,10 +17,14 @@ public class UserHomeController extends ContextController{
         if(registedUser == null){
             return new RedirectView("/");
         }
-//        System.out.println(registedUser.getFullName());
-        registedUser.setNotificationList(refreshesNotifications(registedUser.getUsername()));
-        registedUser.setMeetings(refreshesMeetings(registedUser.getUsername()));
-        session.setAttribute("user", registedUser);
-        return "agenda";
+
+//        registedUser.setNotificationList(refreshesNotifications(registedUser.getUsername()));
+//        registedUser.setMeetings(refreshesMeetings(registedUser.getUsername()));
+//        session.setAttribute("user", registedUser);
+
+        System.out.println(registedUser.getMeetings());
+        model.addAttribute("user", registedUser);
+
+        return "meeting-list.html";
     }
 }

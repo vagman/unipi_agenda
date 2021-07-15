@@ -38,7 +38,6 @@ div #main-section {
 }
 
 .container {
-    height: 100%;
     align-content: center;
 }
 
@@ -112,7 +111,11 @@ input[type=button] {
 input:focus ~ .floating-label-login,
 input:focus ~ .floating-label-signup,
 input:not(:focus):valid ~ .floating-label-login,
-input:not(:focus):valid ~ .floating-label-signup {
+input:not(:focus):valid ~ .floating-label-signup,
+select:focus ~ .floating-label-login,
+select:focus ~ .floating-label-signup,
+select:not(:focus):valid ~ .floating-label-login,
+select:not(:focus):valid ~ .floating-label-signup {
     top: -10px;
     bottom: 20px;
     left: 0;
@@ -223,6 +226,9 @@ div#main-section .input-group {
     color: #0D7377;
     margin-bottom: 22px;
 }
+.meeting-container .meeting-date{
+    margin: 0px 15px 15px;
+}
 
 
 
@@ -253,6 +259,9 @@ div#main-section .input-group {
 
 .agenda-button-row {
     margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .btn-info {
@@ -306,7 +315,7 @@ li.task.open i {
 }
 
 li.task i {
-    transition: transform .5s ease-in;
+    transition: transform .5s ease;
 }
 
 .bx-plus {
@@ -324,12 +333,6 @@ li.task i {
     }
 }
 
-.new-meeting {
-    display: block;
-    margin: 0 auto;
-    width: 100%;
-    text-align: center;
-}
 
 .btn-new-meeting {
     margin: 40px 0 40px 0;
@@ -540,7 +543,7 @@ End Meeting Comments page
 
 
 #footer {
-    position: fixed;
+    position: absolute;
     bottom: 15px;
     width: 100%;
 }
@@ -567,7 +570,7 @@ body.register div#main-section {
 
 
 body.meeting div#main-section > form {
-    padding: 35px 10px;
+    padding: 50px 15px;
 }
 
 body.meeting div#main-section .form-group.meeting-title {
@@ -577,7 +580,8 @@ body.meeting div#main-section .form-group.meeting-title {
     margin-top: 25px;
 }
 
-body.meeting .meeting-title input:not(:focus):valid ~ span.floating-label-login {
+body.meeting .meeting-title input:not(:focus):valid ~ span.floating-label-login,
+body.meeting .meeting-title select:not(:focus):valid ~ span.floating-label-login{
     top: 3px;
     left: 10px;
     font-size: 23px;
@@ -676,7 +680,8 @@ button.sticky-button {
     left: calc(50% - 110px);
 }
 
-body.meeting input:not(:focus):valid ~ .floating-label-login {
+body.meeting input:not(:focus):valid ~ .floating-label-login,
+body.meeting select:not(:focus):valid ~ .floating-label-login{
     font-weight: 100;
     font-size: 20px;
     display: block;
@@ -687,7 +692,10 @@ body.meeting input:not(:focus):valid ~ .floating-label-login {
 
 body.meeting .selected input:not(:focus):valid ~ .floating-label-login,
 body.meeting input:focus ~ .floating-label-login,
-body.meeting .meeting-title.selected input:not(:focus):valid ~ .floating-label-login {
+body.meeting .meeting-title.selected input:not(:focus):valid ~ .floating-label-login,
+body.meeting .selected select:not(:focus):valid ~ .floating-label-login,
+body.meeting select:focus ~ .floating-label-login,
+body.meeting .meeting-title.selected select:not(:focus):valid ~ .floating-label-login{
     top: -18px;
     bottom: 20px;
     left: 0;
@@ -796,11 +804,11 @@ button.add-participants-popup-close {
     content: '';
     position: absolute;
     bottom: -12px;
-    width: 20vw;
+    width: 20%;
     background: #cccccc;
     height: 3px;
-    left: calc(50% - 10vw);
-    border-radius: 5px;
+    left: calc(40%);
+    border-radius: 21px;
 }
 .add-participants-popup.open {
     display: block;
@@ -816,12 +824,12 @@ button.add-participants-popup-close {
     height: 90vh;
     overflow: hidden;
     transition: max-height .5s ease;
-    position: fixed;
+    position: absolute;
 }
 .add-participants-popup.open {
-    max-height: 90vh;
+    max-height: 90%;
     overflow: auto;
-    height: 90vh;
+    height: 90%;
 }
 .user-result {
     padding: 5px 15px;
@@ -830,6 +838,7 @@ button.add-participants-popup-close {
     align-items: center;
     border-bottom: 1px solid #dadada;
     margin: 0 15px;
+    cursor: pointer;
 }
 .user-result:last-child {
     border: unset;
@@ -851,4 +860,317 @@ button.add-participants-popup-close {
 .meeting-participant-info{
     display: flex;
     align-items: center;
+}
+.phone {
+    width: 375px;
+    height: 812px;
+    background: white;
+    border-radius: 5px;
+    position: relative;
+}
+.phone-container{
+    background: #eaeaea;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+}
+#output_label{
+    display: none
+}
+select[name="meeting-duration"] {
+    border: unset;
+    max-width: 80%;
+    display: block;
+    border: unset;
+    font-size: 15px;
+    padding: 10px;
+}
+body.chat .phone {
+    background: #F9F9F9;
+    overflow: hidden;
+}
+body.chat .chat-header {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: white;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    box-shadow: 0px 2px 5px #0000001c;
+}
+.chat-header h1 {
+    font-size: 25px;
+    color: #0D7377;
+    margin-bottom: 0;
+    line-height: 25px;
+    margin-left: 14px;
+    font-weight: bold;
+}
+.chat-header .left-column {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.chat-footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+}
+button#message_send {
+    background: transparent;
+    border: unset;
+}
+input#message_input {
+    padding: 5px 10px;
+    width: 100%;
+    border-radius: 26px;
+    border: 2px solid #0D7377;
+    margin-right: 10px;
+}
+.meeting-list div#main-section .card{
+    height: 630px;
+    overflow: auto;
+}
+body select:focus-visible{
+    outline:unset;
+}
+.btn.btn-primary:not(.disabled):active {
+    background: #0d7377;
+    color: white;
+}
+div#main-section a.btn.btn-primary.btn-new-meeting:hover {
+    color: white;
+}
+button:focus {
+    outline: unset;
+}
+span.card-hours i.bx.bx-chevron-down {
+    color: #0d7377;
+}
+
+button.btn-delete-meeting {
+    border: unset;
+    background: #FF0000;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+button.btn-delete-meeting img {
+    width: 20px;
+}
+
+button.btn-edit-meeting {
+    background: transparent;
+    /* border: unset; */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #858585;
+    border-radius: 5px;
+    margin-left: 8px;
+    padding: 5px 10px;
+}
+
+button.btn-edit-meeting span {
+    line-height: 18px;
+    margin-left: 8px;
+    color: #858585;
+    font-size: 15px;
+}
+
+.agenda-button-row .left-container {
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+}
+
+button.btn-edit-meeting {}
+
+button.btn-edit-meeting img {
+    width: 17px;
+}
+
+div#main-section a.btn-enter-meeting {
+    background: #0D7377;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 10px;
+    border-radius: 5px;
+}
+
+div#main-section a.btn-enter-meeting img {
+    width: 15px;
+    margin-left: 8px;
+}
+
+div#main-section a.btn-enter-meeting span {
+    line-height: 15px;
+}
+a.btn.btn-primary.btn-new-meeting {
+    display: flex;
+    box-shadow: none;
+    align-items: center;
+}
+.message-list {
+    display: flex;
+    flex-direction: column-reverse;
+    height: calc(100% - 105px);
+    overflow: auto;
+    padding: 0 15px;
+    top: 55px;
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+span.message-text {
+    font-size: 17px;
+}
+.message-text {
+    font-size: 18px;
+    color: #848484;
+    padding: 10px 10px;
+    background: white;
+    max-width: 80%;
+    margin: 5px 0;
+    border-radius: 7px;
+    width: max-content;
+    line-height: 21px;
+}
+.message.mine .message-text {
+    color: white;
+    background: #0d7377;
+    float: right;
+}
+span.message-author {
+    color: #a2a2a2;
+    margin-left: 5px;
+}
+#floating_window_toggler {
+    cursor: pointer;
+    background: transparent;
+    border: unset;
+    padding: 0 10px;
+}
+.floating-menu {
+    left: 100%;
+    width: 80%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: white;
+    overflow: hidden;
+    transition: left .5s ease;
+    z-index: 2;
+    padding: 50px 15px 20px 20px;
+}
+.floating-menu.active {
+    width: 80%;
+    left: 20%;
+}
+.floating-menu-filter {
+    background: #00000024;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    opacity: 0;
+    transition: opacity .5s ease;
+    z-index: -1;
+}
+.floating-menu-filter.active {
+    opacity: 1;
+    z-index: 1;
+}
+button#close_floating_menu {
+    background: transparent;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    border: unset;
+}
+
+button#close_floating_menu img {
+    width: 20px;
+}
+
+.floating-menu h3 {
+    color: #0D7377;
+    font-size: 19px;
+    font-weight: 700;
+}
+
+.floating-menu button#edit_description,
+.floating-menu #save_description,
+.floating-menu button#edit_participants {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: transparent;
+    border: unset;
+}
+.floating-menu button#save_description{
+    display: none;
+}
+.floating-menu .description-container,.participants-container {
+    margin-bottom: 25px;
+    position: relative;
+}
+.floating-menu span.meeting-decription {
+    color: #717171;
+    line-height: 22px;
+    font-size: 15px;
+}
+.floating-menu button#leave_meeting {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0;
+    background: transparent;
+    border: unset;
+}
+.floating-menu button#leave_meeting h3 {
+    color: #FF0000;
+}
+.floating-menu textarea.meeting-decription {
+    width: calc(100% + 10px);
+    line-height: 19px;
+    font-size: 14px;
+    background: white;
+    resize: none;
+    margin: 0 -5px;
+}
+.floating-menu textarea.meeting-decription {
+    width: 100%;
+    line-height: 19px;
+    font-size: 14px;
+    background: white;
+    border: 1px solid #c3c3c3;
+    outline: unset;
+    padding: 5px;
+}
+.floating-menu textarea.meeting-decription.disabled {
+    resize: none;
+    border: unset;
+}
+.floating-menu button#save_description img {
+    width: 15px;
 }

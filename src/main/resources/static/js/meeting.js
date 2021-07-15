@@ -76,7 +76,7 @@ $(document).ready(function () {
                     iconColor = "#0d7377";
                 }
                 html += `
-                    <div class="user-result" data-username="`+user._Username+`">
+                    <div class="user-result" data-username="`+user.username+`">
                         <div class="user-icon" style="background-color:`+iconColor+`">
                            <span>`+user.firstName.charAt(0)+`</span>
                            <span>`+user.lastName.charAt(0)+`</span>
@@ -90,5 +90,10 @@ $(document).ready(function () {
             buildAutocompleteListeners();
         });
     });
+
+    $('select[name="meeting-duration"]').change(function(){
+        $(this).parent().addClass("selected");
+    })
+
 
 });

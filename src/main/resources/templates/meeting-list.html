@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <title th:text="${user.username + ' | Unipi Agenda'}"></title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width = device-width, initial-scale= 1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" href="img/favicon.ico">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <link href="boxicons-2.0.7/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- SEO tags -->
+</head>
+<body class="meeting-list">
+
+<div class="phone-container">
+
+    <div class="phone">
+
+        <!-- ========= Header ========== -->
+        <div class="page-header">
+            <div class="logo-container">
+                <img src="img/logo.svg">
+            </div>
+        </div>
+        <!-- ======= End Header ========== -->
+
+        <!-- ======= Main Section ======= -->
+        <div id="main-section" class="container">
+            <div class="">
+                <div class="card">
+                    <div class="meeting-container" th:each="meeting: ${user.meetings}">
+                        <h3 class="meeting-date"
+                            th:text="${#dates.format(meeting.datetime, 'EEEE')}+' '+${#dates.format(meeting.datetime, 'dd-MMM-yyyy')}"></h3>
+                        <div class="card-body">
+                            <ul class="tasks">
+                                <li class="task" th:data-toggle="${meeting.id}">
+                                    <h5 class="card-title" th:text="${meeting.name}"></h5>
+                                    <span class="card-hours">
+                                    <span th:text="${meeting.duration}"></span>
+                                    <i class="bx bx-chevron-down"></i>
+                                </span>
+                                </li>
+                                <li class="task-details" th:data-toggle="${meeting.id}" style="display: none;">
+                                    <div class="card-description-title">Description</div>
+                                    <p class="card-text" th:text="${meeting.description}"></p>
+
+                                    <div class="card-participants-title">Participants</div>
+                                    <p class="card-text">
+                                        <strong th:text="${meeting.admin.username}"></strong>
+                                        <span th:each="participant: ${meeting.participants}">
+                                        <span th:text="', '+${participant.username}"></span>
+                                    </span>
+                                    </p>
+
+                                    <div class="row agenda-button-row">
+                                        <div class="left-container">
+                                            <button type="button" class="btn-delete-meeting">
+                                                <img src="img/exit-white.svg">
+                                            </button>
+                                            <button type="button" class="btn-edit-meeting">
+                                                <img src="img/edit-grey.svg">
+                                                <span>Edit</span>
+                                            </button>
+                                        </div>
+                                        <div class="right-container">
+                                            <a th:href="'/chat?meeting='+${meeting.id}" class="btn-enter-meeting">
+                                                <span>Enter meeting</span>
+                                                <img src="img/arrow-right-big.svg">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="new-meeting">
+                <a href="/meeting" class="btn btn-primary btn-new-meeting">New Meeting<i class="bx bx-plus"></i></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ======= Main Section ======= -->
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+<script src="js/script.js"></script>
+</body>
+</html>
