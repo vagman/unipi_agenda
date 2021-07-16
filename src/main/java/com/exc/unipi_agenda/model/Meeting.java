@@ -165,7 +165,7 @@ public class Meeting implements Serializable {
             return;
         }
 
-        String sql_query = "SELECT * FROM meeting_comments WHERE id_meeting = ?";
+        String sql_query = "SELECT * FROM meeting_comments WHERE id_meeting = ? order by date desc";
         try {
             PreparedStatement ps = conn.prepareStatement(sql_query);
             ps.setInt(1, this.id);
@@ -182,5 +182,50 @@ public class Meeting implements Serializable {
         }catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+    public static List<Meeting> loadMeetings(String username){
+        List<Meeting> meeting = new ArrayList<>();
+        Connection conn = Db.getConnection();
+//      we get meetings data from the meetings which the user is admin or participant
+        String sql_query = "SELECT meeting.id_meeting,name,meeting.date,duration,admin, username, meeting.description\n" +
+                "FROM meeting left join meeting_participants on meeting.id_meeting = meeting_participants.id_meeting\n" +
+                "WHERE meeting.date > now() AND (admin = ? OR (username = ? AND invitation_status = 'approved'))\n" +
+                "ORDER BY date ;";
+        try {
+            if (conn!=null) {
+                PreparedStatement ps = conn.prepareStatement(sql_query);
+                ps.setString(1, username);
+                ps.setString(2, username);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    try {
+//                        if the meeting is the same
+//                          the query can return one or more rows for the same meeting
+//                          it depends on the participants
+                        if (meeting.get(meeting.size() - 1).getId() == rs.getInt("id_meeting")) {
+                            meeting.get(meeting.size() - 1).getParticipants().add(new Participant(rs.getString("username")));
+                        }else{
+//                            if is a new meeting throw an exception to create new meeting
+                            throw new IndexOutOfBoundsException();
+                        }
+                    }catch (IndexOutOfBoundsException e){
+//                      If is a new meeting or is the first time create a meeting object and add it to the list
+                        Meeting m = new Meeting(rs.getInt("id_meeting"));
+                        m.setName(rs.getString("name"));
+                        m.setDescription(rs.getString("description"));
+                        m.setDatetime(rs.getDate("date"));
+                        m.setDuration(rs.getString("duration"));
+                        m.setAdmin(new Admin(rs.getString("admin")));
+                        m.getParticipants().add(new Participant(rs.getString("username")));
+                        meeting.add(m);
+                    }
+
+                }
+                conn.close();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return meeting;
     }
 }

@@ -2,6 +2,7 @@ package com.exc.unipi_agenda.controllers;
 
 import com.exc.unipi_agenda.model.Db;
 import com.exc.unipi_agenda.model.Meeting;
+import com.exc.unipi_agenda.model.Participant;
 import com.exc.unipi_agenda.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,17 +54,18 @@ public class MeetingController extends ContextController{
     @PostMapping("/create-meeting")
     public Object createMeeting(Model model,
                                 HttpSession session,
-                                @RequestParam(name = "meeting-title", required = false) String meetingTitle,
-                                @RequestParam(name = "meeting-desc", required = false) String meetingDescription,
-                                @RequestParam(name = "meeting-date", required = false) String meetingDateString,
-                                @RequestParam(name = "meeting-duration", required = false) String meetingDuration,
-                                @RequestParam(name = "meeting-participants", required = false) String meetingParticipants
+                                @RequestParam(name = "meeting-title", required = true) String meetingTitle,
+                                @RequestParam(name = "meeting-desc", required = true) String meetingDescription,
+                                @RequestParam(name = "meeting-date", required = true) String meetingDateString,
+                                @RequestParam(name = "meeting-duration", required = true) String meetingDuration,
+                                @RequestParam(name = "meeting-participants", required = true) String meetingParticipants
     )
     {
         User registedUser = (User)session.getAttribute("user");
         if(registedUser == null){
             return new RedirectView("/");
         }
+
 
         // Date formating
         Date meetingDate;
@@ -80,18 +82,53 @@ public class MeetingController extends ContextController{
         newMeeting.setDescription(meetingDescription);
         newMeeting.setDatetime(meetingDate);
         newMeeting.setDuration(meetingDuration);
-
         newMeeting.create(registedUser);
 
         // Participants
         String[] meetingParticipantsList = meetingParticipants.split("__separator__");
-        newMeeting.getAdmin().addParticipants(newMeeting.getId(), meetingParticipantsList, model);
+        newMeeting.getAdmin().addParticipants(newMeeting.getId(), meetingParticipantsList);
 
         // Rebuild the meetings list that is stored on the session
         registedUser.setMeetings(refreshesMeetings(registedUser.getUsername()));
 
         return new RedirectView("/user");
     }
-
+    @PostMapping("/delete-meeting")
+    public Object createMeeting(Model model,
+                                HttpSession session,
+                                @RequestParam(name = "id-meeting", required = true) int id_meeting,
+                                @RequestParam(name = "isAdmin", required = true) boolean isAdmin)
+    {
+        User registedUser = (User)session.getAttribute("user");
+        System.out.println(isAdmin);
+        if (isAdmin) {
+//            find the meeting
+            for (Meeting m : registedUser.getMeetings()) {
+                if (id_meeting == m.getId()) {
+//                    Admin delete all the data from the meeting
+                    m.getAdmin().delete(m.getId());
+                    break;
+                }
+            }
+        }else {
+//            find the meeting
+            for (Meeting m : registedUser.getMeetings()) {
+                if (id_meeting == m.getId()) {
+//                    find the user in the Participants
+                    for (Participant p:m.getParticipants()){
+                        if (registedUser.getUsername().equals(p.getUsername())){
+//                          participant leave
+                            p.leave(m.getId());
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        registedUser.setMeetings(refreshesMeetings(registedUser.getUsername()));
+        registedUser.setNotificationList(refreshesNotifications(registedUser.getUsername()));
+        model.addAttribute("user", registedUser);
+        return new RedirectView("/user");
+    }
 
 }

@@ -68,8 +68,6 @@ public class AjaxController extends ContextController{
             ps.setString(3,messageText);
             ps.execute();
             conn.close();
-
-
             return true;
         }catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -112,20 +110,10 @@ public class AjaxController extends ContextController{
         }
     }
 
-    @PostMapping("/leave-meeting")
-    public boolean leaveMeeting(Model model,
-                                            HttpSession session,
-                                            @RequestParam(name = "id_meeting", required = true) int idMeeting
-    )
-    {
-        //TODO: Leave meeting
-        return true;
-    }
-
-    /*@PostMapping("/invitation_response")
+    @PostMapping("/invitation_response")
     public boolean InvitationResponse(Model model,
                                            HttpSession session,
-                                           @RequestParam(name = "response", required = false) String response,
+                                            @RequestParam(name = "response", required = false) String response,
                                            @RequestParam(name = "id_meeting", required = false) int id_meeting) {
 
         Connection conn = Db.getConnection();
@@ -150,5 +138,32 @@ public class AjaxController extends ContextController{
             throwables.printStackTrace();
             return false;
         }
-    }*/
+    }
+    @PostMapping("/viewed")
+    public Object Viewed(Model model, HttpSession session) {
+        // if user not registered
+        User registedUser = (User)session.getAttribute("user");
+        if(registedUser == null){
+            return new RedirectView("/");
+        }
+        Connection conn = Db.getConnection();
+        if (conn == null) {
+            return false;
+        }
+
+        String sql_query = "UPDATE user_notification SET viewed = true " +
+                            "WHERE username = ?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql_query);
+            ps.setString(1, registedUser.getUsername());
+            boolean result = ps.execute();
+            conn.close();
+            registedUser.setNotificationList(refreshesNotifications(registedUser.getUsername()));
+            return result;
+        }catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return false;
+        }
+    }
+
 }

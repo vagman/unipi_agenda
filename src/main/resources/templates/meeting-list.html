@@ -61,9 +61,14 @@
 
                                     <div class="row agenda-button-row">
                                         <div class="left-container">
-                                            <button type="button" class="btn-delete-meeting">
-                                                <img src="img/exit-white.svg">
-                                            </button>
+                                            <form action="/delete-meeting" method="post">
+                                                <input type="hidden" name = "id-meeting" th:value="${meeting.id}">
+                                                <input type="hidden" name = "isAdmin" th:if="${meeting.admin.getUsername() == user.getUsername()}" value="true">
+                                                <input type="hidden" name = "isAdmin" th:unless="${meeting.admin.getUsername() == user.getUsername()}" value="false">
+                                                <button type="submit" class="btn-delete-meeting">
+                                                    <img src="img/exit-white.svg">
+                                                </button>
+                                            </form>
                                             <button type="button" class="btn-edit-meeting">
                                                 <img src="img/edit-grey.svg">
                                                 <span>Edit</span>

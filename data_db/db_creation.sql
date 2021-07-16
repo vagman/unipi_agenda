@@ -61,4 +61,4 @@ CREATE TRIGGER meeting_invitations_trigger
                 concat(meeting.admin,' sends you a invitation for the meeting: ',meeting.name),NOW(),false
             FROM meeting natural join meeting_participants
             WHERE id_meeting = NEW.id_meeting);
-
+# Delete username from the meeting comments if
