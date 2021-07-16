@@ -43,4 +43,8 @@ $(document).ready(function(){
             $('textarea.meeting-decription').prop("disabled",true).addClass('disabled');
         });
     });
+    $('button#edit_participants').click(function(){
+        $('.meeting-participants').addClass('hidden');
+        $('.meeting-participants-edit').addClass('visible');
+    });
 });
