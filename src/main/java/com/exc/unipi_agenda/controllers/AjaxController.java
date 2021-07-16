@@ -82,6 +82,16 @@ public class AjaxController extends ContextController{
         }
         return false;
     }
+    @PostMapping("/update-participants")
+    public boolean updateParticipants(HttpSession session,
+                                      @RequestParam(name = "id_meeting", required = false) int idMeeting,
+                                      @RequestParam(name = "meeting_description", required = false) String meetingDescription
+    )
+    {
+//       TODO: Update participant list
+        return false;
+    }
+
 
     @PostMapping("/invitation_response")
     public boolean InvitationResponse(Model model,

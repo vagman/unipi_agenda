@@ -29,13 +29,10 @@ public class LoginController extends ContextController{
         if (registeredUser != null){
             registeredUser.setNotificationList(refreshesNotifications(registeredUser.getUsername()));
             registeredUser.setMeetings(refreshesMeetings(registeredUser.getUsername()));
-
-            //System.out.println(registeredUser.getFullName());
             session.setAttribute("user", registeredUser);
 
             return new RedirectView("user");
         }
-        model.addAttribute("message", "Something went wrong");
         return "index";
     }
 }

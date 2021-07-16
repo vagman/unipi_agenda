@@ -25,20 +25,4 @@ public class Participant extends User{
         }
         return false;
     }
-    public boolean meetingRequest(String id, String status) {
-        Connection conn = Db.getConnection();
-        if (conn != null) {
-            String sql_query = "UPDATE meeting_participants SET date = NOW(), invitation_status = ? WHERE id_meeting =? and username=?";
-            try {
-                PreparedStatement ps = conn.prepareStatement(sql_query);
-                ps.setString(1,status);
-                ps.setString(2,id);
-                ps.setString(3,this.getUsername());
-                return ps.execute();
-            }catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        }
-        return false;
-    }
 }

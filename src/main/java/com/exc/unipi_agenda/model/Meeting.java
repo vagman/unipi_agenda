@@ -189,7 +189,8 @@ public class Meeting implements Serializable {
 //      we get meetings data from the meetings which the user is admin or participant
         String sql_query = "SELECT meeting.id_meeting,name,meeting.date,duration,admin, username, meeting.description\n" +
                 "FROM meeting left join meeting_participants on meeting.id_meeting = meeting_participants.id_meeting\n" +
-                "WHERE meeting.date > now() AND (admin = ? OR (username = ? AND invitation_status = 'approved'))\n" +
+                "WHERE meeting.date > now() AND (admin = ? OR " +
+                "(meeting_participants.username = ? AND meeting_participants.invitation_status = 'approved'))\n" +
                 "ORDER BY date ;";
         try {
             if (conn!=null) {

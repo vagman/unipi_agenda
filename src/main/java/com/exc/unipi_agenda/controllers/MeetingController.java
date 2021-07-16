@@ -70,7 +70,7 @@ public class MeetingController extends ContextController{
         // Date formating
         Date meetingDate;
         try{
-            meetingDate = new SimpleDateFormat("dd/MM/yyyy").parse(meetingDateString);
+            meetingDate = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss").parse(meetingDateString);
         }catch (Exception e){
             System.out.println(e.toString());
             meetingDate = new Date();
@@ -94,7 +94,7 @@ public class MeetingController extends ContextController{
         return new RedirectView("/user");
     }
     @PostMapping("/delete-meeting")
-    public Object createMeeting(Model model,
+    public Object deleteMeeting(Model model,
                                 HttpSession session,
                                 @RequestParam(name = "id-meeting", required = true) int id_meeting,
                                 @RequestParam(name = "isAdmin", required = true) boolean isAdmin)

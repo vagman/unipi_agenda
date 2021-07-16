@@ -37,7 +37,7 @@ public class Admin extends User{
             return false;
         }
 
-        String sql_query = "UPDATE meeting SET description = ? WHERE id_meeting = ?;";
+        String sql_query = "UPDATE meeting SET description = ?, date = NOW() WHERE id_meeting = ?;";
         try {
             PreparedStatement ps = conn.prepareStatement(sql_query);
             ps.setString(1,description);
