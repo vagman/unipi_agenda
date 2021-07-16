@@ -1174,3 +1174,20 @@ button#close_floating_menu img {
 .floating-menu button#save_description img {
     width: 15px;
 }
+button.remove-participant {
+    background: transparent;
+    border: unset;
+}
+.meeting-participants-edit.visible {
+    max-height: 50%;
+    overflow: auto;
+    border: 1px solid #d4d4d4;
+}
+.meeting-participants.hidden {
+    display: none;
+}
+.meeting-participants-edit {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .5s ease;
+}
