@@ -12,15 +12,16 @@ public class Admin extends User{
     public Admin(String username) {
         super(username);
     }
-    public boolean update(String name, int id, String date, float duration){
+    public boolean update(int id, String name, String description,  String date, float duration){
         Connection conn = Db.getConnection();
         if (conn != null) {
-            String sql_query = "UPDATE meeting SET name=?,date=?,duration=? WHERE id_meeting =?";
+            String sql_query = "UPDATE meeting SET name=?,description = ?,date=?,duration=? WHERE id_meeting =?";
             try {
                 PreparedStatement ps = conn.prepareStatement(sql_query);
                 ps.setString(1,name);
-                ps.setString(2,date);
-                ps.setFloat(3,duration);
+                ps.setString(2,description);
+                ps.setString(3,date);
+                ps.setFloat(4,duration);
                 ps.setInt(4,id);
                 return ps.execute();
             }catch (SQLException throwables) {
@@ -28,6 +29,26 @@ public class Admin extends User{
             }
         }
         return false;
+    }
+
+    public boolean update(int id, String description){
+        Connection conn = Db.getConnection();
+        if (conn == null) {
+            return false;
+        }
+
+        String sql_query = "UPDATE meeting SET description = ? WHERE id_meeting = ?;";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql_query);
+            ps.setString(1,description);
+            ps.setInt(2,id);
+            ps.execute();
+            conn.close();
+            return true;
+        }catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return false;
+        }
     }
     public boolean delete(int id){
         Connection conn = Db.getConnection();

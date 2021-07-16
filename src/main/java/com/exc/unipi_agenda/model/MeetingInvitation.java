@@ -40,39 +40,20 @@ public class MeetingInvitation {
         this.status = status;
     }
 
-    public boolean approve(String username){
+    public static boolean response(int id_meeting, String username, String response){
         Connection conn = Db.getConnection();
         if (conn == null) {
             return false;
         }
         // load name
         String sql_query = "UPDATE meeting_participants                      \n"+
-                           "SET invitation_status = 'approved', date = NOW() \n"+
+                           "SET invitation_status = ?, date = NOW() \n"+
                            "WHERE id_meeting = ? and username = ?";
         try{
             PreparedStatement ps = conn.prepareStatement(sql_query);
-            ps.setInt(1,meeting.getId());
-            ps.setString(1, username);
-            return ps.execute();
-
-        }catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return false;
-        }
-    }
-    public boolean decline(String username){
-        Connection conn = Db.getConnection();
-        if (conn == null) {
-            return false;
-        }
-        // load name
-        String sql_query = "UPDATE meeting_participants                     \n"+
-                           "SET invitation_status = 'declined', date = NOW()\n"+
-                           "WHERE id_meeting = ? and username = ?";
-        try{
-            PreparedStatement ps = conn.prepareStatement(sql_query);
-            ps.setInt(1,meeting.getId());
-            ps.setString(1, username);
+            ps.setString(1,response);
+            ps.setInt(2, id_meeting);
+            ps.setString(3, username);
             return ps.execute();
 
         }catch (SQLException throwables) {

@@ -39,18 +39,18 @@ public class UserNotification {
         this.viewed = viewed;
     }
     private boolean viewed;
-    public boolean markAsViewed(String idNotification, Model model){
+    public static boolean markAsViewed(String username){
         Connection conn = Db.getConnection();
-        if (conn != null) {
-            String sql_query = "UPDATE user_notification SET viewed=true WHERE id_notification =?";
-            try {
-                PreparedStatement ps = conn.prepareStatement(sql_query);
-                ps.setString(1,idNotification);
-                return ps.execute();
-            }catch (SQLException throwables) {
-                model.addAttribute("error","Something wrong with database");
-                throwables.printStackTrace();
-            }
+        if (conn == null) {
+            return false;
+        }
+        String sql_query = "UPDATE user_notification SET viewed=true WHERE username =?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql_query);
+            ps.setString(1,username);
+            return ps.execute();
+        }catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
         return false;
     }

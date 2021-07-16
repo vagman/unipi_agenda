@@ -40,7 +40,7 @@ public class MeetingComment {
         this.date = date;
     }
 
-    static boolean send(int id_meeting, String username, String message){
+    public static boolean send(int id_meeting, String username, String message){
         Connection conn = Db.getConnection();
         if (conn == null) {
             return false;

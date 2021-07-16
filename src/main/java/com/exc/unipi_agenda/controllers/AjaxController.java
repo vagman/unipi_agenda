@@ -1,7 +1,6 @@
 package com.exc.unipi_agenda.controllers;
 
-import com.exc.unipi_agenda.model.Db;
-import com.exc.unipi_agenda.model.User;
+import com.exc.unipi_agenda.model.*;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -55,59 +54,33 @@ public class AjaxController extends ContextController{
                                       @RequestParam(name = "id_meeting", required = false) int idMeeting,
                                       @RequestParam(name = "username", required = false) String username) {
 
-        Connection conn = Db.getConnection();
-        if (conn == null) {
-            return false;
-        }
 
-        String sql_query = "INSERT INTO meeting_comments VALUES(?, ?, NOW(), ?);";
-        try {
-            PreparedStatement ps = conn.prepareStatement(sql_query);
-            ps.setInt(1,idMeeting);
-            ps.setString(2,username);
-            ps.setString(3,messageText);
-            ps.execute();
-            conn.close();
-            return true;
-        }catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return false;
-        }
+        return MeetingComment.send(idMeeting,username,messageText);
     }
 
 
     @PostMapping("/update-meeting-description")
-    public boolean updateMeetingDesctiprion(Model model,
-                                           HttpSession session,
-                                           @RequestParam(name = "id_meeting", required = false) int idMeeting,
-                                           @RequestParam(name = "meeting_description", required = false) String meetingDescription
+    public boolean updateMeetingDescription(Model model,
+                                            HttpSession session,
+                                            @RequestParam(name = "id_meeting", required = false) int idMeeting,
+                                            @RequestParam(name = "meeting_description", required = false) String meetingDescription
     )
     {
-        Connection conn = Db.getConnection();
-        if (conn == null) {
+        User registedUser = (User)session.getAttribute("user");
+        if(registedUser == null){
             return false;
         }
-
-        String sql_query = "UPDATE meeting SET description = ? WHERE id_meeting = ?;";
-        try {
-            PreparedStatement ps = conn.prepareStatement(sql_query);
-            ps.setString(1,meetingDescription);
-            ps.setInt(2,idMeeting);
-            ps.execute();
-            conn.close();
-
-            // Update the meeting list that is stored on the session
-            User registedUser = (User)session.getAttribute("user");
-            if(registedUser == null){
-                return false;
+//      find the meeting
+        for (Meeting m:registedUser.getMeetings()){
+            if (m.getAdmin().getUsername().equals(registedUser.getUsername())){
+//                if update statement was completed successfully refresh the meetings
+                if (m.getAdmin().update(idMeeting,meetingDescription)){
+                    registedUser.setMeetings(refreshesMeetings(registedUser.getUsername()));
+                    return true;
+                }
             }
-            registedUser.setMeetings(refreshesMeetings(registedUser.getUsername()));
-
-            return true;
-        }catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return false;
         }
+        return false;
     }
 
     @PostMapping("/invitation_response")
@@ -116,54 +89,22 @@ public class AjaxController extends ContextController{
                                             @RequestParam(name = "response", required = false) String response,
                                            @RequestParam(name = "id_meeting", required = false) int id_meeting) {
 
-        Connection conn = Db.getConnection();
-        if (conn == null) {
-            return false;
-        }
-
-        String sql_query = "UPDATE meeting_participants SET invitation_status = ?, date = NOW() " +
-                            "WHERE id_meeting = ? AND username = ?";
-        List<Object> search_results = new ArrayList<Object>();
         User registedUser = (User)session.getAttribute("user");
-        try {
-            PreparedStatement ps = conn.prepareStatement(sql_query);
-            ps.setString(1,response);
-            ps.setInt(2,id_meeting);
-            ps.setString(3,registedUser.getUsername());
-            boolean result = ps.execute();
-            conn.close();
+        if (MeetingInvitation.response(id_meeting,registedUser.getUsername(),response)){
             registedUser.setNotificationList(refreshesNotifications(registedUser.getUsername()));
-            return result;
-        }catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return false;
+            return true;
         }
+        return false;
     }
     @PostMapping("/viewed")
-    public Object Viewed(Model model, HttpSession session) {
+    public boolean Viewed(HttpSession session) {
         // if user not registered
         User registedUser = (User)session.getAttribute("user");
-        if(registedUser == null){
-            return new RedirectView("/");
-        }
-        Connection conn = Db.getConnection();
-        if (conn == null) {
-            return false;
-        }
-
-        String sql_query = "UPDATE user_notification SET viewed = true " +
-                            "WHERE username = ?";
-        try {
-            PreparedStatement ps = conn.prepareStatement(sql_query);
-            ps.setString(1, registedUser.getUsername());
-            boolean result = ps.execute();
-            conn.close();
+        if (UserNotification.markAsViewed(registedUser.getUsername())){
             registedUser.setNotificationList(refreshesNotifications(registedUser.getUsername()));
-            return result;
-        }catch (SQLException throwables) {
-            throwables.printStackTrace();
-            return false;
+            return true;
         }
+        return false;
     }
 
 }
