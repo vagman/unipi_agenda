@@ -54,7 +54,7 @@
                                     <div class="card-participants-title">Participants</div>
                                     <p class="card-text">
                                         <strong th:text="${meeting.admin.username}"></strong>
-                                        <span th:if="${meeting.participants == null}" th:each="participant: ${meeting.participants}">
+                                        <span th:if="${meeting.participants != null}" th:each="participant: ${meeting.participants}">
                                         <span  th:text="', '+${participant.username}"></span>
                                     </span>
                                     </p>
