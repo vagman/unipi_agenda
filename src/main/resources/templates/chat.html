@@ -99,8 +99,7 @@
                         <span th:text="${participant.firstName+' '+participant.lastName}"></span>
                         <button th:if="${meeting.admin.getUsername() == user.getUsername()}" class="remove-participant"
                             th:data-username="${participant.username}"
-                            th:data-id-meeting="${meeting.id}"
-                        >
+                            th:data-id-meeting="${meeting.id}">
                             <img src="img/exit-black.svg">
                         </button>
                     </div>

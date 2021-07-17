@@ -31,6 +31,25 @@ public class Admin extends User{
         return false;
     }
 
+    public boolean deleteParticipant(int id_meeting, String participantUsername){
+        Connection conn = Db.getConnection();
+        if (conn == null) {
+            return false;
+        }
+
+        String sql_query = "DELETE FROM meeting_participants WHERE id_meeting = ? AND username = ?;";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql_query);
+            ps.setInt(1,id_meeting);
+            ps.setString(2,participantUsername);
+            ps.execute();
+            conn.close();
+            return true;
+        }catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return false;
+        }
+    }
     public boolean update(int id, String description){
         Connection conn = Db.getConnection();
         if (conn == null) {

@@ -26,10 +26,12 @@ public class AjaxController extends ContextController{
         if (conn == null) {
             return null;
         }
-
-        String sqlQuery = "SELECT username FROM users WHERE username LIKE ? AND username != ?;";
-        List<Object> searchResults = new ArrayList<Object>();
         User registedUser = (User)session.getAttribute("user");
+        if(registedUser == null){
+            return null;
+        }
+        String sqlQuery = "SELECT username FROM users WHERE username LIKE ? AND username != ?;";
+        List<Object> searchResults = new ArrayList<>();
         try {
             PreparedStatement ps = conn.prepareStatement(sqlQuery);
             ps.setString(1,"%"+search_query+"%");
@@ -82,13 +84,26 @@ public class AjaxController extends ContextController{
         }
         return false;
     }
-    @PostMapping("/update-participants")
+    @PostMapping("/delete-participant")
     public boolean updateParticipants(HttpSession session,
                                       @RequestParam(name = "id_meeting", required = false) int idMeeting,
-                                      @RequestParam(name = "meeting_description", required = false) String meetingDescription
+                                      @RequestParam(name = "participant-username", required = false) String participantUsername
     )
     {
-//       TODO: Update participant list
+        User registedUser = (User)session.getAttribute("user");
+        if(registedUser == null){
+            return false;
+        }
+//      find the meeting
+        for (Meeting m:registedUser.getMeetings()){
+            if (m.getAdmin().getUsername().equals(registedUser.getUsername())){
+//                if update statement was completed successfully refresh the meetings
+                if (m.getAdmin().deleteParticipant(idMeeting,participantUsername)){
+                    registedUser.setMeetings(refreshesMeetings(registedUser.getUsername()));
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
@@ -100,6 +115,9 @@ public class AjaxController extends ContextController{
                                            @RequestParam(name = "id_meeting", required = false) int id_meeting) {
 
         User registedUser = (User)session.getAttribute("user");
+        if(registedUser == null){
+            return false;
+        }
         if (MeetingInvitation.response(id_meeting,registedUser.getUsername(),response)){
             registedUser.setNotificationList(refreshesNotifications(registedUser.getUsername()));
             return true;
@@ -110,6 +128,9 @@ public class AjaxController extends ContextController{
     public boolean Viewed(HttpSession session) {
         // if user not registered
         User registedUser = (User)session.getAttribute("user");
+        if(registedUser == null){
+            return false;
+        }
         if (UserNotification.markAsViewed(registedUser.getUsername())){
             registedUser.setNotificationList(refreshesNotifications(registedUser.getUsername()));
             return true;

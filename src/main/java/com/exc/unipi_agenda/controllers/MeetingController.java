@@ -77,11 +77,7 @@ public class MeetingController extends ContextController{
         }
 
         // Meeting creation
-        Meeting newMeeting = new Meeting();
-        newMeeting.setName(meetingTitle);
-        newMeeting.setDescription(meetingDescription);
-        newMeeting.setDatetime(meetingDate);
-        newMeeting.setDuration(meetingDuration);
+        Meeting newMeeting = new Meeting(meetingTitle,meetingDescription,meetingDate,meetingDuration);
         newMeeting.create(registedUser);
 
         // Participants

@@ -21,6 +21,13 @@ public class Meeting implements Serializable {
     private Admin admin;
     private String description;
 
+    public Meeting(String meetingTitle, String meetingDescription, Date meetingDate, String meetingDuration) {
+        this.name = meetingTitle;
+        this.datetime = meetingDate;
+        this.duration = meetingDuration;
+        this.description = meetingDescription;
+    }
+
     public void setAdmin(Admin admin) {
         this.admin = admin;
     }
@@ -36,17 +43,6 @@ public class Meeting implements Serializable {
         this.id = id;
     }
     public Meeting(){}
-//    public Meeting(Admin admin) {
-//        this.admin = admin;
-//    }
-//    public Meeting(String id,Admin admin,String name, float duration){
-//        this.id = id;
-//        this.admin = admin;
-//    }
-//    public Meeting(String id, String admin) {
-//        this.id = id;
-//        this.admin = admin;
-//    }
 
     //getters and setters
     public int getId() {
@@ -118,7 +114,7 @@ public class Meeting implements Serializable {
         this.id = Meeting.getNewId();
 
         // Date formating
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
         String meetingDateString = dateFormatter.format(this.datetime);
 
         // Set admin
@@ -187,11 +183,11 @@ public class Meeting implements Serializable {
         List<Meeting> meeting = new ArrayList<>();
         Connection conn = Db.getConnection();
 //      we get meetings data from the meetings which the user is admin or participant
-        String sql_query = "SELECT meeting.id_meeting,name,meeting.date,duration,admin, username, meeting.description\n" +
+        String sql_query = "SELECT meeting.id_meeting,name,meeting.date,duration,admin, username, invitation_status, meeting.description\n" +
                 "FROM meeting left join meeting_participants on meeting.id_meeting = meeting_participants.id_meeting\n" +
-                "WHERE meeting.date > now() AND (admin = ? OR " +
-                "(meeting_participants.username = ? AND meeting_participants.invitation_status = 'approved'))\n" +
-                "ORDER BY date ;";
+                "WHERE meeting.date > now() AND\n" +
+                "      (meeting.admin = ? OR (meeting_participants.username = ? AND meeting_participants.invitation_status = 'approved'))\n" +
+                "ORDER BY date;";
         try {
             if (conn!=null) {
                 PreparedStatement ps = conn.prepareStatement(sql_query);
@@ -203,7 +199,8 @@ public class Meeting implements Serializable {
 //                        if the meeting is the same
 //                          the query can return one or more rows for the same meeting
 //                          it depends on the participants
-                        if (meeting.get(meeting.size() - 1).getId() == rs.getInt("id_meeting")) {
+                        if (meeting.get(meeting.size() - 1).getId() == rs.getInt("id_meeting") &&
+                                rs.getString("invitation_status").equals("approved")) {
                             meeting.get(meeting.size() - 1).getParticipants().add(new Participant(rs.getString("username")));
                         }else{
 //                            if is a new meeting throw an exception to create new meeting
@@ -217,7 +214,12 @@ public class Meeting implements Serializable {
                         m.setDatetime(rs.getDate("date"));
                         m.setDuration(rs.getString("duration"));
                         m.setAdmin(new Admin(rs.getString("admin")));
-                        m.getParticipants().add(new Participant(rs.getString("username")));
+//                        check if the meeting has participants
+                        if (rs.getString("username") != null){
+                            if (rs.getString("invitation_status").equals("approved")){
+                                m.getParticipants().add(new Participant(rs.getString("username")));
+                            }
+                        }
                         meeting.add(m);
                     }
 
