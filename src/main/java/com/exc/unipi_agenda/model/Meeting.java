@@ -199,9 +199,10 @@ public class Meeting implements Serializable {
 //                        if the meeting is the same
 //                          the query can return one or more rows for the same meeting
 //                          it depends on the participants
-                        if (meeting.get(meeting.size() - 1).getId() == rs.getInt("id_meeting") &&
-                                rs.getString("invitation_status").equals("approved")) {
-                            meeting.get(meeting.size() - 1).getParticipants().add(new Participant(rs.getString("username")));
+                        if ((meeting.get(meeting.size() - 1).getId() == rs.getInt("id_meeting"))){
+                            if (rs.getString("invitation_status").equals("approved")){
+                                meeting.get(meeting.size() - 1).getParticipants().add(new Participant(rs.getString("username")));
+                            }
                         }else{
 //                            if is a new meeting throw an exception to create new meeting
                             throw new IndexOutOfBoundsException();
