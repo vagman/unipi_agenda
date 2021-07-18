@@ -17,6 +17,9 @@ public class MeetingListController extends ContextController{
         if(registedUser == null){
             return new RedirectView("/");
         }
+
+        registedUser.setNotificationList(refreshesNotifications(registedUser.getUsername()));
+        registedUser.setMeetings(refreshesMeetings(registedUser.getUsername()));
         model.addAttribute("user", registedUser);
         return "meeting-list.html";
     }

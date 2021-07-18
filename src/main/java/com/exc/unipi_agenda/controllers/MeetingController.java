@@ -70,7 +70,7 @@ public class MeetingController extends ContextController{
         // Date formating
         Date meetingDate;
         try{
-            meetingDate = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss").parse(meetingDateString);
+            meetingDate = new SimpleDateFormat("dd/MM/yyyy").parse(meetingDateString);
         }catch (Exception e){
             e.printStackTrace();
             meetingDate = new Date();
@@ -96,7 +96,6 @@ public class MeetingController extends ContextController{
                                 @RequestParam(name = "isAdmin", required = true) boolean isAdmin)
     {
         User registedUser = (User)session.getAttribute("user");
-        System.out.println(isAdmin);
         if (isAdmin) {
 //            find the meeting
             for (Meeting m : registedUser.getMeetings()) {
@@ -106,7 +105,7 @@ public class MeetingController extends ContextController{
                     break;
                 }
             }
-        }else {
+        }else{
 //            find the meeting
             for (Meeting m : registedUser.getMeetings()) {
                 if (id_meeting == m.getId()) {

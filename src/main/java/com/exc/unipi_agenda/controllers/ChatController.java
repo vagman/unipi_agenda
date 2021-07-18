@@ -22,7 +22,9 @@ public class ChatController extends ContextController{
         if(registedUser == null){
             return new RedirectView("/");
         }
-
+        registedUser.setNotificationList(refreshesNotifications(registedUser.getUsername()));
+        registedUser.setMeetings(refreshesMeetings(registedUser.getUsername()));
+        model.addAttribute("user", registedUser);
         // get meeting object
         Meeting meetingObject = null;
         for (Meeting meeting : registedUser.getMeetings()) {
