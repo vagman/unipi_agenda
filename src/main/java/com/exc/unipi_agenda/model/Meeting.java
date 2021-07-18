@@ -36,8 +36,10 @@ public class Meeting implements Serializable {
     private List<MeetingComment> comments = new ArrayList<>();
 
     //constructors
-    public Meeting(int id, String name){
-        this.id = id;this.name = name;
+    public Meeting(int id, String name, Admin admin){
+        this.id = id;
+        this.name = name;
+        this.admin = admin;
     }
     public Meeting(int id){
         this.id = id;

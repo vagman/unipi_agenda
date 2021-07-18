@@ -63,12 +63,12 @@ public class UserNotification {
         }
         // load all the notifications (invitations and notifications)
         String sql_query = "(SELECT concat('invitation') as type, m.id_meeting as id,m.name as meeting_name ," +
-                "                   invitation_status, meeting_participants.date as date_add, null as msg, null as viewed\n" +
+                "                   invitation_status, meeting_participants.date as date_add, null as msg, null as viewed, m.admin as meeting_admin\n" +
                 "    FROM meeting_participants inner join meeting m on meeting_participants.id_meeting = m.id_meeting\n" +
                 "    WHERE username = ?)\n" +
                 "UNION\n" +
                 "(SELECT concat('notification') as type, id_notification as id, null as meeting_name, " +
-                "                   null as invitation_status, date as date_add, msg, viewed\n" +
+                "                   null as invitation_status, date as date_add, msg, viewed, null as meeting_admin\n" +
                 "    FROM user_notification\n" +
                 "    WHERE username = ?) order by date_add;";
         try {
@@ -85,7 +85,7 @@ public class UserNotification {
                             rs.getBoolean("viewed")));
                 }else if(rs.getString("type").equals("invitation")){
                     notificationList.add(new MeetingInvitation(
-                            new Meeting(rs.getInt("id"),rs.getString("meeting_name")),
+                            new Meeting(rs.getInt("id"),rs.getString("meeting_name"), new Admin(rs.getString("meeting_admin"))),
                             rs.getString("date_add"),
                             rs.getString("invitation_status")));
                 }
