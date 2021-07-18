@@ -22,14 +22,45 @@
 <div class="phone-container">
 
     <div class="phone">
-
         <!-- ========= Header ========== -->
         <div class="page-header">
-            <div class="logo-container">
-                <img src="img/logo.svg">
-            </div>
+            <nav class="navbar">
+                <form action="/logout" method="post">
+                    <button type="submit" id="logout_button">
+                        <img src="img/exit-black.svg">
+                    </button>
+                </form>
+                <div class="logo-container">
+                    <img src="img/logo.svg">
+                </div>
+                <button id="notifications_button">
+                    <img src="img/bell.svg">
+                    <div th:text="${#lists.size(notifications)}" class="notification-count"></div>
+                </button>
+            </nav>
         </div>
         <!-- ======= End Header ========== -->
+        <div class="notification-popup-filter"></div>
+        <div class="notification-popup">
+            <div class="notification-container" th:each="notification: ${notifications}">
+<!--                <p th:text='${notification.class.name}'></p>-->
+                <div class="invitation" th:if="${notification.class.name == 'com.exc.unipi_agenda.model.MeetingInvitation'}">
+                    <h3 th:text="${notification.meeting.name}"></h3>
+                    <span class="meeting-text"
+                          th:text="${notification.meeting.admin.firstName+' '+notification.meeting.admin.lastName+' created a new meeting and wants you to join him!'}"></span>
+                    <button class="accept-invitation" th:data-meeting-id="${notification.meeting.id}">
+                        <img src="img/check.svg">
+                    </button>
+                    <button class="remove-invitation" th:data-meeting-id="${notification.meeting.id}">
+                        <img src="img/close.svg">
+                    </button>
+                </div>
+                <div class="notification" th:if="${notification.class.name == 'com.exc.unipi_agenda.model.UserNotification'}">
+                    <small style="color:red;">Εδώ χρειάζομαι παραπάνω πληροφοριές για το meeting</small>
+                    <span class="meeting-text" th:text="${notification.message}"></span>
+                </div>
+            </div>
+        </div>
 
         <!-- ======= Main Section ======= -->
         <div id="main-section" class="container">
@@ -107,6 +138,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-<script src="js/script.js"></script>
+<script src="js/meeting-list.js"></script>
 </body>
 </html>
