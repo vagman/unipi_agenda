@@ -72,7 +72,7 @@ public class MeetingController extends ContextController{
         try{
             meetingDate = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss").parse(meetingDateString);
         }catch (Exception e){
-            System.out.println(e.toString());
+            e.printStackTrace();
             meetingDate = new Date();
         }
 
