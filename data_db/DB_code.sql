@@ -1,3 +1,6 @@
+DROP DATABASE IF EXISTS unipi_agenda;
+CREATE DATABASE IF NOT EXISTS unipi_agenda;
+use unipi_agenda;
 -- MySQL dump 10.13  Distrib 8.0.20, for Win64 (x86_64)
 --
 -- Host: localhost    Database: unipi_agenda
@@ -53,44 +56,82 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `meeting_changed_trigger` AFTER UPDATE ON `meeting` FOR EACH ROW BEGIN
-    DECLARE msg VARCHAR(100);
-    DECLARE count_notifications boolean;
-#     check if the meeting has changed more than one time on the last 1 hour
-    set count_notifications =
-        (SELECT DISTINCT(count(id_notification)>0) as count_notifications
-        FROM user_notification
-        WHERE user_notification.id_meeting = OLD.id_meeting AND date > NOW() - INTERVAL 1 HOUR
-        group by username);
-    if count_notifications = 1 THEN
-        set msg = ' changed the meeting more than one time in the last hour, check it out please';
-        DELETE FROM user_notification
-        WHERE user_notification.id_meeting=OLD.id_meeting AND
-                date > NOW() - INTERVAL 1 HOUR;
-        INSERT INTO user_notification(id_meeting, username, msg, date,viewed)
-            (SELECT OLD.id_meeting, meeting_participants.username , concat(OLD.admin, msg), now() , false
-             FROM (meeting_participants)
-             WHERE (OLD.id_meeting = meeting_participants.id_meeting) AND invitation_status = 'approved');
-    ELSE
-#       Detect the edited field
-        IF (OLD.name <> NEW.name) THEN
-            SET msg = ' changed the meeting name ';
-        ELSEIF (OLD.description <> NEW.description) THEN
-            set msg = ' changed the meeting description ';
-        ELSEIF (OLD.date <> NEW.date) THEN
-            set msg = ' changed the meeting date';
-        ELSEIF (OLD.duration <> NEW.duration) THEN
-            set msg = ' changed the meeting duration';
-        ELSE
-            set msg = ' changed the meeting';
-        end if;
-#         send a notification to all participants
-        INSERT INTO user_notification(id_meeting, username, msg, date,viewed)
-            (SELECT OLD.id_meeting ,meeting_participants.username , concat(OLD.admin ,msg), now() , false
-             FROM (meeting_participants)
-             WHERE (OLD.id_meeting = meeting_participants.id_meeting) AND invitation_status = 'approved');
-
-    end if;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `meeting_changed_trigger` AFTER UPDATE ON `meeting` FOR EACH ROW BEGIN
+
+    DECLARE msg VARCHAR(100);
+
+    DECLARE count_notifications boolean;
+
+#     check if the meeting has changed more than one time on the last 1 hour
+
+    set count_notifications =
+
+        (SELECT DISTINCT(count(id_notification)>0) as count_notifications
+
+        FROM user_notification
+
+        WHERE user_notification.id_meeting = OLD.id_meeting AND date > NOW() - INTERVAL 1 HOUR
+
+        group by username);
+
+    if count_notifications = 1 THEN
+
+        set msg = ' changed the meeting more than one time in the last hour, check it out please';
+
+        DELETE FROM user_notification
+
+        WHERE user_notification.id_meeting=OLD.id_meeting AND
+
+                date > NOW() - INTERVAL 1 HOUR;
+
+        INSERT INTO user_notification(id_meeting, username, msg, date,viewed)
+
+            (SELECT OLD.id_meeting, meeting_participants.username , concat(OLD.admin, msg), now() , false
+
+             FROM (meeting_participants)
+
+             WHERE (OLD.id_meeting = meeting_participants.id_meeting) AND invitation_status = 'approved');
+
+    ELSE
+
+#       Detect the edited field
+
+        IF (OLD.name <> NEW.name) THEN
+
+            SET msg = ' changed the meeting name ';
+
+        ELSEIF (OLD.description <> NEW.description) THEN
+
+            set msg = ' changed the meeting description ';
+
+        ELSEIF (OLD.date <> NEW.date) THEN
+
+            set msg = ' changed the meeting date';
+
+        ELSEIF (OLD.duration <> NEW.duration) THEN
+
+            set msg = ' changed the meeting duration';
+
+        ELSE
+
+            set msg = ' changed the meeting';
+
+        end if;
+
+#         send a notification to all participants
+
+        INSERT INTO user_notification(id_meeting, username, msg, date,viewed)
+
+            (SELECT OLD.id_meeting ,meeting_participants.username , concat(OLD.admin ,msg), now() , false
+
+             FROM (meeting_participants)
+
+             WHERE (OLD.id_meeting = meeting_participants.id_meeting) AND invitation_status = 'approved');
+
+
+
+    end if;
+
     END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -161,10 +202,14 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `meeting_invitations_trigger` AFTER INSERT ON `meeting_participants` FOR EACH ROW INSERT INTO user_notification(username, msg, date,viewed)
-        (SELECT meeting_participants.username,
-                concat(meeting.admin,' sends you a invitation for the ',meeting.name),NOW(),false
-            FROM meeting natural join meeting_participants
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `meeting_invitations_trigger` AFTER INSERT ON `meeting_participants` FOR EACH ROW INSERT INTO user_notification(username, msg, date,viewed)
+
+        (SELECT meeting_participants.username,
+
+                concat(meeting.admin,' sends you a invitation for the ',meeting.name),NOW(),false
+
+            FROM meeting natural join meeting_participants
+
             WHERE id_meeting = NEW.id_meeting) */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
