@@ -45,15 +45,16 @@ public class UserNotification {
         return meeting;
     }
 
-    public static boolean markAsViewed(String username){
+    public boolean markAsViewed(String username){
         Connection conn = Db.getConnection();
         if (conn == null) {
             return false;
         }
-        String sql_query = "UPDATE user_notification SET viewed=true WHERE username =?";
+        String sql_query = "UPDATE user_notification SET viewed=true WHERE username =? and id_meeting = ?";
         try {
             PreparedStatement ps = conn.prepareStatement(sql_query);
             ps.setString(1,username);
+            ps.setInt(2,this.getMeeting().getId());
             return ps.execute();
         }catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -78,8 +79,8 @@ public class UserNotification {
         "(SELECT concat('notification') as type, id_notification as id_notification, " +
                 "user_notification.id_meeting as id_meeting, name as meeting_name, null as invitation_status, " +
                 "user_notification.date as date_add, msg, viewed, null as meeting_admin\n" +
-        "    FROM user_notification left join meeting m2 on m2.id_meeting = user_notification.id_meeting\n" +
-        "    WHERE username = ?) order by date_add;";
+        "    FROM user_notification LEFT JOIN meeting m2 on m2.id_meeting = user_notification.id_meeting\n" +
+        "    WHERE username = ? AND viewed = false) order by date_add;";
         try {
             PreparedStatement ps = conn.prepareStatement(sql_query);
             ps.setString(1,username);

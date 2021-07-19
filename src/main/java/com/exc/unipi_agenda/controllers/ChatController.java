@@ -3,6 +3,7 @@ package com.exc.unipi_agenda.controllers;
 import com.exc.unipi_agenda.model.Meeting;
 import com.exc.unipi_agenda.model.MeetingComment;
 import com.exc.unipi_agenda.model.User;
+import com.exc.unipi_agenda.model.UserNotification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +26,14 @@ public class ChatController extends ContextController{
             return new RedirectView("/");
         }
         registedUser.setNotificationList(refreshesNotifications(registedUser.getUsername()));
+        for (Object o:registedUser.getNotificationList()){
+            if (o instanceof UserNotification){
+                if (((UserNotification) o).getMeeting().getId() == meetingId){
+                    ((UserNotification) o).markAsViewed(registedUser.getUsername());
+                    break;
+                }
+            }
+        }
         registedUser.setMeetings(refreshesMeetings(registedUser.getUsername()));
         model.addAttribute("user", registedUser);
         // get meeting object

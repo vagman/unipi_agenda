@@ -125,7 +125,7 @@
                                                     <img src="img/trash-white.svg">
                                                 </button>
                                             </form>
-                                            <a th:href="'/chat?meeting='+${meeting.id}+'&edit=1'" type="button"
+                                            <a th:if="${meeting.admin.getUsername() == user.getUsername()}" th:href="'/chat?meeting='+${meeting.id}+'&edit=1'" type="button"
                                                class="btn-edit-meeting">
                                                 <img src="img/edit-grey.svg">
                                                 <span>Edit</span>

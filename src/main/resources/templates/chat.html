@@ -107,7 +107,7 @@
                         th:data-id-meeting="${meeting.id}">
                     <img src="img/save.svg">
                 </button>
-                <input id="edit_meeting_date" disabled type="text" class="meeting-title disabled" th:value="${meeting.datetime}">
+                <input id="edit_meeting_date" disabled type="text" class="meeting-title disabled" th:value="${#dates.format(meeting.datetime, 'EEEE')}+' '+${#dates.format(meeting.datetime, 'dd-MMM-yyyy hh:mm')}">
             </div>
             <div class="participants-container">
                 <input type="hidden" id="id_meeting_hidden" th:value="${meeting.id}">

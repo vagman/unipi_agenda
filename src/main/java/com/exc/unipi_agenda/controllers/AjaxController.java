@@ -157,20 +157,6 @@ public class AjaxController extends ContextController{
         return false;
     }
 
-    @PostMapping("/viewed")
-    public boolean Viewed(HttpSession session) {
-        // if user not registered
-        User registedUser = (User)session.getAttribute("user");
-        if(registedUser == null){
-            return false;
-        }
-        if (UserNotification.markAsViewed(registedUser.getUsername())){
-            registedUser.setNotificationList(refreshesNotifications(registedUser.getUsername()));
-            return true;
-        }
-        return false;
-    }
-
     @PostMapping("/add-participant-to-meeting")
     public boolean addParticipantToMeeting(HttpSession session,
                                            @RequestParam(name = "participantUsername", required = false) String participantUsername,

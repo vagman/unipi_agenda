@@ -117,13 +117,15 @@ public class Admin extends User{
         String sql_query;
         PreparedStatement ps;
         try {
-            sql_query = "DELETE FROM meeting_comments WHERE id_meeting = ?;"+
+            sql_query = "DELETE FROM user_notification where id_meeting = ?;" +
+                        "DELETE FROM meeting_comments WHERE id_meeting = ?;"+
                         "DELETE FROM meeting_participants WHERE id_meeting = ?;" +
                         "DELETE FROM meeting WHERE id_meeting = ?;";
             ps = conn.prepareStatement(sql_query);
             ps.setInt(1,id);
             ps.setInt(2,id);
             ps.setInt(3,id);
+            ps.setInt(4,id);
             boolean result = ps.execute();
             conn.close();
             return result;
