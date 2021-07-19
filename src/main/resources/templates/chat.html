@@ -9,6 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="icon" href="img/favicon.ico">
     <!-- CSS -->
+    <link rel="stylesheet" type="text/css" href="js/datetimepicker/jquery.datetimepicker.css">
     <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
     <link href="boxicons-2.0.7/css/boxicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
@@ -70,6 +71,7 @@
             <button id="close_floating_menu">
                 <img src="img/close.svg">
             </button>
+
             <div class="title-container">
                 <h3>Title</h3>
                 <button id="edit_title" th:if="${meeting.admin.getUsername() == user.getUsername()}">
@@ -95,6 +97,17 @@
 
                 <textarea class="meeting-decription disabled" rows="4"
                           th:text="${meeting.description}" disabled></textarea>
+            </div>
+            <div class="date-container">
+                <h3>Date</h3>
+                <button id="edit_date" th:if="${meeting.admin.getUsername() == user.getUsername()}">
+                    <img src="img/edit-green.svg">
+                </button>
+                <button id="save_date" th:if="${meeting.admin.getUsername() == user.getUsername()}"
+                        th:data-id-meeting="${meeting.id}">
+                    <img src="img/save.svg">
+                </button>
+                <input id="edit_meeting_date" disabled type="text" class="meeting-title disabled" th:value="${meeting.datetime}">
             </div>
             <div class="participants-container">
                 <input type="hidden" id="id_meeting_hidden" th:value="${meeting.id}">
@@ -158,6 +171,10 @@
         crossorigin="anonymous"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 <script src="/js/chat.js"></script>
+
+<script src="/js/datetimepicker/jquery.js"></script>
+<script src="/js/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
+
 <script th:if="${editMeeting==1}">
     $(document).ready(function () {
         $('button#floating_window_toggler').click();

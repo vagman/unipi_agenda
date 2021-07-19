@@ -108,6 +108,31 @@ public class AjaxController extends ContextController{
         }
         return false;
     }
+
+    @PostMapping("/update-meeting-date")
+    public boolean updateMeetingDate(Model model,
+                                            HttpSession session,
+                                            @RequestParam(name = "id_meeting", required = false) int idMeeting,
+                                            @RequestParam(name = "meeting_date", required = false) String meetingDate
+    )
+    {
+        User registedUser = (User)session.getAttribute("user");
+        if(registedUser == null){
+            return false;
+        }
+//      find the meeting
+        for (Meeting m:registedUser.getMeetings()){
+            if (m.getAdmin().getUsername().equals(registedUser.getUsername())){
+//                if update statement was completed successfully refresh the meetings
+                if (m.getAdmin().updateDate(idMeeting,meetingDate)){
+                    registedUser.setMeetings(refreshesMeetings(registedUser.getUsername()));
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     @PostMapping("/delete-participant")
     public boolean updateParticipants(HttpSession session,
                                       @RequestParam(name = "id_meeting", required = false) int idMeeting,
