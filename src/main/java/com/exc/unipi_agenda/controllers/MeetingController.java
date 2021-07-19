@@ -64,10 +64,10 @@ public class MeetingController extends ContextController{
         }
 
 
-        // Date formating
+        System.out.println(meetingDateString);
         Date meetingDate;
         try{
-            meetingDate = new SimpleDateFormat("dd/MM/yyyy").parse(meetingDateString);
+            meetingDate = new SimpleDateFormat("yyyy/MM/dd HH:mm").parse(meetingDateString);
         }catch (Exception e){
             e.printStackTrace();
             meetingDate = new Date();
@@ -78,8 +78,10 @@ public class MeetingController extends ContextController{
         newMeeting.create(registedUser);
 
         // Participants
-        String[] meetingParticipantsList = meetingParticipants.split("__separator__");
-        newMeeting.getAdmin().addParticipants(newMeeting.getId(), meetingParticipantsList);
+        if(!meetingParticipants.equals("")){
+            String[] meetingParticipantsList = meetingParticipants.split("__separator__");
+            newMeeting.getAdmin().addParticipants(newMeeting.getId(), meetingParticipantsList);
+        }
 
         // Rebuild the meetings list that is stored on the session
         registedUser.setMeetings(refreshesMeetings(registedUser.getUsername()));

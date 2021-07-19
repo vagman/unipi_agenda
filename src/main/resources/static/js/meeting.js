@@ -26,15 +26,10 @@ $(document).ready(function () {
         });
     }
 
-
-    $('.datepicker').datepicker({
-        onSelect: function (date) {
-            $(this).parent().addClass("selected");
-        }
-    });
-    $('.timepicker').timepicker({
-        change: function () {
-            $(this).parent().addClass("selected");
+    $('.datepicker').datetimepicker({
+        onSelectDate:function(){
+            console.log("asdfad");
+            $('.input-group.form-group.meeting-date').addClass("selected");
         }
     });
     $('.meeting-title input').keydown(function () {

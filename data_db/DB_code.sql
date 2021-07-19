@@ -35,7 +35,7 @@ CREATE TABLE `meeting` (
   PRIMARY KEY (`id_meeting`),
   KEY `admin` (`admin`),
   CONSTRAINT `meeting_ibfk_1` FOREIGN KEY (`admin`) REFERENCES `users` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -52,7 +52,6 @@ UNLOCK TABLES;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -154,7 +153,7 @@ CREATE TABLE `meeting_comments` (
   PRIMARY KEY (`id_meeting`,`username`,`date`),
   KEY `username_idx` (`username`),
   CONSTRAINT `username` FOREIGN KEY (`username`) REFERENCES `users` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -181,7 +180,7 @@ CREATE TABLE `meeting_participants` (
   `date` datetime DEFAULT NULL,
   PRIMARY KEY (`id_meeting`,`username`),
   CONSTRAINT `meeting_participants_chk_1` CHECK ((`invitation_status` in (_utf8mb4'open',_utf8mb4'approved',_utf8mb4'declined')))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -198,7 +197,6 @@ UNLOCK TABLES;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -234,7 +232,7 @@ CREATE TABLE `user_notification` (
   PRIMARY KEY (`id_notification`),
   KEY `id_meeting` (`id_meeting`),
   CONSTRAINT `user_notification_ibfk_1` FOREIGN KEY (`id_meeting`) REFERENCES `meeting` (`id_meeting`)
-) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -262,7 +260,7 @@ CREATE TABLE `users` (
   `last_name` varchar(30) NOT NULL,
   `color` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

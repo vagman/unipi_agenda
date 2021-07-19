@@ -84,6 +84,30 @@ public class AjaxController extends ContextController{
         }
         return false;
     }
+
+    @PostMapping("/update-meeting-title")
+    public boolean updateMeetingTitle(Model model,
+                                            HttpSession session,
+                                            @RequestParam(name = "id_meeting", required = false) int idMeeting,
+                                            @RequestParam(name = "meeting_title", required = false) String meetingTitle
+    )
+    {
+        User registedUser = (User)session.getAttribute("user");
+        if(registedUser == null){
+            return false;
+        }
+//      find the meeting
+        for (Meeting m:registedUser.getMeetings()){
+            if (m.getAdmin().getUsername().equals(registedUser.getUsername())){
+//                if update statement was completed successfully refresh the meetings
+                if (m.getAdmin().updateTitle(idMeeting,meetingTitle)){
+                    registedUser.setMeetings(refreshesMeetings(registedUser.getUsername()));
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     @PostMapping("/delete-participant")
     public boolean updateParticipants(HttpSession session,
                                       @RequestParam(name = "id_meeting", required = false) int idMeeting,
@@ -106,7 +130,6 @@ public class AjaxController extends ContextController{
         }
         return false;
     }
-
 
 //    @PostMapping("/invitation_response")
 //    public boolean InvitationResponse(Model model,
@@ -138,6 +161,41 @@ public class AjaxController extends ContextController{
         return false;
     }
 
+    @PostMapping("/add-participant-to-meeting")
+    public boolean addParticipantToMeeting(HttpSession session,
+                                           @RequestParam(name = "participantUsername", required = false) String participantUsername,
+                                           @RequestParam(name = "idMeeting", required = false) int idMeeting,
+                                           @RequestParam(name = "meetingAdmin", required = false) String meetingAdmin) {
+        User registedUser = (User)session.getAttribute("user");
+        if(registedUser == null){
+            return false;
+        }
 
+        Meeting currentMeeting = new Meeting(idMeeting);
+        currentMeeting.setAdmin(new Admin(meetingAdmin));
 
+        String[] participantList = {participantUsername};
+        currentMeeting.getAdmin().addParticipants(currentMeeting.getId(),participantList);
+
+        return true;
+    }
+
+    @PostMapping("/remove-participant")
+    public boolean removeMeetingParticipant(HttpSession session,
+                                           @RequestParam(name = "id_meeting", required = false) int idMeeting,
+                                            @RequestParam(name = "meeting_admin", required = false) String meetingAdmin,
+                                            @RequestParam(name = "participant_username", required = false) String participantUsername
+                                            ) {
+        User registedUser = (User)session.getAttribute("user");
+        if(registedUser == null){
+            return false;
+        }
+
+        Meeting currentMeeting = new Meeting(idMeeting);
+        currentMeeting.setAdmin(new Admin(meetingAdmin));
+
+        currentMeeting.getAdmin().deleteParticipant(currentMeeting.getId(), participantUsername);
+
+        return true;
+    }
 }

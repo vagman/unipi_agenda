@@ -45,7 +45,8 @@
 
                 <!-- User users comments -->
                 <div th:unless="${meeting_comment.user.username == user.username}" class="message">
-                    <span class="message-author" th:text="${meeting_comment.user.firstName+' '+meeting_comment.user.lastName}"></span>
+                    <span class="message-author"
+                          th:text="${meeting_comment.user.firstName+' '+meeting_comment.user.lastName}"></span>
                     <div class="message-text" th:text="${meeting_comment.message}"></div>
                 </div>
             </div>
@@ -54,10 +55,10 @@
 
         <div class="chat-footer">
             <input type="text"
-               id="message_input"
-               placeholder="Enter your message here"
-               th:data-id-meeting="${meeting.id}"
-               th:data-username="${user.username}"
+                   id="message_input"
+                   placeholder="Enter your message here"
+                   th:data-id-meeting="${meeting.id}"
+                   th:data-username="${user.username}"
             >
             <button type="button" id="message_send">
                 <img src="img/paper-plane.svg">
@@ -69,21 +70,41 @@
             <button id="close_floating_menu">
                 <img src="img/close.svg">
             </button>
-
+            <div class="title-container">
+                <h3>Title</h3>
+                <button id="edit_title" th:if="${meeting.admin.getUsername() == user.getUsername()}">
+                    <img src="img/edit-green.svg">
+                </button>
+                <button id="save_title" th:if="${meeting.admin.getUsername() == user.getUsername()}"
+                        th:data-id-meeting="${meeting.id}">
+                    <img src="img/save.svg">
+                </button>
+                <textarea class="meeting-title disabled" rows="2"
+                          th:text="${meeting.name}" disabled></textarea>
+            </div>
             <div class="description-container">
                 <h3>Description</h3>
-                <button id="edit_description" th:if="${meeting.admin.getUsername() == user.getUsername()}" >
+                <button id="edit_description" th:if="${meeting.admin.getUsername() == user.getUsername()}">
                     <img src="img/edit-green.svg">
                 </button>
 
-                <button id="save_description" th:if="${meeting.admin.getUsername() == user.getUsername()}" th:data-id-meeting="${meeting.id}">
+                <button id="save_description" th:if="${meeting.admin.getUsername() == user.getUsername()}"
+                        th:data-id-meeting="${meeting.id}">
                     <img src="img/save.svg">
                 </button>
+
                 <textarea class="meeting-decription disabled" rows="4"
                           th:text="${meeting.description}" disabled></textarea>
             </div>
             <div class="participants-container">
-                <h3>Participants</h3>
+                <input type="hidden" id="id_meeting_hidden" th:value="${meeting.id}">
+                <input type="hidden" id="meeting_username_hidden" th:value="${meeting.admin.username}">
+                <h3>
+                    Participants
+                    <button th:if="${meeting.admin.getUsername() == user.getUsername()}" id="add_participant">
+                        <img src="img/add-green.svg">
+                    </button>
+                </h3>
                 <button th:if="${meeting.admin.getUsername() == user.getUsername()}" id="edit_participants">
                     <img src="img/edit-green.svg">
                 </button>
@@ -100,8 +121,8 @@
                     <div class="meeting-participant" th:each="participant: ${meeting.participants}">
                         <span th:text="${participant.firstName+' '+participant.lastName}"></span>
                         <button th:if="${meeting.admin.getUsername() == user.getUsername()}" class="remove-participant"
-                            th:data-username="${participant.username}"
-                            th:data-id-meeting="${meeting.id}">
+                                th:data-username="${participant.username}"
+                                th:data-id-meeting="${meeting.id}">
                             <img src="img/exit-black.svg">
                         </button>
                     </div>
@@ -109,9 +130,11 @@
             </div>
             <div class="leave-container">
                 <form action="/delete-meeting" method="post">
-                    <input type="hidden" name = "id-meeting" th:value="${meeting.id}">
-                    <input type="hidden" name = "isAdmin" th:if="${meeting.admin.getUsername() == user.getUsername()}" value="true">
-                    <input type="hidden" name = "isAdmin" th:unless="${meeting.admin.getUsername() == user.getUsername()}" value="false">
+                    <input type="hidden" name="id-meeting" th:value="${meeting.id}">
+                    <input type="hidden" name="isAdmin" th:if="${meeting.admin.getUsername() == user.getUsername()}"
+                           value="true">
+                    <input type="hidden" name="isAdmin" th:unless="${meeting.admin.getUsername() == user.getUsername()}"
+                           value="false">
                     <button id="leave_meeting" type="submit">
                         <h3 th:if="${meeting.admin.getUsername() == user.getUsername()}">Delete Meeting</h3>
                         <h3 th:unless="${meeting.admin.getUsername() == user.getUsername()}">Leave Meeting</h3>
@@ -135,6 +158,10 @@
         crossorigin="anonymous"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
 <script src="/js/chat.js"></script>
-
+<script th:if="${editMeeting==1}">
+    $(document).ready(function () {
+        $('button#floating_window_toggler').click();
+    })
+</script>
 </body>
 </html>

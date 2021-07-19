@@ -15,7 +15,9 @@ import java.util.List;
 @Controller
 public class ChatController extends ContextController{
     @GetMapping(path = "/chat")
-    public Object getContent(Model model, HttpSession session, @RequestParam(name = "meeting", required = false) int meetingId) {
+    public Object getContent(Model model, HttpSession session,
+                             @RequestParam(name = "meeting", required = false) int meetingId,
+                             @RequestParam(name = "edit", required = false) Integer editMeeting) {
 
         // if user not registered
         User registedUser = (User)session.getAttribute("user");
@@ -41,7 +43,7 @@ public class ChatController extends ContextController{
         meetingObject.loadMessageComments();
         model.addAttribute("meeting", meetingObject);
         model.addAttribute("user", registedUser);
-
+        model.addAttribute("editMeeting", editMeeting);
 
         return "chat.html";
     }

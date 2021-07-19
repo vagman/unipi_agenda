@@ -35,7 +35,9 @@
                 </div>
                 <button id="notifications_button">
                     <img src="img/bell.svg">
-                    <div th:text="${#lists.size(notifications)}" class="notification-count"></div>
+                    <div th:if="${notifications != null}">
+                        <div th:text="${#lists.size(notifications)}" class="notification-count"></div>
+                    </div>
                 </button>
             </nav>
         </div>
@@ -43,16 +45,17 @@
         <div class="notification-popup-filter"></div>
         <div class="notification-popup">
             <div class="notification-container" th:each="notification: ${notifications}">
-<!--                <p th:text='${notification.class.name}'></p>-->
-                <div class="invitation" th:if="${notification.class.name == 'com.exc.unipi_agenda.model.MeetingInvitation'}">
-                    <h3 class="meeting-date" th:text="${notification.meeting.name}"></h3>
-                    <span class="meeting-text"
-                          th:text="${notification.meeting.admin.firstName+' '+notification.meeting.admin.lastName+' created a new meeting and wants you to join him!'}"></span>
+                <div class="invitation"
+                     th:if="${notification.class.name == 'com.exc.unipi_agenda.model.MeetingInvitation'}">
+                    <h3 th:text="${notification.meeting.name}"></h3>
+                    <div class="meeting-text"
+                         th:text="${notification.meeting.admin.firstName+' '+notification.meeting.admin.lastName+' created a new meeting and wants you to join him!'}">
+                    </div>
                     <form action="/invitation_response" method="post">
                         <input type="hidden" name="response" value="approved">
                         <input type="hidden" name="id_meeting" th:value="${notification.meeting.id}">
                         <button type="submit" class="accept-invitation" th:data-meeting-id="${notification.meeting.id}">
-                            <img id ="accept-invitation" src="img/check.svg">
+                            <img id="accept-invitation" src="img/check.svg">
                         </button>
                     </form>
                     <form action="/invitation_response" method="post">
@@ -63,11 +66,12 @@
                         </button>
                     </form>
                 </div>
-                <div class="notification" th:if="${notification.class.name == 'com.exc.unipi_agenda.model.UserNotification'}">
+                <div class="notification"
+                     th:if="${notification.class.name == 'com.exc.unipi_agenda.model.UserNotification'}">
                     <a th:href="'/chat?meeting='+${notification.meeting.id}">
-                        <h3 class="meeting-date" th:text="${notification.meeting.name}"></h3>
-    <!--                    <small style="color:red;"th:text="${notification.message}"></small>-->
-                        <span class="meeting-text" th:text="${notification.message}"></span>
+                        <h3 th:text="${notification.meeting.name}"></h3>
+                        <!--                    <small style="color:red;"th:text="${notification.message}"></small>-->
+                        <div class="meeting-text" th:text="${notification.message}"></div>
                     </a>
                 </div>
             </div>
@@ -96,25 +100,36 @@
                                     <div class="card-participants-title">Participants</div>
                                     <p class="card-text">
                                         <strong th:text="${meeting.admin.username}"></strong>
-                                        <span th:if="${meeting.participants != null}" th:each="participant: ${meeting.participants}">
-                                        <span  th:text="', '+${participant.username}"></span>
+                                        <span th:if="${meeting.participants != null}"
+                                              th:each="participant: ${meeting.participants}">
+                                        <span th:text="', '+${participant.username}"></span>
                                     </span>
                                     </p>
 
                                     <div class="row agenda-button-row">
                                         <div class="left-container">
                                             <form action="/delete-meeting" method="post">
-                                                <input type="hidden" name = "id-meeting" th:value="${meeting.id}">
-                                                <input type="hidden" name = "isAdmin" th:if="${meeting.admin.getUsername() == user.getUsername()}" value="true">
-                                                <input type="hidden" name = "isAdmin" th:unless="${meeting.admin.getUsername() == user.getUsername()}" value="false">
-                                                <button type="submit" class="btn-delete-meeting">
+                                                <input type="hidden" name="id-meeting" th:value="${meeting.id}">
+                                                <input type="hidden" name="isAdmin"
+                                                       th:if="${meeting.admin.getUsername() == user.getUsername()}"
+                                                       value="true">
+                                                <input type="hidden" name="isAdmin"
+                                                       th:unless="${meeting.admin.getUsername() == user.getUsername()}"
+                                                       value="false">
+                                                <button type="submit" class="btn-delete-meeting"
+                                                        th:unless="${meeting.admin.getUsername() == user.getUsername()}">
                                                     <img src="img/exit-white.svg">
                                                 </button>
+                                                <button type="submit" class="btn-delete-meeting"
+                                                        th:if="${meeting.admin.getUsername() == user.getUsername()}">
+                                                    <img src="img/trash-white.svg">
+                                                </button>
                                             </form>
-                                            <button type="button" class="btn-edit-meeting">
+                                            <a th:href="'/chat?meeting='+${meeting.id}+'&edit=1'" type="button"
+                                               class="btn-edit-meeting">
                                                 <img src="img/edit-grey.svg">
                                                 <span>Edit</span>
-                                            </button>
+                                            </a>
                                         </div>
                                         <div class="right-container">
                                             <a th:href="'/chat?meeting='+${meeting.id}" class="btn-enter-meeting">
@@ -150,5 +165,6 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 <script src="js/meeting-list.js"></script>
+
 </body>
 </html>
