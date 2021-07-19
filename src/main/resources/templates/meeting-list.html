@@ -45,19 +45,30 @@
             <div class="notification-container" th:each="notification: ${notifications}">
 <!--                <p th:text='${notification.class.name}'></p>-->
                 <div class="invitation" th:if="${notification.class.name == 'com.exc.unipi_agenda.model.MeetingInvitation'}">
-                    <h3 th:text="${notification.meeting.name}"></h3>
+                    <h3 class="meeting-date" th:text="${notification.meeting.name}"></h3>
                     <span class="meeting-text"
                           th:text="${notification.meeting.admin.firstName+' '+notification.meeting.admin.lastName+' created a new meeting and wants you to join him!'}"></span>
-                    <button class="accept-invitation" th:data-meeting-id="${notification.meeting.id}">
-                        <img src="img/check.svg">
-                    </button>
-                    <button class="remove-invitation" th:data-meeting-id="${notification.meeting.id}">
-                        <img src="img/close.svg">
-                    </button>
+                    <form action="/invitation_response" method="post">
+                        <input type="hidden" name="response" value="approved">
+                        <input type="hidden" name="id_meeting" th:value="${notification.meeting.id}">
+                        <button type="submit" class="accept-invitation" th:data-meeting-id="${notification.meeting.id}">
+                            <img id ="accept-invitation" src="img/check.svg">
+                        </button>
+                    </form>
+                    <form action="/invitation_response" method="post">
+                        <input type="hidden" name="response" value="declined">
+                        <input type="hidden" name="id_meeting" th:value="${notification.meeting.id}">
+                        <button class="remove-invitation" th:data-meeting-id="${notification.meeting.id}">
+                            <img src="img/close.svg">
+                        </button>
+                    </form>
                 </div>
                 <div class="notification" th:if="${notification.class.name == 'com.exc.unipi_agenda.model.UserNotification'}">
-                    <small style="color:red;">Εδώ χρειάζομαι παραπάνω πληροφοριές για το meeting</small>
-                    <span class="meeting-text" th:text="${notification.message}"></span>
+                    <a th:href="'/chat?meeting='+${notification.meeting.id}">
+                        <h3 class="meeting-date" th:text="${notification.meeting.name}"></h3>
+    <!--                    <small style="color:red;"th:text="${notification.message}"></small>-->
+                        <span class="meeting-text" th:text="${notification.message}"></span>
+                    </a>
                 </div>
             </div>
         </div>

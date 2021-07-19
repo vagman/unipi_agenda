@@ -108,22 +108,22 @@ public class AjaxController extends ContextController{
     }
 
 
-    @PostMapping("/invitation_response")
-    public boolean InvitationResponse(Model model,
-                                           HttpSession session,
-                                            @RequestParam(name = "response", required = false) String response,
-                                           @RequestParam(name = "id_meeting", required = false) int id_meeting) {
-
-        User registedUser = (User)session.getAttribute("user");
-        if(registedUser == null){
-            return false;
-        }
-        if (MeetingInvitation.response(id_meeting,registedUser.getUsername(),response)){
-            registedUser.setNotificationList(refreshesNotifications(registedUser.getUsername()));
-            return true;
-        }
-        return false;
-    }
+//    @PostMapping("/invitation_response")
+//    public boolean InvitationResponse(Model model,
+//                                           HttpSession session,
+//                                            @RequestParam(name = "response", required = false) String response,
+//                                           @RequestParam(name = "id_meeting", required = false) int id_meeting) {
+//
+//        User registedUser = (User)session.getAttribute("user");
+//        if(registedUser == null){
+//            return false;
+//        }
+//        if (MeetingInvitation.response(id_meeting,registedUser.getUsername(),response)){
+//            registedUser.setNotificationList(refreshesNotifications(registedUser.getUsername()));
+//            return true;
+//        }
+//        return false;
+//    }
     @PostMapping("/viewed")
     public boolean Viewed(HttpSession session) {
         // if user not registered

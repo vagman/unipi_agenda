@@ -46,13 +46,49 @@ create table user_notification
     viewed          boolean,
     primary key (id_notification)
 );
+DROP TRIGGER IF EXISTS meeting_changed_trigger;
 # This trigger is handle the notifications to the participants when the admin change a meeting
 CREATE TRIGGER meeting_changed_trigger
     AFTER UPDATE on meeting for each row
-    INSERT INTO user_notification(username, msg, date,viewed)
-            (SELECT meeting_participants.username ,concat(OLD.name ,' meeting is changed'), now() , false
-            FROM (meeting_participants)
-            WHERE (OLD.id_meeting = meeting_participants.id_meeting));
+    BEGIN
+    DECLARE msg VARCHAR(100);
+    DECLARE count_notifications boolean;
+#     check if the meeting has changed more than one time on the last 1 hour
+    set count_notifications =
+        (SELECT DISTINCT(count(id_notification)>0) as count_notifications
+        FROM user_notification
+        WHERE user_notification.id_meeting = OLD.id_meeting AND date > NOW() - INTERVAL 1 HOUR
+        group by username);
+    if count_notifications = 1 THEN
+        set msg = ' changed the meeting more than one time in the last hour, check it out please';
+        DELETE FROM user_notification
+        WHERE user_notification.id_meeting=OLD.id_meeting AND
+                date > NOW() - INTERVAL 1 HOUR;
+        INSERT INTO user_notification(id_meeting, username, msg, date,viewed)
+            (SELECT OLD.id_meeting, meeting_participants.username , concat(OLD.admin, msg), now() , false
+             FROM (meeting_participants)
+             WHERE (OLD.id_meeting = meeting_participants.id_meeting));
+    ELSE
+#       Detect the edited field
+        IF (OLD.name <> NEW.name) THEN
+            SET msg = ' changed the meeting name ';
+        ELSEIF (OLD.description <> NEW.description) THEN
+            set msg = ' changed the meeting description ';
+        ELSEIF (OLD.date <> NEW.date) THEN
+            set msg = ' changed the meeting date';
+        ELSEIF (OLD.duration <> NEW.duration) THEN
+            set msg = ' changed the meeting duration';
+        ELSE
+            set msg = ' changed the meeting';
+        end if;
+#         send a notification to all participants
+        INSERT INTO user_notification(id_meeting, username, msg, date,viewed)
+            (SELECT OLD.id_meeting ,meeting_participants.username , concat(OLD.admin ,msg), now() , false
+             FROM (meeting_participants)
+             WHERE (OLD.id_meeting = meeting_participants.id_meeting));
+
+    end if;
+    END;
 # This trigger inform the participants for their invitations
 CREATE TRIGGER meeting_invitations_trigger
     AFTER INSERT on meeting_participants for each row
@@ -61,4 +97,3 @@ CREATE TRIGGER meeting_invitations_trigger
                 concat(meeting.admin,' sends you a invitation for the meeting: ',meeting.name),NOW(),false
             FROM meeting natural join meeting_participants
             WHERE id_meeting = NEW.id_meeting);
-# Delete username from the meeting comments if

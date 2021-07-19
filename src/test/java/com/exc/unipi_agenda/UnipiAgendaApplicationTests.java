@@ -81,18 +81,18 @@ class UnipiAgendaApplicationTests {
 //
 //			}
 //		}
-		MeetingInvitation mi = new MeetingInvitation(new Meeting(),"","open");
-		UserNotification un = new UserNotification(1,"hello","123",false);
-		List<Object> o = new ArrayList<>();
-		o.add(mi);
-		o.add(un);
-		for(Object list : o){
-			if (list instanceof MeetingInvitation){
-				System.out.println(((MeetingInvitation) list).getStatus());
-			} else if (list instanceof UserNotification){
-				System.out.println(((UserNotification) list).getMessage());
-			}
-		}
+//		MeetingInvitation mi = new MeetingInvitation(new Meeting(),"","open");
+//		UserNotification un = new UserNotification(1,"hello","123",false);
+//		List<Object> o = new ArrayList<>();
+//		o.add(mi);
+//		o.add(un);
+//		for(Object list : o){
+//			if (list instanceof MeetingInvitation){
+//				System.out.println(((MeetingInvitation) list).getStatus());
+//			} else if (list instanceof UserNotification){
+//				System.out.println(((UserNotification) list).getMessage());
+//			}
+//		}
 
 
 	}

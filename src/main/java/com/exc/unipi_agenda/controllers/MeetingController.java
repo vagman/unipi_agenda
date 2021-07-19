@@ -1,9 +1,6 @@
 package com.exc.unipi_agenda.controllers;
 
-import com.exc.unipi_agenda.model.Db;
-import com.exc.unipi_agenda.model.Meeting;
-import com.exc.unipi_agenda.model.Participant;
-import com.exc.unipi_agenda.model.User;
+import com.exc.unipi_agenda.model.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -123,6 +120,22 @@ public class MeetingController extends ContextController{
         registedUser.setMeetings(refreshesMeetings(registedUser.getUsername()));
         registedUser.setNotificationList(refreshesNotifications(registedUser.getUsername()));
         model.addAttribute("user", registedUser);
+        return new RedirectView("/user");
+    }
+    @PostMapping("/invitation_response")
+    public Object InvitationResponse(Model model,
+                                     HttpSession session,
+                                     @RequestParam(name = "response", required = false) String response,
+                                     @RequestParam(name = "id_meeting", required = false) int id_meeting) {
+
+        User registedUser = (User)session.getAttribute("user");
+        if(registedUser == null){
+            return new RedirectView("/");
+        }
+        if (MeetingInvitation.response(id_meeting,registedUser.getUsername(),response)){
+            registedUser.setNotificationList(refreshesNotifications(registedUser.getUsername()));
+            return new RedirectView("/user");
+        }
         return new RedirectView("/user");
     }
 

@@ -69,11 +69,13 @@
             <button id="close_floating_menu">
                 <img src="img/close.svg">
             </button>
+
             <div class="description-container">
                 <h3>Description</h3>
                 <button id="edit_description" th:if="${meeting.admin.getUsername() == user.getUsername()}" >
                     <img src="img/edit-green.svg">
                 </button>
+
                 <button id="save_description" th:if="${meeting.admin.getUsername() == user.getUsername()}" th:data-id-meeting="${meeting.id}">
                     <img src="img/save.svg">
                 </button>
