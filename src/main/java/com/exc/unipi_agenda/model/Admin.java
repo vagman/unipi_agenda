@@ -23,7 +23,9 @@ public class Admin extends User{
                 ps.setString(3,date);
                 ps.setFloat(4,duration);
                 ps.setInt(4,id);
-                return ps.execute();
+                boolean result = ps.execute();
+                conn.close();
+                return result;
             }catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
@@ -124,6 +126,7 @@ public class Admin extends User{
                     ps.addBatch();
                 }
                 ps.executeBatch();
+                conn.close();
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }

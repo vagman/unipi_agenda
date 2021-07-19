@@ -53,7 +53,9 @@ public class MeetingComment {
             ps.setInt(1,id_meeting);
             ps.setString(2, username);
             ps.setString(3, message);
-            return ps.execute();
+            boolean result = ps.execute();
+            conn.close();
+            return result;
 
         }catch (SQLException throwables) {
             throwables.printStackTrace();

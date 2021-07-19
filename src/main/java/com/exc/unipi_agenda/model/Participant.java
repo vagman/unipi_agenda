@@ -21,7 +21,9 @@ public class Participant extends User{
                 ps.setString(2,this.getUsername());
                 ps.setInt(3,id);
                 ps.setString(4,this.getUsername());
-                return ps.execute();
+                boolean result = ps.execute();
+                conn.close();
+                return result;
             }catch (SQLException throwables) {
                 throwables.printStackTrace();
             }

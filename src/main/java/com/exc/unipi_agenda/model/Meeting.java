@@ -131,7 +131,9 @@ public class Meeting implements Serializable {
             ps.setString(4, meetingDateString);
             ps.setString(5, this.duration);
             ps.setString(6, admin.getUsername());
-            return ps.execute();
+            boolean result = ps.execute();
+            conn.close();
+            return result;
         } catch (SQLException throwables) {
             return false;
         }
@@ -148,7 +150,9 @@ public class Meeting implements Serializable {
             PreparedStatement ps = conn.prepareStatement(sql_query);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
-                return rs.getInt("last_id");
+                int index = rs.getInt("last_id");
+                conn.close();
+                return index;
             }
         }catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -177,6 +181,7 @@ public class Meeting implements Serializable {
                 ));
             }
             this.comments = meetingCommentList;
+            conn.close();
         }catch (SQLException throwables) {
             throwables.printStackTrace();
         }

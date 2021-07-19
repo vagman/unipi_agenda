@@ -103,6 +103,7 @@ public class UserNotification {
                             rs.getString("invitation_status")));
                 }
             }
+            conn.close();
         }catch (SQLException throwables) {
             throwables.printStackTrace();
             return null;

@@ -127,6 +127,7 @@ public class User {
                 ps.setString(6,color);
                 System.out.println(ps);
                 int rows = ps.executeUpdate();
+                conn.close();
                 if (rows>0){
                     model.addAttribute("message","New user created successfully");
                     return new User(username);
@@ -164,6 +165,7 @@ public class User {
                 this.lastName = rs.getString("last_name");
                 this.color = rs.getString("color");
             }
+            conn.close();
         }catch (SQLException throwables) {
             throwables.printStackTrace();
         }

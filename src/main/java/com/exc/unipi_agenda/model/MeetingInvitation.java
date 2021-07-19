@@ -54,7 +54,9 @@ public class MeetingInvitation {
             ps.setString(1,response);
             ps.setInt(2, id_meeting);
             ps.setString(3, username);
-            return ps.execute();
+            boolean result = ps.execute();
+            conn.close();
+            return result;
 
         }catch (SQLException throwables) {
             throwables.printStackTrace();
