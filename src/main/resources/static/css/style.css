@@ -234,8 +234,12 @@ div#main-section .input-group {
     margin: 0px 15px 15px;
 }
 
-
-
+.xdsoft_datetimepicker .xdsoft_calendar td:hover, .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box >div >div:hover{
+    background: #32E0C4 !important;
+}
+.xdsoft_datetimepicker .xdsoft_calendar td.xdsoft_default, .xdsoft_datetimepicker .xdsoft_calendar td.xdsoft_current, .xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box >div >div.xdsoft_current{
+    background: #0d7377 !important;
+}
 .bx-chevron-down {
     vertical-align: middle;
     font-size: 37px;
@@ -976,7 +980,7 @@ button.btn-delete-meeting img {
     width: 20px;
 }
 
-button.btn-edit-meeting {
+a.btn-edit-meeting {
     background: transparent;
     /* border: unset; */
     display: inline-flex;
@@ -988,7 +992,7 @@ button.btn-edit-meeting {
     padding: 5px 10px;
 }
 
-button.btn-edit-meeting span {
+a.btn-edit-meeting span {
     line-height: 18px;
     margin-left: 8px;
     color: #858585;
@@ -1001,9 +1005,9 @@ button.btn-edit-meeting span {
     /* justify-content: center; */
 }
 
-button.btn-edit-meeting {}
 
-button.btn-edit-meeting img {
+
+a.btn-edit-meeting img {
     width: 17px;
 }
 
@@ -1121,6 +1125,8 @@ button#close_floating_menu img {
     font-weight: 700;
 }
 
+.floating-menu button#edit_title,
+.floating-menu button#save_title,
 .floating-menu button#edit_description,
 .floating-menu #save_description,
 .floating-menu button#edit_participants {
@@ -1130,10 +1136,15 @@ button#close_floating_menu img {
     background: transparent;
     border: unset;
 }
-.floating-menu button#save_description{
+.floating-menu button#save_description,
+.floating-menu button#save_title
+{
     display: none;
 }
-.floating-menu .description-container,.participants-container {
+.floating-menu .description-container,
+.participants-container,
+.title-container
+{
     margin-bottom: 25px;
     position: relative;
 }
@@ -1154,7 +1165,9 @@ button#close_floating_menu img {
 .floating-menu button#leave_meeting h3 {
     color: #FF0000;
 }
-.floating-menu textarea.meeting-decription {
+.floating-menu textarea.meeting-decription,
+.floating-menu textarea.meeting-title
+{
     width: calc(100% + 10px);
     line-height: 19px;
     font-size: 14px;
@@ -1171,20 +1184,25 @@ button#close_floating_menu img {
     outline: unset;
     padding: 5px;
 }
-.floating-menu textarea.meeting-decription.disabled {
+.floating-menu textarea.meeting-decription.disabled,
+.floating-menu textarea.meeting-title.disabled
+{
     resize: none;
     border: unset;
 }
-.floating-menu button#save_description img {
+.floating-menu button#save_description img,
+.floating-menu button#save_title img
+{
     width: 15px;
 }
-button.remove-participant {
+button.remove-participant,
+button.remove-search-participant{
     background: transparent;
     border: unset;
 }
 .meeting-participants-edit.visible {
     max-height: 50%;
-    overflow: auto;
+    overflow: visible;
     border: 1px solid #d4d4d4;
 }
 .meeting-participants.hidden {
@@ -1304,7 +1322,7 @@ button.accept-invitation,button.remove-invitation {
     align-items: center;
     justify-content: center;
     position: absolute;
-    top: 5px;
+    top: 0;
 }
 
 
@@ -1314,18 +1332,78 @@ button.accept-invitation,button.remove-invitation {
 button.accept-invitation {
     right: 0;
 }
-.invitation h3 {
+.notification-container h3 {
     font-size: 19px;
     margin-right: 70px;
+    margin-bottom: 10px;
+    color: #0D7377;
+    font-weight: 700;
 }
-.invitation img{
-    max-width: 25px;
+.notification-container img {
+    max-width: 12px;
 }
-.invitation span.meeting-text {
-    line-height: 10px;
-    font-size: 15px;
-    word-break: break-word;
-}
+
 button.remove-invitation {
     right: 30px;
+}
+.notification-container a {
+    text-decoration: none;
+}
+.notification-container {
+    margin-bottom: 20px;
+}
+.notification-container .meeting-text {
+    color: black;
+    font-size: 15px;
+    line-height: 19px;
+}
+.floating-menu .editing button#add_participant{
+    display: inline-flex;
+}
+.floating-menu button#add_participant {
+    background: transparent;
+    border: 2px solid #0d7377;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    margin-left: 10px;
+    display: none;
+}
+.floating-menu button#add_participant img {
+    width: 10px;
+}
+.floating-menu .participants-container h3 {
+    display: flex;
+    align-items: center;
+}
+.floating-menu .meeting-participant.search {
+    position: relative;
+    overflow: visible;
+}
+.floating-menu .search-results .user-result {
+    margin: 0;
+}
+.floating-menu .search-results {
+    position: absolute;
+    top: 100%;
+    z-index: 9999;
+    width: calc(100% + 2px);
+    left: 0;
+    border: 1px solid #cacaca;
+    border-radius: 0 0px 10px 10px;
+    margin: 0 -1px;
+}
+.floating-menu .search-participant {
+    border: unset;
+}
+span.successfull_addition {
+    display: block;
+    font-size: 15px;
+    color: #0d7377;
+    font-weight: 500;
+    line-height: 15px;
+    margin-top: 15px;
 }

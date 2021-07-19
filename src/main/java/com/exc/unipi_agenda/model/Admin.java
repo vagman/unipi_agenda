@@ -69,6 +69,25 @@ public class Admin extends User{
             return false;
         }
     }
+    public boolean updateTitle(int id, String title){
+        Connection conn = Db.getConnection();
+        if (conn == null) {
+            return false;
+        }
+
+        String sql_query = "UPDATE meeting SET name = ? WHERE id_meeting = ?;";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql_query);
+            ps.setString(1,title);
+            ps.setInt(2,id);
+            ps.execute();
+            conn.close();
+            return true;
+        }catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return false;
+        }
+    }
     public boolean delete(int id){
         Connection conn = Db.getConnection();
         if (conn == null) {
