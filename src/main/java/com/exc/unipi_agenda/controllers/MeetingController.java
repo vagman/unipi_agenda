@@ -141,4 +141,13 @@ public class MeetingController extends ContextController{
         return new RedirectView("/user");
     }
 
+    @PostMapping("/send-meeting-message")
+    public Object sendMeetingMessage(HttpSession session,
+                                      @RequestParam(name = "message_text", required = false) String messageText,
+                                      @RequestParam(name = "id_meeting", required = false) int idMeeting,
+                                      @RequestParam(name = "username", required = false) String username) {
+        MeetingComment.send(idMeeting,username,messageText);
+        return new RedirectView("/chat?meeting="+idMeeting);
+    }
+
 }

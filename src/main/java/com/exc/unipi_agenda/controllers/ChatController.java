@@ -25,7 +25,6 @@ public class ChatController extends ContextController{
         if(registedUser == null){
             return new RedirectView("/");
         }
-        registedUser.setNotificationList(refreshesNotifications(registedUser.getUsername()));
         for (Object o:registedUser.getNotificationList()){
             if (o instanceof UserNotification){
                 if (((UserNotification) o).getMeeting().getId() == meetingId){

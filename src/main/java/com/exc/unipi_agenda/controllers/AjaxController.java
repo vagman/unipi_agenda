@@ -50,17 +50,6 @@ public class AjaxController extends ContextController{
         return searchResults;
     }
 
-    @PostMapping("/send-meeting-message")
-    public boolean sendMeetingMessage(
-                                      @RequestParam(name = "message_text", required = false) String messageText,
-                                      @RequestParam(name = "id_meeting", required = false) int idMeeting,
-                                      @RequestParam(name = "username", required = false) String username) {
-
-        if (messageText.equals("")) {
-            return false;
-        }
-        return MeetingComment.send(idMeeting,username,messageText);
-    }
 
 
     @PostMapping("/update-meeting-description")

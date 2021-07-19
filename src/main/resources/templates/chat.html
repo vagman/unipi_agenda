@@ -53,19 +53,21 @@
             </div>
 
         </div>
-
-        <div class="chat-footer">
-            <input type="text"
-                   id="message_input"
-                   placeholder="Enter your message here"
-                   th:data-id-meeting="${meeting.id}"
-                   th:data-username="${user.username}"
-            >
-            <button type="button" id="message_send">
-                <img src="img/paper-plane.svg">
-            </button>
-        </div>
-
+        <form action="/send-meeting-message" method="post">
+            <div class="chat-footer">
+                <input type="hidden" name="id_meeting" th:value="${meeting.id}">
+                <input type="hidden" name="username" th:value="${user.username}">
+                    <input type="text"
+                           name="message_text"
+                           id="message_input"
+                           placeholder="Enter your message here"
+                           th:data-id-meeting="${meeting.id}"
+                           th:data-username="${user.username}">
+                        <button type="submit" id="message_send">
+                            <img src="img/paper-plane.svg">
+                        </button>
+            </div>
+        </form>
         <div class="floating-menu-filter"></div>
         <div class="floating-menu">
             <button id="close_floating_menu">

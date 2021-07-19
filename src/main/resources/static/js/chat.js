@@ -1,21 +1,21 @@
 $(document).ready(function(){
-    $('#message_send').click(function(){
-        let messageInput = $('#message_input');
-        let message_text = messageInput.val();
-        let id_meeting = messageInput.attr('data-id-meeting');
-        let username = messageInput.attr('data-username');
-        $.ajax({
-            url: "/send-meeting-message",
-            method: "POST",
-            data: {
-                message_text: message_text,
-                id_meeting: id_meeting,
-                username: username
-            }
-        }).done(function (usersList) {
-            location.reload();
-        });
-    });
+    // $('#message_send').click(function(){
+    //     let messageInput = $('#message_input');
+    //     let message_text = messageInput.val();
+    //     let id_meeting = messageInput.attr('data-id-meeting');
+    //     let username = messageInput.attr('data-username');
+    //     $.ajax({
+    //         url: "/send-meeting-message",
+    //         method: "POST",
+    //         data: {
+    //             message_text: message_text,
+    //             id_meeting: id_meeting,
+    //             username: username
+    //         }
+    //     }).done(function (usersList) {
+    //         window.location.href = "localhost:8080/chat?meeting="+id_meeting;
+    //     });
+    // });
     $('#floating_window_toggler').click(function(){
         $('.floating-menu, .floating-menu-filter').addClass('active');
     });

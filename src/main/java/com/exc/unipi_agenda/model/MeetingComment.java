@@ -47,7 +47,7 @@ public class MeetingComment {
         }
         // load name
         String sql_query = "INSERT INTO meeting_comments(id_meeting, username, date, msg)\n"+
-                           "VALUES(?,?,NOW(),?)";
+                           "VALUES(?,?,NOW(),?);";
         try{
             PreparedStatement ps = conn.prepareStatement(sql_query);
             ps.setInt(1,id_meeting);
