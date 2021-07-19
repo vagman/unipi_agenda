@@ -53,6 +53,27 @@ $(document).ready(function(){
         $('button#edit_title').hide();
         $('button#save_title').show();
     });
+    $('button#save_date').click(function(){
+        let meeting_date = $('#edit_meeting_date').val();
+        let id_meeting = $(this).attr('data-id-meeting');
+        $.ajax({
+            url: "/update-meeting-date",
+            method: "POST",
+            data: {
+                id_meeting: id_meeting,
+                meeting_date: meeting_date,
+            }
+        }).done(function () {
+            $('button#save_date').hide();
+            $('button#edit_date').show();
+            $('#edit_meeting_date').prop("disabled",true);
+        });
+    });
+    $('button#edit_date').click(function(){
+        $('#edit_meeting_date').prop("disabled",false);
+        $('button#edit_date').hide();
+        $('button#save_date').show();
+    });
     $('button#save_title').click(function(){
         let meeting_title = $('.meeting-title').val();
         let id_meeting = $(this).attr('data-id-meeting');
@@ -85,6 +106,7 @@ $(document).ready(function(){
              location.reload();
         });
     });
+    $('#edit_meeting_date').datetimepicker();
     $("#add_participant").click(function (){
         var randomNumber = Math.round(Math.random()*100000000000,2);
         var html = `
