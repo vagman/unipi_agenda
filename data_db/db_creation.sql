@@ -67,7 +67,7 @@ CREATE TRIGGER meeting_changed_trigger
         INSERT INTO user_notification(id_meeting, username, msg, date,viewed)
             (SELECT OLD.id_meeting, meeting_participants.username , concat(OLD.admin, msg), now() , false
              FROM (meeting_participants)
-             WHERE (OLD.id_meeting = meeting_participants.id_meeting));
+             WHERE (OLD.id_meeting = meeting_participants.id_meeting) AND invitation_status = 'approved');
     ELSE
 #       Detect the edited field
         IF (OLD.name <> NEW.name) THEN
@@ -85,7 +85,7 @@ CREATE TRIGGER meeting_changed_trigger
         INSERT INTO user_notification(id_meeting, username, msg, date,viewed)
             (SELECT OLD.id_meeting ,meeting_participants.username , concat(OLD.admin ,msg), now() , false
              FROM (meeting_participants)
-             WHERE (OLD.id_meeting = meeting_participants.id_meeting));
+             WHERE (OLD.id_meeting = meeting_participants.id_meeting) AND invitation_status = 'approved');
 
     end if;
     END;
