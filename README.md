@@ -12,5 +12,6 @@ Your team will implement a web application that will serve as an online agenda. 
 
 ### IDEs and Tools
 * IntelliJ Ultimate
+* Visual Studio Code
 * Adobe XD
 * Visio Professional 2019
