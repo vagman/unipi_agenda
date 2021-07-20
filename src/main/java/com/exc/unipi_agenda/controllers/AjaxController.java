@@ -184,4 +184,9 @@ public class AjaxController extends ContextController{
 
         return true;
     }
+
+    @PostMapping("/change-view")
+    public void changeView(HttpSession session,@RequestParam(name = "view", required = false) String viewMode) {
+        session.setAttribute("viewMode", viewMode);
+    }
 }
