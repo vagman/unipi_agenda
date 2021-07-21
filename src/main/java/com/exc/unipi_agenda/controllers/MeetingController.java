@@ -45,6 +45,10 @@ public class MeetingController extends ContextController{
         registedUser.setMeetings(refreshesMeetings(registedUser.getUsername()));
         model.addAttribute("user", registedUser);
 
+        if(this.isDesktop(session)){
+            return "meeting-desktop";
+        }
+
         return "meeting";
     }
 
@@ -86,6 +90,7 @@ public class MeetingController extends ContextController{
         // Rebuild the meetings list that is stored on the session
         registedUser.setMeetings(refreshesMeetings(registedUser.getUsername()));
 
+
         return new RedirectView("/user");
     }
     @PostMapping("/delete-meeting")
@@ -122,6 +127,7 @@ public class MeetingController extends ContextController{
         registedUser.setMeetings(refreshesMeetings(registedUser.getUsername()));
         registedUser.setNotificationList(refreshesNotifications(registedUser.getUsername()));
         model.addAttribute("user", registedUser);
+
         return new RedirectView("/user");
     }
     @PostMapping("/invitation_response")
@@ -138,6 +144,9 @@ public class MeetingController extends ContextController{
             registedUser.setNotificationList(refreshesNotifications(registedUser.getUsername()));
             return new RedirectView("/user");
         }
+
+
+
         return new RedirectView("/user");
     }
 
@@ -147,6 +156,11 @@ public class MeetingController extends ContextController{
                                       @RequestParam(name = "id_meeting", required = false) int idMeeting,
                                       @RequestParam(name = "username", required = false) String username) {
         MeetingComment.send(idMeeting,username,messageText);
+
+        if(this.isDesktop(session)){
+            return new RedirectView("/user?open_meeting="+idMeeting);
+        }
+
         return new RedirectView("/chat?meeting="+idMeeting);
     }
 
