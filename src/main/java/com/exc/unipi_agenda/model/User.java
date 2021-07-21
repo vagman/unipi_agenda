@@ -136,7 +136,7 @@ public class User {
             } catch (SQLException e) {
 //                handle primary key exception and return the right message for the user
                 if (e.getErrorCode() == Db.getMysqlDuplicatePkexception())
-                    model.addAttribute("message","This username is already exists");
+                    model.addAttribute("message","This username already exists");
                 else {
                     model.addAttribute("message","Something happen with Database");
                     e.printStackTrace();
