@@ -17,13 +17,13 @@ import java.util.List;
 public class ChatController extends ContextController{
     @GetMapping(path = "/chat")
     public Object getContent(Model model, HttpSession session,
-                             @RequestParam(name = "meeting", required = false) int meetingId,
+                             @RequestParam(name = "meeting", required = false) Integer meetingId,
                              @RequestParam(name = "edit", required = false) Integer editMeeting) {
 
 
         // if user not registered
         User registedUser = (User)session.getAttribute("user");
-        if(registedUser == null){
+        if(registedUser == null || meetingId==null){
             return new RedirectView("/");
         }
 

@@ -29,8 +29,15 @@ public class RegisterController extends ContextController {
                                @RequestParam(name = "username", required = false) String username,
                                @RequestParam(name = "password", required = false) String password,
                                @RequestParam(name = "firstname", required = false) String firstname,
-                               @RequestParam(name = "lastname", required = false) String lastname)
+                               @RequestParam(name = "lastname", required = false) String lastname,
+                               @RequestParam(name = "reenter-password", required = false) String secondPassword)
     {
+        // pas
+        if(!password.equals(secondPassword)){
+            model.addAttribute("message","Passwords don't match");
+            return "register";
+        }
+
         //random color generation
         Random rand = new Random();
         Color randomColor = new Color(rand.nextFloat(), rand.nextFloat(), rand.nextFloat());
