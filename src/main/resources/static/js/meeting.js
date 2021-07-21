@@ -55,10 +55,17 @@ $(document).ready(function () {
     });
     $('input#user_search').keyup(function () {
         let search_query = $(this).val();
+        let exclude_usernames = $("input#meeting_participants_input_hidden").val();
+        if(exclude_usernames != ""){
+            exclude_usernames = $("input#meeting_participants_input_hidden").val().split("__separator__").join(",");
+        }
         $.ajax({
             url: "/search-user",
             method: "POST",
-            data: { search_query: search_query }
+            data: {
+                search_query: search_query,
+                exclude_usernames: exclude_usernames
+            }
         }).done(function (usersList) {
             $('div#user_search_results > *').remove();
 

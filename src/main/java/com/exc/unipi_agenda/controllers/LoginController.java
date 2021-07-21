@@ -15,7 +15,11 @@ import org.springframework.web.servlet.view.RedirectView;
 public class LoginController extends ContextController{
 
     @GetMapping(path = "/")
-    public String getContent(Model model) {
+    public String getContent(Model model, HttpSession session) {
+        if(this.isDesktop(session)){
+            return "index-desktop";
+        }
+
         return "index";
     }
 
@@ -33,6 +37,11 @@ public class LoginController extends ContextController{
 
             return new RedirectView("user");
         }
+
+        if(this.isDesktop(session)){
+            return "index-desktop";
+        }
+
         return "index";
     }
 }

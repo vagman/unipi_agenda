@@ -1069,7 +1069,7 @@ span.message-author {
     color: #a2a2a2;
     margin-left: 5px;
 }
-#floating_window_toggler {
+.floating_window_toggler {
     cursor: pointer;
     background: transparent;
     border: unset;
@@ -1125,12 +1125,12 @@ button#close_floating_menu img {
     font-weight: 700;
 }
 
-.floating-menu button#edit_date,
-.floating-menu button#save_date,
-.floating-menu button#edit_title,
-.floating-menu button#save_title,
-.floating-menu button#edit_description,
-.floating-menu #save_description,
+.floating-menu button.edit_date,
+.floating-menu button.save_date,
+.floating-menu button.edit_title,
+.floating-menu button.save_title,
+.floating-menu button.edit_description,
+.floating-menu .save_description,
 .floating-menu button#edit_participants {
     position: absolute;
     top: 0;
@@ -1138,9 +1138,9 @@ button#close_floating_menu img {
     background: transparent;
     border: unset;
 }
-.floating-menu button#save_date,
-.floating-menu button#save_description,
-.floating-menu button#save_title
+.floating-menu button.save_date,
+.floating-menu button.save_description,
+.floating-menu button.save_title
 {
     display: none;
 }
@@ -1178,6 +1178,7 @@ button#close_floating_menu img {
     background: white;
     resize: none;
     margin: 0 -5px;
+    border: 1px solid #c5c5c5;
 }
 .floating-menu textarea.meeting-decription {
     width: 100%;
@@ -1194,9 +1195,9 @@ button#close_floating_menu img {
     resize: none;
     border: unset;
 }
-.floating-menu button#save_date img,
-.floating-menu button#save_description img,
-.floating-menu button#save_title img
+.floating-menu button.save_date img,
+.floating-menu button.save_description img,
+.floating-menu button.save_title img
 {
     width: 15px;
 }
@@ -1412,7 +1413,7 @@ span.successfull_addition {
     line-height: 15px;
     margin-top: 15px;
 }
-input#edit_meeting_date {
+input.edit_meeting_date {
     border: unset;
     padding: 5px 5px;
     width: 100%;
@@ -1421,4 +1422,249 @@ input#edit_meeting_date {
 }
 input#edit_meeting_date:not(:disabled) {
     border: 1px solid #bbbbbb;
+}
+button#desktop_view,
+button#mobile_view{
+     position: fixed;
+     bottom: 20px;
+     right: 20px;
+     border: 2px solid #0d7377;
+     width: 70px;
+     height: 70px;
+     border-radius: 50%;
+     background: white;
+}
+button#desktop_view svg path,
+button#mobile_view svg path
+{
+    fill: #0d7377;
+}
+button#desktop_view svg ,
+button#mobile_view svg{
+    width: 40px;
+    height: 40px;
+}
+button#desktop_view:hover,
+button#mobile_view:hover
+{
+    background: #0d7377;
+}
+button#desktop_view:hover svg path ,
+button#mobile_view:hover svg path
+{
+    fill: white;
+}
+body.login.desktop {
+    background: url(/img/logo.svg);
+    background-size: 90vw;
+    background-repeat: no-repeat;
+    background-position-x: 5vw;
+    background-position-y: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+.login-desktop-filter {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #00000029;
+}
+body.login.desktop  .card-login {
+    border: none;
+    width: 500px;
+    margin: 0;
+}
+.fake-tabs {
+    display: flex;
+    align-items: center;
+}
+.fake-tabs > * {
+    width: 50%;
+    text-align: center;
+    font-size: 23px;
+    font-weight: 600;
+    padding: 10px 0;
+}
+a.fake-tab-item.inactive {
+    background: #e4e4e4;
+    text-decoration: none;
+}
+body.login.desktop  .card-body {
+    padding: 50px;
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+body.login.desktop  .card-body form {
+    width: 100%;
+}
+body.meeting-list.desktop .left-column {
+    width: 25vw;
+    height: 100vh;
+    border: 1px solid #e4e4e4;
+    position: relative;
+    box-shadow: 5px 0px 5px #00000014;
+}
+body.meeting-list.desktop .meeting-container .meeting-date {
+    margin: 0px 0 15px;
+}
+body.meeting-list.desktop li.task{
+    padding:0;
+}
+body.meeting-list.desktop .meeting-container:hover {
+    background: #ececec;
+}
+body.meeting-list.desktop  .logo-container {
+    display: block;
+    width: 80%;
+    margin: 50px auto;
+}
+body.meeting-list.desktop .meeting-list .logo-container > img {
+    margin: 0;
+    display: block;
+    width: 100%;
+}
+body.meeting-list.desktop .new-meeting {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+}
+body.meeting-list.desktop .meeting-chat-container{
+    display: none;
+}
+body.meeting-list.desktop .meeting-container > img {
+    position: absolute;
+    right: 25px;
+    top: calc(50% - 12px);
+}
+body.meeting-list.desktop .meeting-container p.card-text {
+    margin: 0;
+}
+body.meeting-list.desktop .meeting-container {
+    position: relative;
+    background: #ffffff;
+    padding: 15px 20px;
+    border-bottom: 1px solid #e2e2e2;
+    cursor: pointer;
+}
+body.meeting-list.desktop {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+body.meeting-list.desktop .right-column {
+    width: 75vw;
+    position: relative;
+}
+body.meeting-list.desktop .meeting-chat-container {
+    display: none;
+    height: 100vh;
+}
+body.meeting-list.desktop .meeting-headliners {
+    padding: 20px;
+    background: white;
+    box-shadow: 0 5px 5px #e2e2e2;
+}
+body.meeting-list.desktop .meeting-headliners h3 {
+    margin-bottom: 5px;
+}
+body.meeting-list.desktop p.meeting-participants-list {
+    float: right;
+    background: transparent;
+    margin: 0;
+}
+body.meeting-list.desktop .meeting-chat-container.open {
+    display: flex;
+    flex-direction: column;
+}
+body.meeting-list.desktop .message-list{
+    height: calc(100% - 160px);
+    top: 95px;
+    background: #cccccc26;
+}
+body.meeting-list.desktop .meeting-container.open {
+    background: #ececec;
+}
+body.meeting-list.desktop #mobile_view {
+    position: absolute;
+    bottom: 100px;
+}
+body.meeting.desktop div#main-section .form-group.meeting-title {
+    margin-top: 0;
+}
+body.meeting-list.desktop button.btn-delete-meeting {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+}
+body.meeting-list.desktop button#logout_button {
+    font-size: 20px;
+    color: black;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    bottom: 35px;
+    left: 20px;
+}
+body.meeting-list.desktop button#logout_button img {
+    margin-right: 10px;
+}
+body.meeting-list.desktop .notification-popup-filter.open {
+    position: fixed;
+}
+body.meeting-list.desktop .notification-popup {
+    width: 500px;
+    right: -800px;
+    height: 500px;
+    top: 10px;
+    position: fixed;
+}
+body.meeting-list.desktop .notification-popup.open {
+    right: 10px;
+}
+a#helpbox {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0d7377;
+    border: 1px solid #0d7377;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+}
+.floating-menu a#helpbox {
+    top:10px;
+    bottom:unset;
+
+}
+input.edit_meeting_date:not(:disabled) {
+    border: 1px solid #d2d2d2;
+}
+body.meeting-list.desktop  button.floating_window_toggler.btn-edit-meeting {
+    position: absolute;
+    top: 15px;
+    right: 75px;
+    background: transparent;
+    padding: 2px 20px;
+    border-radius: 3px;
+    border: 3px solid #c3c3c3;
+    font-size: 15px;
+}
+body.meeting-list.desktop .floating-menu.active {
+    width: 30%;
+    left: 70%;
+}
+body.meeting-list.desktop .left-column .meeting-list-container {
+    max-height: 60vh;
+    overflow: auto;
 }

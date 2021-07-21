@@ -15,7 +15,11 @@ import java.util.Random;
 @Controller
 public class RegisterController extends ContextController {
     @GetMapping("/register")
-    public String getContent(Model model) {
+    public String getContent(Model model, HttpSession session) {
+        if(this.isDesktop(session)){
+            return "register-desktop";
+        }
+
         return "register";
     }
 
@@ -38,6 +42,10 @@ public class RegisterController extends ContextController {
             registeredUser.setMeetings(refreshesMeetings(registeredUser.getUsername()));
             session.setAttribute("user", registeredUser);
             return new RedirectView("user");
+        }
+
+        if(this.isDesktop(session)){
+            return "register-desktop";
         }
         return "register";
     }

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <title>$meeting_name | Unipi Agenda</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width = device-width, initial-scale= 1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" href="img/favicon.ico">
+    <!-- CSS -->
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <link href="boxicons-2.0.7/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="js/datetimepicker/jquery.datetimepicker.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- SEO tags -->
+</head>
+<body class="meeting login desktop">
+<div class="login-desktop-filter"></div>
+
+<div id="main-section">
+    <div class="card card-login">
+        <div class="card-body">
+            <a class="go-back" href="/user"><img src="/img/arrow-left.svg">Go back</a>
+            <form action="/create-meeting" method="post">
+                <div class="input-group form-group meeting-title">
+                    <input name="meeting-title" class="form-control" autocomplete="off">
+                    <span class="floating-label-login">Meeting title</span>
+                </div>
+                <div class="input-group form-group meeting-desc">
+                    <h4>Description</h4>
+                    <textarea name="meeting-desc" class="meeting-desc" autocomplete="off"></textarea>
+                </div>
+                <div class="datetime-container">
+                    <div class="input-group form-group meeting-date">
+                        <div class="input-group-prepend">
+                            <img src="/img/calendar.svg">
+                        </div>
+                        <input name="meeting-date" class="datepicker" autocomplete="off">
+                        <span class="floating-label-login">Date</span>
+                    </div>
+                    <div class="input-group form-group meeting-duration">
+                        <div class="input-group-prepend">
+                            <img src="/img/clock.svg">
+                        </div>
+                        <select name="meeting-duration">
+                            <option value=""></option>
+                            <option th:each="optionValue : ${timepickerOptions}" th:value="${optionValue}" th:text="${optionValue}"></option>
+                        </select>
+
+                        <span class="floating-label-login">Duration</span>
+
+                    </div>
+                </div>
+                <div class="input-group form-group meeting-participants">
+                    <div class="meeting-headline">
+                        <h4>Participants</h4>
+                        <button id="add_participants"><img src="/img/add.svg"></button>
+                    </div>
+                    <div class="meeting-participants-list">
+                        <input type="hidden" name="meeting-participants" id="meeting_participants_input_hidden">
+                        <div class="meeting-participant">
+                            <div class="meeting-participant-info">
+                                <div class="user-icon" th:style="'background:' + @{${user.color}} + '; '">
+                                    <span th:text="${user.getFirstName().charAt(0)}"></span>
+                                    <span th:text="${user.getLastName().charAt(0)}"></span>
+                                </div>
+                                <span class="meeting-participant-name" th:text="${user.getFullName()}"></span>
+                            </div>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="sticky-button">Create meeting</button>
+
+                <div class="add-participants-popup-filter"></div>
+                <div class="add-participants-popup">
+                    <button class="add-participants-popup-close">
+                        <img src="/img/close.svg">
+                    </button>
+
+                    <h2>Add participants</h2>
+
+                    <input type="text" id="user_search" placeholder="Search for participants">
+                    <div id="user_search_results"></div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<button id="mobile_view">
+    <svg version="1.1" id="Capa_1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+         y="0px"
+         width="35px" height="35px" viewBox="0 0 35 35" style="enable-background:new 0 0 35 35;" xml:space="preserve">
+    <g>
+        <path fill="#0d7377" d="M25.302,0H9.698c-1.3,0-2.364,1.063-2.364,2.364v30.271C7.334,33.936,8.398,35,9.698,35h15.604
+            c1.3,0,2.364-1.062,2.364-2.364V2.364C27.666,1.063,26.602,0,25.302,0z M15.004,1.704h4.992c0.158,0,0.286,0.128,0.286,0.287
+            c0,0.158-0.128,0.286-0.286,0.286h-4.992c-0.158,0-0.286-0.128-0.286-0.286C14.718,1.832,14.846,1.704,15.004,1.704z M17.5,33.818
+            c-0.653,0-1.182-0.529-1.182-1.183s0.529-1.182,1.182-1.182s1.182,0.528,1.182,1.182S18.153,33.818,17.5,33.818z M26.021,30.625
+            H8.979V3.749h17.042V30.625z"/>
+    </g>
+    </svg>
+</button>
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js"></script>
+
+<!--<script src="/js/DurationPickerMaker/src/DurationPickerMaker.js"></script>-->
+<!--<script src="/js/DurationPickerMaker/src/FormattedDuration.js"></script>-->
+<script src="/js/datetimepicker/jquery.js"></script>
+<script src="/js/datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
+
+<script src="/js/meeting.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>

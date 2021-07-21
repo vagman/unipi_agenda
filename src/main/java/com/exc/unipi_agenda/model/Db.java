@@ -14,7 +14,7 @@ public class Db
         try{
             String connectionUrl = "jdbc:mysql://localhost:3306/unipi_agenda?serverTimezone=UTC&allowMultiQueries=true";
             String connectionUsername = "root";
-            String connectionPassword = "root";//root
+            String connectionPassword = "";//root
             return DriverManager.getConnection(connectionUrl, connectionUsername, connectionPassword);
         } catch (SQLException e) {
             e.printStackTrace();

@@ -20,11 +20,17 @@ public class ChatController extends ContextController{
                              @RequestParam(name = "meeting", required = false) int meetingId,
                              @RequestParam(name = "edit", required = false) Integer editMeeting) {
 
+
         // if user not registered
         User registedUser = (User)session.getAttribute("user");
         if(registedUser == null){
             return new RedirectView("/");
         }
+
+        if(this.isDesktop(session)){
+            return new RedirectView("/user");
+        }
+
         for (Object o:registedUser.getNotificationList()){
             if (o instanceof UserNotification){
                 if (((UserNotification) o).getMeeting().getId() == meetingId){

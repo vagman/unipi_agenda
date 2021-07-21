@@ -12,7 +12,14 @@ $(document).ready(function (){
 
     $('#notifications_button,.notification-popup-filter').click(function () {
         $('.notification-popup,.notification-popup-filter').toggleClass('open')
-        $(this).toggleClass('open');
+        $('#notifications_button').toggleClass('open');
+    });
+
+    $('.desktop .meeting-container').click(function (){
+        var id_meeting = $(this).attr('data-meeting-id');
+        $('.meeting-chat-container,  .meeting-container').removeClass("open");
+        $(this).addClass("open");
+        $('.meeting-chat-container[data-meeting-id="'+id_meeting+'"]').addClass("open");
     });
 })
 

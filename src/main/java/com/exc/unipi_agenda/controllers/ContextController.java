@@ -22,4 +22,12 @@ public class ContextController {
     public List<Meeting> refreshesMeetings(String username){
         return Meeting.loadMeetings(username);
     }
+
+    public boolean isDesktop(HttpSession session){
+        String viewMode = (String)session.getAttribute("viewMode");
+        if(viewMode != null && viewMode.equals("desktop")){
+            return true;
+        }
+        return false;
+    }
 }
