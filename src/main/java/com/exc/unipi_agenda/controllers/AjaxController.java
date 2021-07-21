@@ -20,7 +20,8 @@ public class AjaxController extends ContextController{
     @PostMapping("/search-user")
     public List<Object> searchUser(Model model,
                                    HttpSession session,
-                                   @RequestParam(name = "search_query", required = false) String search_query) {
+                                   @RequestParam(name = "search_query", required = false) String search_query,
+                                   @RequestParam(name = "exclude_usernames", required = false) String exclude_usernames) {
 
         Connection conn = Db.getConnection();
         if (conn == null) {
@@ -30,12 +31,35 @@ public class AjaxController extends ContextController{
         if(registedUser == null){
             return null;
         }
-        String sqlQuery = "SELECT username FROM users WHERE username LIKE ? AND username != ?;";
+        String sqlQuery = "SELECT username FROM users WHERE username LIKE ? AND username != ?";
+        String[] splited = {};
+        if(exclude_usernames != null && !exclude_usernames.equals("")){
+            // had to create dynamic parameters for the username excludes
+            StringBuilder builder = new StringBuilder();
+            splited = exclude_usernames.split(",");
+            builder.append(sqlQuery);
+            builder.append(" AND username NOT IN (");
+            for (int i=0; i<splited.length; i++){
+                if(i == splited.length-1){
+                    builder.append("?");
+                }else{
+                    builder.append("?,");
+                }
+            }
+            builder.append(")");
+            sqlQuery = builder.toString();
+        }
         List<Object> searchResults = new ArrayList<>();
         try {
             PreparedStatement ps = conn.prepareStatement(sqlQuery);
             ps.setString(1,"%"+search_query+"%");
             ps.setString(2,registedUser.getUsername());
+            if(exclude_usernames != null && !exclude_usernames.equals("")){
+                for (int i=0; i<splited.length; i++){
+                    ps.setString(i+3,splited[i]);
+                }
+            }
+//            System.out.println(ps);
             ResultSet rs = ps.executeQuery();
             while(rs.next()){
                 String result_username = rs.getString("username");

@@ -16,20 +16,21 @@ $(document).ready(function(){
     //         window.location.href = "localhost:8080/chat?meeting="+id_meeting;
     //     });
     // });
-    $('#floating_window_toggler').click(function(){
-        $('.floating-menu, .floating-menu-filter').addClass('active');
+    $('.floating_window_toggler').click(function(){
+        let id_meeting = $(this).attr('data-id-meeting');
+        $('.floating-menu[data-id-meeting="'+id_meeting+'"], .floating-menu-filter[data-id-meeting="'+id_meeting+'"]').addClass('active');
     });
     $('.floating-menu-filter, #close_floating_menu').click(function(){
         $('.floating-menu, .floating-menu-filter').removeClass('active');
     });
-    $('button#edit_description').click(function(){
+    $('button.edit_description').click(function(){
         $('textarea.meeting-decription').prop("disabled",false).removeClass('disabled');
-        $('button#edit_description').hide();
-        $('button#save_description').show();
+        $('button.edit_description').hide();
+        $('button.save_description').show();
     });
-    $('button#save_description').click(function(){
-        let meeting_description = $('.meeting-decription').val();
+    $('button.save_description').click(function(){
         let id_meeting = $(this).attr('data-id-meeting');
+        let meeting_description = $('.meeting-decription[data-id-meeting="'+id_meeting+'"]').val();
         $.ajax({
             url: "/update-meeting-description",
             method: "POST",
@@ -38,8 +39,8 @@ $(document).ready(function(){
                 meeting_description: meeting_description,
             }
         }).done(function (usersList) {
-            $('button#save_description').hide();
-            $('button#edit_description').show();
+            $('button.save_description').hide();
+            $('button.edit_description').show();
             $('textarea.meeting-decription').prop("disabled",true).addClass('disabled');
         });
     });
@@ -48,14 +49,14 @@ $(document).ready(function(){
         $('.meeting-participants').addClass('hidden');
         $('.meeting-participants-edit').addClass('visible');
     });
-    $('button#edit_title').click(function(){
+    $('button.edit_title').click(function(){
         $('textarea.meeting-title').prop("disabled",false).removeClass('disabled');
-        $('button#edit_title').hide();
-        $('button#save_title').show();
+        $('button.edit_title').hide();
+        $('button.save_title').show();
     });
-    $('button#save_date').click(function(){
-        let meeting_date = $('#edit_meeting_date').val();
+    $('button.save_date').click(function(){
         let id_meeting = $(this).attr('data-id-meeting');
+        let meeting_date = $('.edit_meeting_date[data-id-meeting="'+id_meeting+'"]').val();
         $.ajax({
             url: "/update-meeting-date",
             method: "POST",
@@ -64,19 +65,19 @@ $(document).ready(function(){
                 meeting_date: meeting_date,
             }
         }).done(function () {
-            $('button#save_date').hide();
-            $('button#edit_date').show();
-            $('#edit_meeting_date').prop("disabled",true);
+            $('button.save_date').hide();
+            $('button.edit_date').show();
+            $('.edit_meeting_date[data-id-meeting="'+id_meeting+'"]').prop("disabled",true);
         });
     });
-    $('button#edit_date').click(function(){
-        $('#edit_meeting_date').prop("disabled",false);
-        $('button#edit_date').hide();
-        $('button#save_date').show();
+    $('button.edit_date').click(function(){
+        $('.edit_meeting_date').prop("disabled",false);
+        $('button.edit_date').hide();
+        $('button.save_date').show();
     });
-    $('button#save_title').click(function(){
-        let meeting_title = $('.meeting-title').val();
+    $('button.save_title').click(function(){
         let id_meeting = $(this).attr('data-id-meeting');
+        let meeting_title = $('.meeting-title[data-id-meeting="'+id_meeting+'"]').val();
         $.ajax({
             url: "/update-meeting-title",
             method: "POST",
@@ -85,8 +86,8 @@ $(document).ready(function(){
                 meeting_title: meeting_title,
             }
         }).done(function (usersList) {
-            $('button#save_title').hide();
-            $('button#edit_title').show();
+            $('button.save_title').hide();
+            $('button.edit_title').show();
             $('textarea.meeting-title').prop("disabled",true).addClass('disabled');
         });
     });
@@ -106,7 +107,7 @@ $(document).ready(function(){
              location.reload();
         });
     });
-    $('#edit_meeting_date').datetimepicker();
+    $('.edit_meeting_date').datetimepicker();
     $("#add_participant").click(function (){
         var randomNumber = Math.round(Math.random()*100000000000,2);
         var html = `
@@ -124,10 +125,14 @@ $(document).ready(function(){
         })
         $('#search_users_'+randomNumber).keyup(function () {
             let search_query = $(this).val();
+            let exclude_usernames = $(".meeting-participants").html().replace(/(<([^>]+)>)|\s/gi, "")
             $.ajax({
                 url: "/search-user",
                 method: "POST",
-                data: { search_query: search_query }
+                data: {
+                    search_query: search_query,
+                    exclude_usernames:exclude_usernames
+                }
             }).done(function (usersList) {
                 $('#search_results_'+randomNumber+' > *').removeClass('filled').remove();
 
@@ -165,7 +170,8 @@ $(document).ready(function(){
                             idMeeting: idMeeting,
                             meetingAdmin: meetingAdmin,
                         }
-                    }).done(function (usersList) {
+                    }).done(function () {
+                        $('.meeting-participants-edit[data-id-meeting="'+idMeeting+'"] .meeting-participant.search input').val("");
                         $('.floating-menu .search-results > *').remove();
                         $('.floating-menu .search-results').removeClass('filled');
 
