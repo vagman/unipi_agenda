@@ -8,3 +8,10 @@ Your team will implement a web application that will serve as an online agenda. 
 * SpringBoot 2.4.5
 * Bootstrap 4.3.1
 * JQuery 3.3.1
+* MySQL 8.0.25
+
+### IDEs and Tools
+* IntelliJ Ultimate
+* Visual Studio Code
+* Adobe XD
+* Visio Professional 2019
